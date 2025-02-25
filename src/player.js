@@ -1,5 +1,7 @@
+import { vitals } from "./vitals.js"
+
 var player = {
-    vitals: [],
+    vitals: vitals,
     resources: [],
     actions: [],
     skills: [],
@@ -9,12 +11,12 @@ var player = {
     inventory: []
 }
 
-var health = {
-    name: "Health",
-    max: 5,
-    current: 5
+var breakEgg = {
+    name: "Break Egg",
+    progress: 0,
+    max: 100
 }
 
-player.vitals.push(health)
+player.actions.push(breakEgg)
 
 export {player}
