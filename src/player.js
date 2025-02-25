@@ -16,3 +16,5 @@ var health = {
 }
 
 player.vitals.push(health)
+
+export {player}

@@ -2,7 +2,6 @@
 <html lang="">
   <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Untitled Dragon Game</title>
   </head>
@@ -10,13 +9,15 @@
     <div id="app">
       <div class = "vitalsContainer">
           <div class="vitalBar" v-for="vital in player.vitals">
-            {{ vital.name }}: {{ vital.current }} / {{ vital.max }}
+            {{vital.name}}: {{vital.current}} / {{vital.max}}
           </div>
       </div>
       <div class = "actionsContainer">
           <div class="actionButton" v-for="action in player.actions"></div>
       </div>
     </div>
-    <script type="module" src="/src/main.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script type="module" src="src/player.js"></script>
+    <script type="module" src="src/index.js"></script>
   </body>
 </html>
