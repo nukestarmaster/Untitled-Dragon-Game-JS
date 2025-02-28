@@ -9,9 +9,9 @@ class Vital extends Counter {
     }
 }
 
-var health = new Vital("Health", 4, 5, "w3-red", true)
-var stamina = new Vital("Stamina", 5, 5, "w3-yellow", true)
+const health = new Vital("Health", 4, 5, "w3-red", true)
+const stamina = new Vital("Stamina", 5, 5, "w3-yellow", true)
 
-var vitals = [health, stamina]
+const vitals = [health, stamina]
 
 export {vitals}

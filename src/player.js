@@ -1,6 +1,6 @@
 import { vitals } from "./vitals.js"
 
-var player = {
+const player = {
     vitals: vitals,
     resources: [],
     actions: [],
@@ -11,10 +11,14 @@ var player = {
     inventory: []
 }
 
-var breakEgg = {
+const breakEgg = {
     name: "Break Egg",
     progress: 0,
-    max: 100
+    max: 100,
+    click() {
+        console.log(this)
+        this.progress++;
+    }
 }
 
 player.actions.push(breakEgg)

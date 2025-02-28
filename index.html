@@ -16,9 +16,11 @@
           </div>
       </div>
       <div class = "actionsContainer">
-          <button class="actionButton" v-for="action in player.actions">
-            <b>{{action.name}}</b><br>Progress: {{action.progress}} / {{action.max}}
-          </button>
+          <div v-for="action in player.actions">
+            <button class="actionButton" @click="action.click()">
+              <b>{{action.name}}</b><br>Progress: {{action.progress}} / {{action.max}}
+            </button>
+          </div>
       </div>
       <div class = "statContainer">
         <button class="actionButton" v-for="skill in player.skills">
