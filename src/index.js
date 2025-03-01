@@ -13,8 +13,7 @@ const app = Vue.createApp({
         click: function click(button, manager) {
             console.log(" ")
             console.log("clicking")
-            console.log(manager)
-            button.click(manager.dt, manager)
+            button.click(manager)
         },
         format: format,
     },

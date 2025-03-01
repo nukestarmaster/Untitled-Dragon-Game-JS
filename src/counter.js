@@ -37,6 +37,7 @@ class Counter {
         }
     }
     remove(n) {
+        console.log(`Removing ${n} from ${this.name}: ${this.current}`)
         this.current -= n;
         if (this.current <= 0) {
             this.emptyEffect(-this.current);
@@ -61,7 +62,7 @@ class Counter {
         return !this.capped || this.max > this.current
     }
     canSpend(n, flat = false, allowPartial = false) {
-        return this.allowDeficit || (allowPartial && this.amount > 0) || this.getCost(n, flat) < this.current
+        return (this.allowDeficit || (allowPartial && this.amount > 0) || this.getCost(n, flat) < this.current)
     }
     earn(n, flat = false) {
         if (this.canEarn()) {
@@ -71,9 +72,7 @@ class Counter {
     spend(n, flat = false, allowPartial = false) {
         if (this.canSpend(n, flat, allowPartial)) {
             this.remove(this.getCost(n, flat))
-            return false
         }
-        return true
     }
 }
 
@@ -82,14 +81,13 @@ class Cost {
         this.counter = counter
         this.amount = amount
         this.flat = flat
-
         this.allowPartial = allowPartial
     }
     canSpend(dt = 1) {
-
+        return this.counter.canSpend(dt)
     }
     spend(dt = 1) {
-        return this.counter.spend(this.amount * dt, this.flat, this.allowPartial)
+        this.counter.spend(this.amount * dt, this.flat, this.allowPartial)
     }
 }
 

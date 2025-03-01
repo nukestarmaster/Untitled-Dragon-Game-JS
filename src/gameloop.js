@@ -1,16 +1,12 @@
-import { Yield, Counter, Cost } from "./counter.js"
+const framerate = 10
 
 function gameloop(that) {
     that.player.lastUpdate = Date.now()
-    window.setInterval(tick, 100, that)
+    window.setInterval(tick, 1000/framerate, that)
 }
 
-function tick(that, actionManager) {
-    let t = Date.now()
-    let dt = (t - that.player.lastUpdate) / 1000
-    that.player.lastUpdate = t
-    that.player.actionManager.tick(dt)
-    that.player.actionManager.dt = dt
+function tick(that) {
+    that.player.actionManager.tick()
 }
 
 

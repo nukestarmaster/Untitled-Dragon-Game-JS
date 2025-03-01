@@ -4,7 +4,7 @@ import { vitals } from "./vitals.js"
 
 const player = {
     vitals: vitals,
-    actionManager: new ActionManager([new Cost(vitals.health, 0.5)]),
+    actionManager: new ActionManager([]),
     resources: [],
     actions: actions,
     skills: [],
