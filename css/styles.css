@@ -7,9 +7,6 @@
     margin: auto;
 }
 
-div {
-    margin: 2px;
-}
 
 .vitalsContainer, .actionsContainer, .statContainer {
     position: relative;

@@ -1,10 +1,9 @@
-import { ActionManager, actions } from "./action.js";
-import { Cost } from "./counter.js"
-import { vitals } from "./vitals.js"
+import { vitals } from "./data/vitals.js"
+import { actionManager, actions } from "./data/actions.js";
 
 const player = {
     vitals: vitals,
-    actionManager: new ActionManager([]),
+    actionManager: actionManager,
     resources: [],
     actions: actions,
     skills: [],

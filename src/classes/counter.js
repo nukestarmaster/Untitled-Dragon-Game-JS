@@ -1,7 +1,7 @@
 class CounterList {
-    constructor(name, actions) {
+    constructor(name, counters) {
         this.name = name
-        this.counters = actions
+        this.counters = counters
     }
     returnCounters() {
         return this.counters.filter((a) => a.visible)
@@ -16,10 +16,9 @@ class Counter {
         this.type = null;
         this.visible = visible
         this.allowDeficit = allowDeficit
-        this.capped = capped
         this.fullEffect = () => {return;}
         this.emptyEffect = () => {return;}
-
+        this.capped = capped
     }
     gain() {
         return 1
@@ -37,7 +36,6 @@ class Counter {
         }
     }
     remove(n) {
-        console.log(`Removing ${n} from ${this.name}: ${this.current}`)
         this.current -= n;
         if (this.current <= 0) {
             this.emptyEffect(-this.current);
@@ -58,11 +56,11 @@ class Counter {
         }
         return n / this.efficiency()
     }
-    canEarn() {
-        return !this.capped || this.max > this.current
+    canEarn(capped) {
+        return !capped || !this.capped || this.max > this.current
     }
     canSpend(n, flat = false, allowPartial = false) {
-        return (this.allowDeficit || (allowPartial && this.amount > 0) || this.getCost(n, flat) < this.current)
+        return (this.allowDeficit || (n < 1 && this.amount > 0) || this.getCost(n, flat) < this.current)
     }
     earn(n, flat = false) {
         if (this.canEarn()) {
@@ -77,29 +75,34 @@ class Counter {
 }
 
 class Cost {
-    constructor(counter, amount, flat = false, allowPartial = false) {
-        this.counter = counter
+    constructor(type, id, amount, flat = false, allowPartial = false) {
+        this.type = type
+        this.id = id
         this.amount = amount
         this.flat = flat
         this.allowPartial = allowPartial
     }
-    canSpend(dt = 1) {
-        return this.counter.canSpend(dt)
+    canSpend(player, dt = 1) {
+        return player[this.type + "s"][this.id].canSpend(this.amount * dt, this.flat, this.allowPartial)
     }
-    spend(dt = 1) {
-        this.counter.spend(this.amount * dt, this.flat, this.allowPartial)
+    spend(player, dt = 1) {
+        player[this.type + "s"][this.id].spend(this.amount * dt, this.flat, this.allowPartial)
     }
 }
 
 class Yield {
-    constructor(counter, amount, flat = false,) {
-        this.counter = counter
+    constructor(type, id, amount, flat = false, capped = true) {
+        this.type = type
+        this.id = id
         this.amount = amount
         this.flat = flat
         this.capped = capped
     }
-    earn(dt = 1) {
-        this.counter.earn(this.amount * dt, this.flat,)
+    canEarn(player, dt = 1) {
+        return player[this.type + "s"][this.id].canEarn(this.capped)
+    }
+    earn(player, dt = 1) {
+        player[this.type + "s"][this.id].earn(this.amount * dt, this.flat,)
     }
 }
 
