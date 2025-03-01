@@ -12,13 +12,14 @@
       <div class = "vitalsContainer">
           <div class="w3-light-grey w3-round container" v-for="vital in player.vitals">
             <div class="w3-container w3-round background" :class="vital.colour" :style="{width: vital.current / vital.max * 100 + '%' }"></div> 
-            <div class="overlayText">{{vital.name}}: {{vital.current}} / {{vital.max}}</div>
+            <div class="overlayText">{{vital.name}}: {{format(vital.current)}} / {{format(vital.max)}}</div>
           </div>
       </div>
       <div class = "actionsContainer">
-          <div v-for="action in player.actions">
-            <button class="actionButton" @click="action.click()">
-              <b>{{action.name}}</b><br>Progress: {{action.progress}} / {{action.max}}
+          <div v-for="action in player.actions.returnCounters()">
+            <button class="actionButton" @click="click(action, player.actionManager)">
+              {{console.log(player.actionManager)}}
+              <b>{{action.name}}</b><br>Progress: {{action.current}} / {{action.max}}
             </button>
           </div>
       </div>

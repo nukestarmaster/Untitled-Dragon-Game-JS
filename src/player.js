@@ -1,26 +1,18 @@
+import { ActionManager, actions } from "./action.js";
+import { Cost } from "./counter.js"
 import { vitals } from "./vitals.js"
 
 const player = {
     vitals: vitals,
+    actionManager: new ActionManager([new Cost(vitals.health, 0.5)]),
     resources: [],
-    actions: [],
+    actions: actions,
     skills: [],
     attributes: [],
     spiritAttributes: [],
     effects: [],
-    inventory: []
+    inventory: [],
+    lastUpdate: 0
 }
-
-const breakEgg = {
-    name: "Break Egg",
-    progress: 0,
-    max: 100,
-    click() {
-        console.log(this)
-        this.progress++;
-    }
-}
-
-player.actions.push(breakEgg)
 
 export {player}
