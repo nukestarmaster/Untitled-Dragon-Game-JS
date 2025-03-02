@@ -7,6 +7,10 @@
     margin: auto;
 }
 
+.w3-button {
+    width: 100%;
+    text-wrap-mode: wrap;
+}
 
 .vitalsContainer, .actionsContainer, .statContainer {
     position: relative;

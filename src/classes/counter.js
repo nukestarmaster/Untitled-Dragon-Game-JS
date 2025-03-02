@@ -1,26 +1,25 @@
-class CounterList {
-    constructor(name, counters) {
-        this.name = name
-        this.counters = counters
-    }
-    returnCounters() {
-        return this.counters.filter((a) => a.visible)
-    }
-}
+import { getComponent } from "../player.js";
 
+/*Abstract class for everything that tracks a spendable and/or gainable resource, parent of nearly all visible elements.
+Name is the formal name of the counter used for displaying text.
+Initial is the initial number in the counter.
+Max is the maximum number in the counter, different kinds of counters might do different things when reaching their maximum.
+Visible is true when the counter is being displayed.
+AllowDefecit true if the counter can go below 0.
+Capped is true if the counter can go over max.
+Type is a string that holds what implementation of Counter the counter is.
+*/
 class Counter {
-    constructor(name, initial, max, visible = false, allowDeficit = false, capped = true) {
+    constructor(name, initial, max, allowDeficit = false, capped = true) {
         this.name = name
-        this.current = initial;
-        this.max = max;
-        this.type = null;
-        this.visible = visible
+        this.current = initial
+        this.max = max
+        this.visible = false
         this.allowDeficit = allowDeficit
-        this.fullEffect = () => {return;}
-        this.emptyEffect = () => {return;}
         this.capped = capped
+        this.type = null
     }
-    gain() {
+    yieldMod() {
         return 1
     }
     efficiency() {
@@ -29,7 +28,6 @@ class Counter {
     add(n) {
         this.current += n;
         if (this.current >= this.max) {
-            this.fullEffect(this.current - this.max);
             if (this.capped) {
                 this.current = this.max;
             }
@@ -38,17 +36,16 @@ class Counter {
     remove(n) {
         this.current -= n;
         if (this.current <= 0) {
-            this.emptyEffect(-this.current);
             if (!this.allowDeficit) {
                 this.current = 0;
             }
         }
     }
-    getEarnings(n, flat) {
+    getYield(n, flat) {
         if (flat) {
             return n
         }
-        return n * this.gain()
+        return n * this.yieldMod()
     }
     getCost(n, flat) {
         if (flat) {
@@ -60,11 +57,11 @@ class Counter {
         return !capped || !this.capped || this.max > this.current
     }
     canSpend(n, flat = false, allowPartial = false) {
-        return (this.allowDeficit || (n < 1 && this.amount > 0) || this.getCost(n, flat) < this.current)
+        return this.allowDeficit || (allowPartial && this.current > 0) || this.getCost(n, flat) < this.current
     }
     earn(n, flat = false) {
         if (this.canEarn()) {
-            this.add(this.getEarnings(n, flat))
+            this.add(this.getYield(n, flat))
         }
     }
     spend(n, flat = false, allowPartial = false) {
@@ -74,6 +71,13 @@ class Counter {
     }
 }
 
+
+/*Classes for spending from or gaining in a Counter.
+Type and Id are the type and id of the counter respectively, combined they uniquely identify a counter.
+Amount is the base amount spent or yielded to the counter.
+Flat is true if the counter ignores efficiency/yieldMod modifiers.
+allowPartial
+*/
 class Cost {
     constructor(type, id, amount, flat = false, allowPartial = false) {
         this.type = type
@@ -83,10 +87,10 @@ class Cost {
         this.allowPartial = allowPartial
     }
     canSpend(player, dt = 1) {
-        return player[this.type + "s"][this.id].canSpend(this.amount * dt, this.flat, this.allowPartial)
+        return getComponent(player, this.type, this.id).canSpend(this.amount * dt, this.flat, this.allowPartial)
     }
     spend(player, dt = 1) {
-        player[this.type + "s"][this.id].spend(this.amount * dt, this.flat, this.allowPartial)
+        getComponent(player, this.type, this.id).spend(this.amount * dt, this.flat, this.allowPartial)
     }
 }
 
@@ -99,11 +103,11 @@ class Yield {
         this.capped = capped
     }
     canEarn(player, dt = 1) {
-        return player[this.type + "s"][this.id].canEarn(this.capped)
+        return !this.capped || getComponent(player, this.type, this.id).canEarn(this.capped)
     }
     earn(player, dt = 1) {
-        player[this.type + "s"][this.id].earn(this.amount * dt, this.flat,)
+        getComponent(player, this.type, this.id).earn(this.amount * dt, this.flat,)
     }
 }
 
-export {CounterList, Counter, Cost, Yield}
+export { Counter, Cost, Yield }

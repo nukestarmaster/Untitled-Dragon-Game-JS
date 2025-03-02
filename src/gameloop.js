@@ -1,4 +1,4 @@
-const framerate = 10
+const framerate = 50
 
 function gameloop(player) {
     player.lastUpdate = Date.now()

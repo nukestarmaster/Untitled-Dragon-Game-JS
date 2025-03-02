@@ -1,6 +1,6 @@
 import { Yield } from "../classes/counter.js"
 import { Action, ActionManager } from "../classes/action.js"
-import { CounterList, Cost } from "../classes/counter.js"
+import { Cost } from "../classes/counter.js"
 /*
 (name, 
 max, 
@@ -15,9 +15,8 @@ compYeild = []) */
 
 const breakEgg = new Action(
     "Break Egg", 
-    5,
-    true, 
-    true, 
+    5, 
+    true,
     3, 
     [],  
     [new Cost("vital", "stamina", 1, false, true)], 
@@ -25,16 +24,18 @@ const breakEgg = new Action(
     1)
 const rest = new Action(
     "Rest", 
-    1,
-    true,
+    20,
     false,
     1,
     [],
     [],
     [new Yield("vital", "stamina", 1)],
-    0.01)
+    1)
 
-const actions = new CounterList("Actions", [breakEgg, rest])
+const actions = 
+    {breakEgg: breakEgg, 
+    rest: rest}
+
 
 const actionManager = new ActionManager([])
 

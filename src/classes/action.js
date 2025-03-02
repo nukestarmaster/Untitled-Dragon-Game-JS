@@ -1,4 +1,4 @@
-import { Cost, Counter, CounterList } from "./counter.js";
+import { Cost, Counter} from "./counter.js";
 
 class ActionManager {
     constructor(upkeep, limit = 1) {
@@ -30,8 +30,8 @@ class ActionManager {
 }
 
 class Action extends Counter {
-    constructor(name, max, visible, limited = false, remaining = 1, initCost = [], progCost = [], progYield = [], progSpeed = 0, compYield = []) {
-        super(name, 0, max, visible, false, false)
+    constructor(name, max, limited = false, remaining = 1, initCost = [], progCost = [], progYield = [], progSpeed = 0, compYield = []) {
+        super(name, 0, max, false, false)
         this.limited = limited
         this.remaining = remaining
         this.initCost = initCost
@@ -96,7 +96,7 @@ class Action extends Counter {
         else {
             this.deactivate(player)
         }
-        while(this.current > (this.max - 0.01) && this.started) {
+        while(this.current > (this.max) && this.started) {
             this.complete(player)
         }
     }
