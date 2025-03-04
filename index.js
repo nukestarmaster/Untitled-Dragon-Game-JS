@@ -1,4 +1,4 @@
-import { player, returnCounters } from "./src/player.js";
+import { player, returnCounters, startEvent } from "./src/player.js";
 import { gameloop } from "./src/gameloop.js"
 import { format } from "./src/format.js"
 
@@ -7,6 +7,7 @@ const app = Vue.createApp({
     data() {
         return {
             player: player,
+            renderComponent: true
         }
     },
     methods: {
@@ -14,12 +15,16 @@ const app = Vue.createApp({
             button.click(player)
         },
         format: format,
-        returnCounters: returnCounters
+        returnCounters: returnCounters,
+        
     },
     beforeMount() {
         gameloop(player)
-        player.events.start1.call(player)
-    }
+        startEvent(player)
+    },
+    updated() {
+        console.log("update")
+    },
 })
     
 app.mount('#app')

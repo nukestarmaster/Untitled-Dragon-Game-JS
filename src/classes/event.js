@@ -14,7 +14,7 @@ class Event {
         if (this.eventText != null) {
             console.log(this.eventText)
         }
-        this.loop(player)
+        this.loop(player);
         if (this.nextEvent != null) {
             this.nextEvent.call(player)
         }
@@ -40,7 +40,9 @@ class WaitEvent extends Event {
         super(components, eventText)
     }
     func(player, compType, compId, magnitude) {
-        setTimeout(getComponent(player, compType, compId).call(player), magnitude)
+        let nextEvent = getComponent(player, compType, compId)
+        let boundCall = nextEvent.call.bind(nextEvent, player)
+        setTimeout(boundCall, magnitude)
     }
 }
 
@@ -69,9 +71,9 @@ class RevealEvent extends Event {
         super(components, eventText)
     }
     func(player, compType, compId, magnitude) {
-        console.log(compType,compId,  magnitude)
-        console.log(player)
-        getComponent(player, compType, compId).visible = true
+        console.log(compType, compId, magnitude)
+        getComponent(player, compType, compId).show()
+        console.log(getComponent(player, compType, compId))
     }
 }
 
@@ -80,8 +82,10 @@ class HideEvent extends Event {
         super(components, magnitude, eventText)
     }
     func(player, compType, compId, magnitude) {
-        getComponent(player, compType, compId).visible = false
+        getComponent(player, compType, compId).hide()
     }
 }
 
-export { TextEvent, WaitEvent, CostEvent, YieldEvent, RevealEvent, HideEvent }
+Event.working
+
+export {Event, TextEvent, WaitEvent, CostEvent, YieldEvent, RevealEvent, HideEvent }

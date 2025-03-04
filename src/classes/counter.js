@@ -19,6 +19,12 @@ class Counter {
         this.capped = capped
         this.type = null
     }
+    show() {
+        this.visible = true
+    }
+    hide() {
+        this.visible = false
+    }
     yieldMod() {
         return 1
     }

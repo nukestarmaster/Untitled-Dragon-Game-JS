@@ -25,4 +25,10 @@ function returnCounters(counters) {
     return list.filter((a) => a.visible)
 }
 
-export {player, getComponent, returnCounters}
+function startEvent(player) {
+    let event1 = getComponent(player, "event", "start1")
+    let call = event1.call.bind(event1, player)
+    call()
+}
+
+export {player, getComponent, returnCounters, startEvent}
