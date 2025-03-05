@@ -73,9 +73,7 @@ class RevealEvent extends Event {
         super(components, eventText)
     }
     func(player, compType, compId, magnitude) {
-        console.log(compType, compId, magnitude)
         getComponent(player, compType, compId).show()
-        console.log(getComponent(player, compType, compId))
     }
 }
 

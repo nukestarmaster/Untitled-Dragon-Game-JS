@@ -1,6 +1,7 @@
 import { Yield } from "../classes/counter.js"
-import { Action, ActionManager } from "../classes/action.js"
+import { Action, ActionManager, LimitAction } from "../classes/action.js"
 import { Cost } from "../classes/counter.js"
+import { getComponent } from "../player.js"
 /*
 (name, 
 max, 
@@ -13,27 +14,32 @@ progYield = [],
 progSpeed = 0, 
 compYeild = []) */
 
-const breakEgg = new Action(
+const breakEgg = new LimitAction(
     "Break Egg", 
-    5, 
-    true,
-    3, 
+    5,
+    1,
+    3,
     [],  
     [new Cost("vital", "stamina", 1, false, true)], 
-    [], 
-    1)
+    [],
+    [],
+    undefined,
+    {
+        1: ['event', 'tired'],
+        3: ['event', 'nullEvent']
+    }
+    )
 
 //breakEgg.visible = true
     
 const rest = new Action(
     "Rest", 
     20,
-    false,
     1,
     [],
     [],
     [new Yield("vital", "stamina", 1)],
-    1)
+    )
 
 const actions = 
     {breakEgg: breakEgg, 

@@ -1,3 +1,4 @@
+import { getComponent } from "../player.js";
 import { Cost, Counter} from "./counter.js";
 
 class ActionManager {
@@ -30,15 +31,15 @@ class ActionManager {
 }
 
 class Action extends Counter {
-    constructor(name, max, limited = false, remaining = 1, initCost = [], progCost = [], progYield = [], progSpeed = 0, compYield = []) {
+    constructor(name, max, progSpeed = 1, initCost = [], progCost = [], progYield = [], compYield = [], compEvent, countEvents = {}) {
         super(name, 0, max, false, false)
-        this.limited = limited
-        this.remaining = remaining
         this.initCost = initCost
         this.progCost = progCost
         this.progYield = progYield
         this.progSpeed = progSpeed
         this.compYield = compYield
+        this.compEvent = compEvent
+        this.countEvents = countEvents
         this.started = false
         this.active = false
         this.count = 0
@@ -70,6 +71,9 @@ class Action extends Counter {
     }
     init
     clickable(player, dt) {
+        if (!this.visible) {
+            return false
+        }
         if (!this.started) {
             if (!this.initCost.every((c) => c.canSpend(player))) {
                 return false
@@ -107,17 +111,32 @@ class Action extends Counter {
     complete(player) {
         this.started = false
         this.current -= this.max
-        this.compYield.map((y) => y.earn(player))
-        if (this.limited) {
-            this.remaining --
-            if (this.remaining <= 0) {
-                this.visible = false
-            }
+        this.count ++
+        if (this.compEvent) {
+            getComponent(player, this.compEvent[0], this.compEvent[1]).call(player)
         }
+        if (this.countEvents[this.count] != undefined) {
+            getComponent(player, this.countEvents[this.count][0], this.countEvents[this.count][1]).call(player)
+        }
+        this.compYield.map((y) => y.earn(player))
         if (this.clickable) {
             this.start(player)
         }
     }
 }
 
-export { ActionManager, Action }
+class LimitAction extends Action {
+    constructor(name, max, progSpeed = 1, limit = 1, initCost = [], progCost = [], progYield = [], compYield = [], compEvent, countEvents = {}) {
+        super(name, max, progSpeed, initCost, progCost, progYield, compYield, compEvent, countEvents)
+        this.limit = limit
+    }
+    complete(player) {
+        this.limit --
+        if (this.limit <= 0) {
+            this.visible = false
+        }
+        super.complete(player)
+    }
+}
+
+export { ActionManager, Action, LimitAction }

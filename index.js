@@ -21,9 +21,6 @@ const app = Vue.createApp({
         gameloop(this.player)
         startEvent(this.player)
     },
-    updated() {
-        console.log("update")
-    },
 })
     
 app.mount('#app')
