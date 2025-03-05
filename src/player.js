@@ -13,7 +13,6 @@ const player = {
     spiritAttributes: [],
     effects: [],
     inventory: [],
-    lastUpdate: 0,
 }
 
 function getComponent(player, type, id) {

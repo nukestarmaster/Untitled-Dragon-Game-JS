@@ -18,7 +18,7 @@
       <div class = "actionsContainer">
           <div 
           v-for="action in returnCounters(player.actions)">
-            <button class="w3-round container"
+            <div class="w3-round container"
             :class="action.active ? 'w3-dark-grey' : action.clickable(player, player.actionManager.dt) ? 'w3-grey' : 'w3-lightgrey w3-diabled'"
             type="button"
             @click="click(action, player.actionManager)">
@@ -26,13 +26,13 @@
               :class="action.active ? 'w3-black' : action.clickable(player, player.actionManager.dt) ? 'w3-dark-grey' : 'w3-grey'" 
               :style="{width: action.current / action.max * 100 + '%' }"></div>
               <div class="overlayText"><b>{{action.name}}</b><br>Progress: {{format(action.current)}} / {{format(action.max)}}</div>
-            </button>
+      </div>
           </div>
       </div>
       <div class = "statContainer">
-        <button class="w3-btn" v-for="skill in player.skills">
+        <div class="w3-btn" v-for="skill in player.skills">
           <b>{{skill.name}}</b><br>EXP: {{format(skill.progress)}} / {{format(skill.max)}}
-        </button>
+        </div>
       </div>
     </div>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>

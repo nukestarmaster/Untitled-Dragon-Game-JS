@@ -12,15 +12,14 @@ const app = Vue.createApp({
     },
     methods: {
         click: function click(button) {
-            button.click(player)
+            button.click(this.player)
         },
         format: format,
         returnCounters: returnCounters,
-        
     },
     beforeMount() {
-        gameloop(player)
-        startEvent(player)
+        gameloop(this.player)
+        startEvent(this.player)
     },
     updated() {
         console.log("update")

@@ -22,6 +22,9 @@ const breakEgg = new Action(
     [new Cost("vital", "stamina", 1, false, true)], 
     [], 
     1)
+
+//breakEgg.visible = true
+    
 const rest = new Action(
     "Rest", 
     20,
@@ -35,6 +38,8 @@ const rest = new Action(
 const actions = 
     {breakEgg: breakEgg, 
     rest: rest}
+
+
 
 
 const actionManager = new ActionManager([])

@@ -11,10 +11,12 @@ class Event {
         this.nextEvent = nextEvent
     }
     call(player) {
+        player.eventTrigger = true
         if (this.eventText != null) {
             console.log(this.eventText)
         }
         this.loop(player);
+        player.eventTrigger = false
         if (this.nextEvent != null) {
             this.nextEvent.call(player)
         }
