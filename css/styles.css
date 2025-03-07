@@ -12,15 +12,15 @@
     text-wrap-mode: wrap;
 }
 
-.vitalsContainer, .actionsContainer, .statContainer {
+.vitalsContainer, .actionsContainer, .statContainer, .resourceContainer {
     position: relative;
     border: 1px solid black;
     width: 160px;
     height: 100%;
     float: inline-start;
     margin: 5px;
-    padding: 3px;
 }
+
 
 .actionButton {
     width: 100%;
@@ -28,6 +28,8 @@
 
 .container {
     position: relative;
+    border: 1px solid black;
+    margin: 2px;
 }
 
 .background {

@@ -1,4 +1,4 @@
-const framerate = 50
+const framerate = 100
 
 function gameloop(player) {
     player.lastUpdate = Date.now()
@@ -8,7 +8,5 @@ function gameloop(player) {
 function tick(player) {
     player.actionManager.tick(player)
 }
-
-
 
 export {gameloop}

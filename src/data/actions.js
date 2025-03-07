@@ -16,7 +16,7 @@ compYeild = []) */
 
 const breakEgg = new LimitAction(
     "Break Egg", 
-    5,
+    2,
     1,
     3,
     [],  
@@ -26,11 +26,23 @@ const breakEgg = new LimitAction(
     undefined,
     {
         1: ['event', 'tired'],
-        3: ['event', 'nullEvent']
-    }
-    )
+        3: ['event', 'hatch']
+    })
+const eatEggshell = new LimitAction(
+    "Eat Eggshell",
+    1,
+    1,
+    3,
+    [],
+    [],
+    [],
+    [new Yield("vital", "satiety", 4)]
+)
 
-//breakEgg.visible = true
+const limitActions = {
+    breakEgg,
+    eatEggshell,
+}
     
 const rest = new Action(
     "Rest", 
@@ -39,15 +51,40 @@ const rest = new Action(
     [],
     [],
     [new Yield("vital", "stamina", 1)],
-    )
+)
+const digStones = new Action(
+    "Dig Stones",
+    1,
+    1,
+    [],
+    [new Cost("vital", "stamina", 1, false, true)],
+    [],
+    [new Yield("resource", "stones", 1)],
+    undefined,
+    {
+        1: ['event', 'getStone']
+    }
+)
+const eatStone = new Action(
+    "Eat Stone",
+    1,
+    1,
+    [new Cost("resource", "stones", 1)],
+    [],
+    [],
+    [new Yield("vital", "satiety", 1)]
+)
 
-const actions = 
-    {breakEgg: breakEgg, 
-    rest: rest}
+const actions = {
+    rest,
+    digStones,
+    eatStone,
+}
+
 
 
 
 
 const actionManager = new ActionManager([])
 
-export { actions, actionManager }
+export { actions, actionManager, limitActions }

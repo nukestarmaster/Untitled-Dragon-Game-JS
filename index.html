@@ -1,42 +1,58 @@
 <!DOCTYPE html>
 <html lang="">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Untitled Dragon Game</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-  </head>
-  <body>
-    <div id="app">
-      <div class = "vitalsContainer">
-          <div class="w3-grey w3-round container" v-for="vital in player.vitals">
-            <div class="w3-round background" :class="vital.colour" :style="{width: vital.current / vital.max * 100 + '%' }"></div> 
-            <div class="overlayText">{{vital.name}}: {{format(vital.current)}} / {{format(vital.max)}}</div>
-          </div>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Untitled Dragon Game</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+
+<body>
+  <div id="app">
+    <div class="vitalsContainer" v-if="returnCounters(player.vitals)[0]">
+      <div class="w3-grey w3-round container" v-for="vital in returnCounters(player.vitals)">
+        <div class="w3-round background" :class="vital.colour" :style="{width: vital.current / vital.max * 100 + '%' }">
+        </div>
+        <div class="overlayText" v-html="vital.display()"></div>
       </div>
-      <div class = "actionsContainer">
-          <div 
-          v-for="action in returnCounters(player.actions)">
-            <div class="w3-round container"
-            :class="action.active ? 'w3-dark-grey' : action.clickable(player, player.actionManager.dt) ? 'w3-grey' : 'w3-lightgrey w3-diabled'"
-            type="button"
-            @click="click(action, player.actionManager)">
-              <div class="w3-round background" 
-              :class="action.active ? 'w3-black' : action.clickable(player, player.actionManager.dt) ? 'w3-dark-grey' : 'w3-grey'" 
-              :style="{width: action.current / action.max * 100 + '%' }"></div>
-              <div class="overlayText"><b>{{action.name}}</b><br>Progress: {{format(action.current)}} / {{format(action.max)}}</div>
-      </div>
-          </div>
-      </div>
-      <div class = "statContainer">
-        <div class="w3-btn" v-for="skill in player.skills">
-          <b>{{skill.name}}</b><br>EXP: {{format(skill.progress)}} / {{format(skill.max)}}
+    </div>
+    <div class="actionsContainer" v-if="returnCounters(player.actions)[0]">
+      <div v-for="action in returnCounters(player.actions)">
+        <div class="w3-round container"
+          :class="action.active ? 'w3-dark-grey' : action.clickable(player) ? 'w3-grey' : 'w3-lightgrey w3-diabled'"
+          type="button" @click="click(action, player.actionManager)">
+          <div class="w3-round background"
+            :class="action.active ? 'w3-black' : action.clickable(player) ? 'w3-dark-grey' : 'w3-grey'"
+            :style="{width: action.current / action.max * 100 + '%' }"></div>
+          <div class="overlayText" v-html="action.display()"></div>
         </div>
       </div>
     </div>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script type="module" src="src/player.js"></script>
-    <script type="module" src="index.js"></script>
-  </body>
+    <div class="actionsContainer" v-if="returnCounters(player.limitActions)[0]">
+      <div v-for="action in returnCounters(player.limitActions)">
+        <div class="w3-round container"
+          :class="action.active ? 'w3-dark-grey' : action.clickable(player) ? 'w3-grey' : 'w3-lightgrey w3-diabled'"
+          type="button" @click="click(action, player.actionManager)">
+          <div class="w3-round background"
+            :class="action.active ? 'w3-black' : action.clickable(player) ? 'w3-dark-grey' : 'w3-grey'"
+            :style="{width: action.current / action.max * 100 + '%' }"></div>
+          <div class="overlayText" v-html="action.display()"></div>
+        </div>
+      </div>
+    </div>
+    <div class="resourceContainer" v-if="returnCounters(player.resources)[0]">
+      <div class="w3-grey w3-round container" v-for="rec in returnCounters(player.resources)">
+        <div class="w3-round background w3-dark-grey" :style="{width: rec.current / rec.max * 100 + '%' }">
+        </div>
+        <div class="overlayText" v-html="rec.display()"></div>
+      </div>
+    </div>
+  </div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script type="module" src="src/player.js"></script>
+  <script type="module" src="index.js"></script>
+</body>
+
 </html>

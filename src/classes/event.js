@@ -1,5 +1,5 @@
 import { Cost, Yield } from "./counter.js"
-import { getComponent } from "../player.js"
+import { getComponent, returnCounters } from "../player.js"
 
 /*Event is an class for assorted one off effects.
 
@@ -73,7 +73,7 @@ class RevealEvent extends Event {
         super(components, eventText)
     }
     func(player, compType, compId, magnitude) {
-        getComponent(player, compType, compId).show()
+        getComponent(player, compType, compId).visible = true
     }
 }
 
@@ -82,10 +82,10 @@ class HideEvent extends Event {
         super(components, magnitude, eventText)
     }
     func(player, compType, compId, magnitude) {
-        getComponent(player, compType, compId).hide()
+        getComponent(player, compType, compId).visible = false
     }
 }
 
 Event.working
 
-export {Event, TextEvent, WaitEvent, CostEvent, YieldEvent, RevealEvent, HideEvent }
+export { Event, TextEvent, WaitEvent, CostEvent, YieldEvent, RevealEvent, HideEvent }

@@ -1,4 +1,5 @@
 import { getComponent } from "../player.js";
+import { format } from "../format.js";
 
 /*Abstract class for everything that tracks a spendable and/or gainable resource, parent of nearly all visible elements.
 Name is the formal name of the counter used for displaying text.
@@ -74,6 +75,9 @@ class Counter {
         if (this.canSpend(n, flat, allowPartial)) {
             this.remove(this.getCost(n, flat))
         }
+    }
+    display() {
+        return `${this.name}: ${format(this.current)} / ${format(this.max)}`
     }
 }
 

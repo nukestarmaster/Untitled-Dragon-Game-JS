@@ -1,18 +1,20 @@
 import { vitals } from "./data/vitals.js"
-import { actionManager, actions } from "./data/actions.js";
+import { actionManager, actions, limitActions } from "./data/actions.js";
 import { events } from "./data/events.js";
+import { resources } from "./data/resources.js";
 
 const player = {
-    events: events,
-    vitals: vitals,
     actionManager: actionManager,
-    resources: [],
+    vitals: vitals,
     actions: actions,
+    limitActions: limitActions,
+    resources: resources,
     skills: [],
     attributes: [],
     spiritAttributes: [],
     effects: [],
     inventory: [],
+    events: events,
 }
 
 function getComponent(player, type, id) {

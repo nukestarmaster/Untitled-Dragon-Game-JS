@@ -1,5 +1,6 @@
 import { getComponent } from "../player.js";
 import { Cost, Counter} from "./counter.js";
+import { format } from "../format.js";
 
 class ActionManager {
     constructor(upkeep, limit = 1) {
@@ -46,12 +47,10 @@ class Action extends Counter {
         this.capped = false
     }
     activate(player) {
-        console.log(`Activating ${this.name}`)
         player.actionManager.activateAction(player, this)
         this.active = true
     }
     deactivate(player) {
-        console.log(`Deactivating ${this.name}`)
         player.actionManager.deactivateAction(this)
         this.active = false
     }
@@ -70,7 +69,8 @@ class Action extends Counter {
         this.activate(player)
     }
     init
-    clickable(player, dt) {
+    clickable(player) {
+        let dt = player.actionManager.dt
         if (!this.visible) {
             return false
         }
@@ -123,6 +123,9 @@ class Action extends Counter {
             this.start(player)
         }
     }
+    display() {
+        return `<b>${this.name}</b><br>Completed: ${this.count}`
+    }
 }
 
 class LimitAction extends Action {
@@ -136,6 +139,9 @@ class LimitAction extends Action {
             this.visible = false
         }
         super.complete(player)
+    }
+    display() {
+        return `<b>${this.name}</b><br>Remaining: ${this.limit}`
     }
 }
 
