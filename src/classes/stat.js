@@ -22,6 +22,9 @@ class Stat extends Counter {
         return this.level > 0 || allowPartial && this.level > 0 || this.getCost(n, flat) < this.current
     }
     earn(n, flat = false) {
+        if (this.visible == false) {
+            this.visible = true
+        }
         super.earn(n, flat)
         while (this.current >= this.max) {
             this.current -= this.max
@@ -51,7 +54,7 @@ class Stat extends Counter {
         this.level --
         this.max = Math.floor(this.initMax * (this.mult ** this.level))
     }
-    effLevel() {
+    getLevel(player) {
         return this.level
     }
     display() {

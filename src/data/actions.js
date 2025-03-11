@@ -17,7 +17,7 @@ compYeild = []) */
 const breakEgg = new LimitAction(
     "Break Egg", 
     1,
-    1,
+    null,
     3,
     [],  
     [new Cost("vital", "stamina", 1, false, true)], 
@@ -31,7 +31,7 @@ const breakEgg = new LimitAction(
 const eatEggshell = new LimitAction(
     "Eat Eggshell",
     1,
-    1,
+    null,
     3,
     [],
     [],
@@ -47,7 +47,7 @@ const limitActions = {
 const rest = new Action(
     "Rest", 
     20,
-    1,
+    "resting",
     [],
     [],
     [new Yield("vital", "stamina", 1)],
@@ -55,7 +55,7 @@ const rest = new Action(
 const digStones = new Action(
     "Dig Stones",
     1,
-    1,
+    "mining",
     [],
     [new Cost("vital", "stamina", 1, false, true)],
     [],
@@ -70,7 +70,7 @@ const digStones = new Action(
 const eatStone = new Action(
     "Eat Stone",
     1,
-    1,
+    null,
     [new Cost("resource", "stones", 1)],
     [],
     [],

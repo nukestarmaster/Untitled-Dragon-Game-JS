@@ -31,12 +31,13 @@ class ActionManager {
 }
 
 class Action extends Counter {
-    constructor(name, max, progSpeed = 1, initCost = [], progCost = [], progYield = [], compYield = [], compEvent, countEvents = {}) {
+    constructor(name, max, skill = null, initCost = [], progCost = [], progYield = [], compYield = [], compEvent, countEvents = {}) {
         super(name, 0, max, false, false)
+        this.skill = skill
         this.initCost = initCost
         this.progCost = progCost
         this.progYield = progYield
-        this.progSpeed = progSpeed
+        this.progSpeed = 1
         this.compYield = compYield
         this.compEvent = compEvent
         this.countEvents = countEvents
@@ -44,6 +45,24 @@ class Action extends Counter {
         this.active = false
         this.count = 0
         this.capped = false
+    }
+    getSkillEff(player) {
+        if (this.skill == null) {
+            return 1
+        }
+        return 1 + (getComponent(player, "skill", this.skill).getLevel(player) * 0.01)
+    }
+    getSkillYield(player) {
+        if (this.skill == null) {
+            return 1
+        }
+        return 1 + (getComponent(player, "skill", this.skill).getLevel(player) * 0.01)
+    }
+    getSkillSpeed(player) {
+        if (this.skill == null) {
+            return 1
+        }
+        return 1 + (getComponent(player, "skill", this.skill).getLevel(player) * 0.05)
     }
     activate(player) {
         player.actionManager.activateAction(player, this)
@@ -74,17 +93,17 @@ class Action extends Counter {
             return false
         }
         if (!this.started) {
-            if (!this.initCost.every((c) => c.canSpend(player))) {
+            if (!this.initCost.every((c) => c.canSpend(player, 1 / this.getSkillEff(player)))) {
                 return false
             }
         }
-        if (!this.progCost.every((c) => c.canSpend(player, dt))) {
+        if (!this.progCost.every((c) => c.canSpend(player, dt * this.getSkillSpeed(player) / this.getSkillEff(player)))) {
             return false
         }
-        if (!this.progYield.every((c) => c.canEarn(player, dt))) {
+        if (!this.progYield.every((c) => c.canEarn(player, dt * this.getSkillSpeed(player) * this.getSkillYield(player)))) {
             return false
         }
-        if (!this.compYield.every((c) => c.canEarn(player))) {
+        if (!this.compYield.every((c) => c.canEarn(player, this.getSkillYield(player)))) {
             return false
         }
         return true
@@ -92,9 +111,9 @@ class Action extends Counter {
     tick(player) {
         let dt = player.actionManager.dt
         if (this.clickable(player, dt)) {
-            this.progCost.map((c) => c.spend(player, dt)) 
-            this.progYield.map((y) => y.earn(player, dt))
-            this.earn(this.progSpeed * dt)
+            this.progCost.map((c) => c.spend(player, dt * this.getSkillSpeed(player) / this.getSkillEff(player))) 
+            this.progYield.map((y) => y.earn(player, dt * this.getSkillSpeed(player) * this.getSkillYield(player)))
+            this.earn(this.progSpeed * dt * this.getSkillSpeed(player))
         }
         else {
             this.deactivate(player)
@@ -104,7 +123,7 @@ class Action extends Counter {
         }
     }
     start(player) {
-        this.initCost.map((c) => c.spend(player))
+        this.initCost.map((c) => c.spend(player, 1 / this.getSkillEff(player)))
         this.started = true
     }
     complete(player) {
@@ -117,10 +136,11 @@ class Action extends Counter {
         if (this.countEvents[this.count] != undefined) {
             getComponent(player, this.countEvents[this.count][0], this.countEvents[this.count][1]).call(player)
         }
-        this.compYield.map((y) => y.earn(player))
+        this.compYield.map((y) => y.earn(player, this.getSkillEff(player)))
         if (this.clickable) {
             this.start(player)
         }
+        console.log(this.getSkillEff(player), this.getSkillYield(player), this.getSkillSpeed(player))
     }
     display() {
         return `<b>${this.name}</b><br>Completed: ${this.count}`
@@ -128,8 +148,8 @@ class Action extends Counter {
 }
 
 class LimitAction extends Action {
-    constructor(name, max, progSpeed = 1, limit = 1, initCost = [], progCost = [], progYield = [], compYield = [], compEvent, countEvents = {}) {
-        super(name, max, progSpeed, initCost, progCost, progYield, compYield, compEvent, countEvents)
+    constructor(name, max, skill = null, limit = 1, initCost = [], progCost = [], progYield = [], compYield = [], compEvent, countEvents = {}) {
+        super(name, max, skill, initCost, progCost, progYield, compYield, compEvent, countEvents)
         this.limit = limit
     }
     complete(player) {
