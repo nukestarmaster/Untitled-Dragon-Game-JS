@@ -16,7 +16,7 @@ compYeild = []) */
 
 const breakEgg = new LimitAction(
     "Break Egg", 
-    2,
+    1,
     1,
     3,
     [],  
@@ -59,7 +59,9 @@ const digStones = new Action(
     [],
     [new Cost("vital", "stamina", 1, false, true)],
     [],
-    [new Yield("resource", "stones", 1)],
+    [new Yield("resource", "stones", 1),
+     new Yield("skill", 'mining', 1)
+    ],
     undefined,
     {
         1: ['event', 'getStone']

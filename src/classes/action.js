@@ -1,6 +1,5 @@
 import { getComponent } from "../player.js";
 import { Cost, Counter} from "./counter.js";
-import { format } from "../format.js";
 
 class ActionManager {
     constructor(upkeep, limit = 1) {

@@ -49,6 +49,18 @@
         <div class="overlayText" v-html="rec.display()"></div>
       </div>
     </div>
+    <div class="statContainer" v-if="returnCounters(player.skills)[0]">
+      <div v-for="stat in returnCounters(player.skills)">
+        <div class="w3-round container"
+          :class="stat.clickable(player) ? 'w3-grey' : 'w3-lightgrey w3-diabled'"
+          type="button" @click="">
+          <div class="w3-round background"
+            :class="stat.clickable(player) ? 'w3-dark-grey' : 'w3-grey'"
+            :style="{width: stat.current / stat.max * 100 + '%' }"></div>
+          <div class="overlayText" v-html="stat.display()"></div>
+        </div>
+      </div>
+    </div>
   </div>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <script type="module" src="src/player.js"></script>

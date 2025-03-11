@@ -72,16 +72,16 @@ class RevealEvent extends Event {
     constructor(components, eventText) {
         super(components, eventText)
     }
-    func(player, compType, compId, magnitude) {
+    func(player, compType, compId) {
         getComponent(player, compType, compId).visible = true
     }
 }
 
 class HideEvent extends Event {
-    constructor(components, magnitude, eventText) {
-        super(components, magnitude, eventText)
+    constructor(components, eventText) {
+        super(components, eventText)
     }
-    func(player, compType, compId, magnitude) {
+    func(player, compType, compId) {
         getComponent(player, compType, compId).visible = false
     }
 }

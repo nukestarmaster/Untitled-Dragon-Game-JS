@@ -1,4 +1,6 @@
-import { Counter } from "./counter";
+import { Counter } from "./counter.js";
+import { format } from "../format.js";
+
 const skillCostInit = 10
 const skillCostMult = 1.1
 
@@ -21,14 +23,14 @@ class Stat extends Counter {
     }
     earn(n, flat = false) {
         super.earn(n, flat)
-        if (this.current > this.max) {
+        while (this.current >= this.max) {
             this.current -= this.max
             this.levelUp()
         }
     }
     spend(n, flat = false, allowPartial = false) {
         super.spend(n, flat, allowPartial)
-        if (this.current < this.max) {
+        while (this.current < this.max) {
             if (this.level > 0) {
                 this.levelDown()
                 this.current += this.max
@@ -38,13 +40,16 @@ class Stat extends Counter {
             }
         }
     }
+    clickable() {
+        return false
+    }
     levelUp() {
         this.level ++
-        this.max = Math.floor(this.initMax * (this.mult ^ this.level))
+        this.max = Math.floor(this.initMax * (this.mult ** this.level))
     }
     levelDown() {
         this.level --
-        this.max = Math.floor(this.initMax * (this.mult ^ this.level))
+        this.max = Math.floor(this.initMax * (this.mult ** this.level))
     }
     effLevel() {
         return this.level

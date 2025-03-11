@@ -2,6 +2,7 @@ import { vitals } from "./data/vitals.js"
 import { actionManager, actions, limitActions } from "./data/actions.js";
 import { events } from "./data/events.js";
 import { resources } from "./data/resources.js";
+import { skills } from "./data/stats.js";
 
 const player = {
     actionManager: actionManager,
@@ -9,7 +10,7 @@ const player = {
     actions: actions,
     limitActions: limitActions,
     resources: resources,
-    skills: [],
+    skills: skills,
     attributes: [],
     spiritAttributes: [],
     effects: [],
