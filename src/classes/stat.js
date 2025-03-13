@@ -3,17 +3,19 @@ import { format } from "../format.js";
 
 const skillCostInit = 10
 const skillCostMult = 1.1
+const skillVisThreshold = 1
 
 const attCostInit = 50
 const attCostMult = 1.2
 
 
 class Stat extends Counter {
-    constructor(name, max, mult) {
+    constructor(name, max, mult, visThreshold = 1) {
         super(name, 0, max, true, false)
         this.initMax = max
         this.mult = mult
         this.level = 0
+        this.visThreshold = visThreshold
     }
     canEarn() {
         return true
@@ -22,13 +24,13 @@ class Stat extends Counter {
         return this.level > 0 || allowPartial && this.level > 0 || this.getCost(n, flat) < this.current
     }
     earn(n, flat = false) {
-        if (this.visible == false) {
-            this.visible = true
-        }
         super.earn(n, flat)
         while (this.current >= this.max) {
             this.current -= this.max
             this.levelUp()
+        }
+        if (this.visible == false && this.current >= this.visThreshold) {
+            this.visible = true
         }
     }
     spend(n, flat = false, allowPartial = false) {
@@ -64,7 +66,7 @@ class Stat extends Counter {
 
 class Skill extends Stat {
     constructor(name, majorAtt = [], midAtt = [], minorAtt) {
-        super(name, skillCostInit, skillCostMult)
+        super(name, skillCostInit, skillCostMult, skillVisThreshold)
         this.majorAtt = majorAtt
         this.midAtt = midAtt
         this.minorAtt = minorAtt

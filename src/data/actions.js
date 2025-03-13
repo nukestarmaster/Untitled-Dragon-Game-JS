@@ -2,6 +2,7 @@ import { Yield } from "../classes/counter.js"
 import { Action, ActionManager, LimitAction } from "../classes/action.js"
 import { Cost } from "../classes/counter.js"
 import { getComponent } from "../player.js"
+import { YieldEvent } from "../classes/event.js"
 /*
 (name, 
 max, 
@@ -26,7 +27,7 @@ const breakEgg = new LimitAction(
     undefined,
     {
         1: ['event', 'tired'],
-        3: ['event', 'hatch']
+        3: ['event', 'hatch1']
     })
 const eatEggshell = new LimitAction(
     "Eat Eggshell",
@@ -35,8 +36,8 @@ const eatEggshell = new LimitAction(
     3,
     [],
     [],
-    [],
-    [new Yield("vital", "satiety", 4)]
+    [new Yield("vital", "satiety", 4)],
+    [new Yield("skill", "eating", 4)]
 )
 
 const limitActions = {
@@ -51,10 +52,11 @@ const rest = new Action(
     [],
     [],
     [new Yield("vital", "stamina", 1)],
+    [new Yield("skill", "resting", 1)]
 )
 const digStones = new Action(
     "Dig Stones",
-    1,
+    0.5,
     "mining",
     [],
     [new Cost("vital", "stamina", 1, false, true)],
@@ -73,8 +75,8 @@ const eatStone = new Action(
     null,
     [new Cost("resource", "stones", 1)],
     [],
-    [],
-    [new Yield("vital", "satiety", 1)]
+    [new Yield("vital", "satiety", 1)],
+    [new Yield("skill", "eating", 0.1)]
 )
 
 const actions = {
@@ -87,6 +89,6 @@ const actions = {
 
 
 
-const actionManager = new ActionManager([])
+const actionManager = new ActionManager()
 
 export { actions, actionManager, limitActions }

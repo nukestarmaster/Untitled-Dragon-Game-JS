@@ -64,7 +64,7 @@ class Counter {
         return !capped || !this.capped || this.max > this.current
     }
     canSpend(n, flat = false, allowPartial = false) {
-        return this.allowDeficit || (allowPartial && this.current > 0) || this.getCost(n, flat) < this.current
+        return this.allowDeficit || (allowPartial && this.current > 0) || this.getCost(n, flat) <= this.current
     }
     earn(n, flat = false) {
         if (this.canEarn()) {
@@ -74,7 +74,9 @@ class Counter {
     spend(n, flat = false, allowPartial = false) {
         if (this.canSpend(n, flat, allowPartial)) {
             this.remove(this.getCost(n, flat))
+            return true
         }
+        return false
     }
     display() {
         return `${this.name}: ${format(this.current)} / ${format(this.max)}`

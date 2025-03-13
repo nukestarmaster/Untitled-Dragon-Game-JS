@@ -2,9 +2,9 @@ import { getComponent } from "../player.js";
 import { Cost, Counter} from "./counter.js";
 
 class ActionManager {
-    constructor(upkeep, limit = 1) {
-        this.limit = limit
-        this.upkeep = upkeep
+    constructor() {
+        this.limit = 1
+        this.upkeep = []
         this.actions = []
         this.t0 = 0
         this.dt = 0
@@ -19,12 +19,33 @@ class ActionManager {
         let list = this.actions.filter((a) => a.name != action.name)
         this.actions = list
     }
+    changeUpkeep(type, id, amount) {
+        for (let c in this.upkeep) {
+            if (this.upkeep[c].type == type && this.upkeep[c].id == id) {
+                this.upkeep[c].amount += amount
+                if (this.upkeep[c].amount <= 0) {
+                    this.upkeep.splice(c, 1)
+                }
+                return
+            }
+        }
+        if (amount <= 0) {
+            console.log(`Tried to remove upkeep of ${amount} from ${type}.${id} but this was not found in array`)
+            console.log(this.upkeep)
+            return
+        }
+        this.upkeep.push(new Cost(type, id, amount))
+    }
+
     tick(player) {
         if (this.actions.length > 0) {
             let t1 = Date.now()
             this.dt = (t1 - this.t0) / 1000
-            player.actionManager.upkeep.map((c) => c.spend(this.dt))
-            player.actionManager.actions.map((a) => a.tick(player))
+            this.upkeep.map((c) => c.spend(player, this.dt))
+            this.actions.map((a) => a.tick(player))
+            if (!this.upkeep.every((c) => c.canSpend(player, this.dt))) {
+                this.actions.map((a) => a.deactivate(player))
+            }
             this.t0 = t1
         }
     }
@@ -86,7 +107,6 @@ class Action extends Counter {
         }
         this.activate(player)
     }
-    init
     clickable(player) {
         let dt = player.actionManager.dt
         if (!this.visible) {
@@ -115,7 +135,7 @@ class Action extends Counter {
             this.progYield.map((y) => y.earn(player, dt * this.getSkillSpeed(player) * this.getSkillYield(player)))
             this.earn(this.progSpeed * dt * this.getSkillSpeed(player))
         }
-        else {
+        if (!this.clickable(player, dt)) {
             this.deactivate(player)
         }
         while(this.current > (this.max) && this.started) {
@@ -137,10 +157,9 @@ class Action extends Counter {
             getComponent(player, this.countEvents[this.count][0], this.countEvents[this.count][1]).call(player)
         }
         this.compYield.map((y) => y.earn(player, this.getSkillEff(player)))
-        if (this.clickable) {
+        if (this.clickable(player)) {
             this.start(player)
         }
-        console.log(this.getSkillEff(player), this.getSkillYield(player), this.getSkillSpeed(player))
     }
     display() {
         return `<b>${this.name}</b><br>Completed: ${this.count}`

@@ -18,7 +18,8 @@ class Event {
         this.loop(player);
         player.eventTrigger = false
         if (this.nextEvent != null) {
-            this.nextEvent.call(player)
+            let nextEvent = getComponent(player, 'event', this.nextEvent)
+            nextEvent.call(player)
         }
     }
     loop(player) {
@@ -38,9 +39,6 @@ class TextEvent extends Event {
 }
 
 class WaitEvent extends Event {
-    constructor(components, eventText) {
-        super(components, eventText)
-    }
     func(player, compType, compId, magnitude) {
         let nextEvent = getComponent(player, compType, compId)
         let boundCall = nextEvent.call.bind(nextEvent, player)
@@ -49,9 +47,6 @@ class WaitEvent extends Event {
 }
 
 class CostEvent extends Event {
-    constructor(components, eventText) {
-        super(components, eventText)
-    }
     func(player, compType, compId, magnitude) {
         let cost0 = new Cost(compType, compId, magnitude, false, true)
         cost0.spend(player)
@@ -59,9 +54,6 @@ class CostEvent extends Event {
 }
 
 class YieldEvent extends Event {
-    constructor(components, eventText) {
-        super(components, eventText)
-    }
     func(player, compType, compId, magnitude) {
         let yield0 = new Yield(compType, compId, magnitude, false, true)
         yield0.earn(player)
@@ -69,23 +61,23 @@ class YieldEvent extends Event {
 }
 
 class RevealEvent extends Event {
-    constructor(components, eventText) {
-        super(components, eventText)
-    }
     func(player, compType, compId) {
         getComponent(player, compType, compId).visible = true
     }
 }
 
 class HideEvent extends Event {
-    constructor(components, eventText) {
-        super(components, eventText)
-    }
     func(player, compType, compId) {
         getComponent(player, compType, compId).visible = false
     }
 }
 
+class UpkeepEvent extends Event {
+    func(player, compType, compId, magnitude) {
+        player.actionManager.changeUpkeep(compType, compId, magnitude)
+    }
+}
+
 Event.working
 
-export { Event, TextEvent, WaitEvent, CostEvent, YieldEvent, RevealEvent, HideEvent }
+export { Event, TextEvent, WaitEvent, CostEvent, YieldEvent, RevealEvent, HideEvent, UpkeepEvent }
