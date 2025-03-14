@@ -1,8 +1,8 @@
-import { Skill } from "../classes/stat.js";
+import { Attribute, Skill } from "../classes/stat.js";
 
-const mining = new Skill("Mining")
-const resting = new Skill("Resting")
-const eating = new Skill("Eating")
+const mining = new Skill("Mining", ["strength"], ["constitution", "dexterity"], ["metabolism"])
+const resting = new Skill("Resting", ["metabolism"], ["constitution"])
+const eating = new Skill("Eating", ["metabolism"], ["constitution"])
 
 const skills = {
     mining,
@@ -10,4 +10,16 @@ const skills = {
     eating
 }
 
-export { skills }
+const strength = new Attribute("Strength")
+const constitution = new Attribute("Constitution")
+const dexterity = new Attribute("Dexterity")
+const metabolism = new Attribute("Metabolism")
+
+const attributes = {
+    strength,
+    constitution,
+    dexterity,
+    metabolism
+}
+
+export { skills, attributes }

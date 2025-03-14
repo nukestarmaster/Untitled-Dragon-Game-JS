@@ -47,12 +47,14 @@ const limitActions = {
     
 const rest = new Action(
     "Rest", 
-    20,
+    5,
     "resting",
     [],
     [],
     [new Yield("vital", "stamina", 1)],
-    [new Yield("skill", "resting", 1)]
+    [new Yield("skill", "resting", 1),
+     new Yield("attribute", "metabolism", 1)
+    ]
 )
 const digStones = new Action(
     "Dig Stones",
@@ -62,7 +64,9 @@ const digStones = new Action(
     [new Cost("vital", "stamina", 1, false, true)],
     [],
     [new Yield("resource", "stones", 1),
-     new Yield("skill", 'mining', 1)
+     new Yield("skill", 'mining', 1),
+     new Yield("attribute", "strength", 1),
+     new Yield("attribute", "constitution", 1),
     ],
     undefined,
     {
@@ -76,7 +80,9 @@ const eatStone = new Action(
     [new Cost("resource", "stones", 1)],
     [],
     [new Yield("vital", "satiety", 1)],
-    [new Yield("skill", "eating", 0.1)]
+    [new Yield("skill", "eating", 0.1),
+     new Yield("attribute", "metabolism", 0.1)
+    ]
 )
 
 const actions = {
