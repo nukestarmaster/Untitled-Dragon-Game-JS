@@ -1,10 +1,13 @@
 import { Counter } from "./counter.js";
 import { format } from "../format.js";
-import { getComponent } from "../player.js";
 
 const skillCostInit = 10
 const skillCostMult = 1.1
 const skillVisThreshold = 1
+
+const skillEffMod = 0.01
+const skillYieldMod = 0.01
+const skillSpeedMod = 0.01
 
 const attCostInit = 50
 const attCostMult = 1.2
@@ -25,8 +28,8 @@ class Stat extends Counter {
     canSpend(n, flat = false, allowPartial = false) {
         return this.level > 0 || allowPartial && this.level > 0 || this.getCost(n, flat) < this.current
     }
-    earn(n, flat = false) {
-        super.earn(n, flat)
+    earn(player, n, flat = false) {
+        super.earn(player, n, flat)
         while (this.current >= this.max) {
             this.current -= this.max
             this.levelUp()
@@ -78,9 +81,18 @@ class Skill extends Stat {
         return this.level + this.skillBonus(player)
     }
     skillBonus(player) {
-        return this.majorAtt.reduce((s, a) => s + getComponent(player, "attribute", a).level, 0) * 0.5 + 
-        this.midAtt.reduce((s, a) => s + getComponent(player, "attribute", a).level, 0) * 0.25 + 
-        this.minorAtt.reduce((s, a) => s + getComponent(player, "attribute", a).level, 0) * 0.1
+        return this.majorAtt.reduce((s, a) => s + player.getComponent("attribute", a).level, 0) * 0.5 + 
+        this.midAtt.reduce((s, a) => s + player.getComponent("attribute", a).level, 0) * 0.25 + 
+        this.minorAtt.reduce((s, a) => s + player.getComponent("attribute", a).level, 0) * 0.1
+    }
+    getSkillEff(player) {
+        return this.getLevel(player) * skillEffMod
+    }
+    getSkillYield(player) {
+        return this.getLevel(player) * skillYieldMod
+    }
+    getSkillSpeed(player) {
+        return this.getLevel(player) * skillSpeedMod
     }
 }
 

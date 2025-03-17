@@ -1,14 +1,17 @@
+import { camelCase } from "../player.js"
 import { Cost, Yield } from "./counter.js"
-import { getComponent, returnCounters } from "../player.js"
 
 /*Event is an class for assorted one off effects.
 
 */
 class Event {
-    constructor(components, eventText = null, nextEvent = null) {
+    constructor(name, components, eventText = null, nextEvent = null) {
+        this.name = name
         this.components = components
         this.eventText = eventText
         this.nextEvent = nextEvent
+        this.id = camelCase(name)
+        this.type = "event"
     }
     call(player) {
         player.eventTrigger = true
@@ -18,7 +21,7 @@ class Event {
         this.loop(player);
         player.eventTrigger = false
         if (this.nextEvent != null) {
-            let nextEvent = getComponent(player, 'event', this.nextEvent)
+            let nextEvent = player.getComponent("event", this.nextEvent)
             nextEvent.call(player)
         }
     }
@@ -33,14 +36,14 @@ class Event {
 }
 
 class TextEvent extends Event {
-    constructor(eventText) {
-        super([], 0, eventText)
+    constructor(name, eventText) {
+        super(name, [], 0, eventText)
     }
 }
 
 class WaitEvent extends Event {
     func(player, compType, compId, magnitude) {
-        let nextEvent = getComponent(player, compType, compId)
+        let nextEvent = player.getComponent(compType, compId)
         let boundCall = nextEvent.call.bind(nextEvent, player)
         setTimeout(boundCall, magnitude)
     }
@@ -62,13 +65,13 @@ class YieldEvent extends Event {
 
 class RevealEvent extends Event {
     func(player, compType, compId) {
-        getComponent(player, compType, compId).visible = true
+        player.getComponent(compType, compId).visible = true
     }
 }
 
 class HideEvent extends Event {
     func(player, compType, compId) {
-        getComponent(player, compType, compId).visible = false
+        player.getComponent(compType, compId).visible = false
     }
 }
 
@@ -78,6 +81,10 @@ class UpkeepEvent extends Event {
     }
 }
 
-Event.working
+class ModEvent extends Event {
+    func(player, modType, comp, magnitude) {
+        player.setMod(modType, comp, [this.type, this.id], magnitude)
+    }
+}
 
-export { Event, TextEvent, WaitEvent, CostEvent, YieldEvent, RevealEvent, HideEvent, UpkeepEvent }
+export { Event, TextEvent, WaitEvent, CostEvent, YieldEvent, RevealEvent, HideEvent, UpkeepEvent, ModEvent }

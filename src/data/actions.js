@@ -1,7 +1,6 @@
 import { Yield } from "../classes/counter.js"
 import { Action, ActionManager, LimitAction } from "../classes/action.js"
 import { Cost } from "../classes/counter.js"
-import { getComponent } from "../player.js"
 import { YieldEvent } from "../classes/event.js"
 /*
 (name, 

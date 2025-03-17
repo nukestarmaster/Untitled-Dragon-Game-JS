@@ -1,7 +1,8 @@
-import { Counter } from "../classes/counter.js";
+
+import { Resource } from "../classes/resource.js";
 
 
-const stones = new Counter("Stones", 0, 100, false, true)
+const stones = new Resource("Stones", 0, 100)
 
 const resources = {
     stones

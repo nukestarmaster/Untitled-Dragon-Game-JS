@@ -1,4 +1,4 @@
-import { getComponent } from "../player.js";
+
 import { Cost, Counter} from "./counter.js";
 
 class ActionManager {
@@ -66,24 +66,31 @@ class Action extends Counter {
         this.active = false
         this.count = 0
         this.capped = false
+        this.type = "action"
     }
-    getSkillEff(player) {
+    yieldMod() {
+        return 1
+    }
+    effMod() {
+        return 1
+    }
+    getActionEff(player) {
         if (this.skill == null) {
             return 1
         }
-        return 1 + (getComponent(player, "skill", this.skill).getLevel(player) * 0.01)
+        return 1 + (player.getComponent("skill", this.skill).getSkillEff(player))
     }
-    getSkillYield(player) {
+    getActionYield(player) {
         if (this.skill == null) {
             return 1
         }
-        return 1 + (getComponent(player, "skill", this.skill).getLevel(player) * 0.01)
+        return 1 + (player.getComponent("skill", this.skill).getSkillYield(player))
     }
-    getSkillSpeed(player) {
+    getActionSpeed(player) {
         if (this.skill == null) {
             return 1
         }
-        return 1 + (getComponent(player, "skill", this.skill).getLevel(player) * 0.05)
+        return 1 + (player.getComponent("skill", this.skill).getSkillSpeed(player))
     }
     activate(player) {
         player.actionManager.activateAction(player, this)
@@ -113,17 +120,17 @@ class Action extends Counter {
             return false
         }
         if (!this.started) {
-            if (!this.initCost.every((c) => c.canSpend(player, 1 / this.getSkillEff(player)))) {
+            if (!this.initCost.every((c) => c.canSpend(player, 1 / this.getActionEff(player)))) {
                 return false
             }
         }
-        if (!this.progCost.every((c) => c.canSpend(player, dt * this.getSkillSpeed(player) / this.getSkillEff(player)))) {
+        if (!this.progCost.every((c) => c.canSpend(player, dt * this.getActionSpeed(player) / this.getActionEff(player)))) {
             return false
         }
-        if (!this.progYield.every((c) => c.canEarn(player, dt * this.getSkillSpeed(player) * this.getSkillYield(player)))) {
+        if (!this.progYield.every((c) => c.canEarn(player, dt * this.getActionSpeed(player) * this.getActionYield(player)))) {
             return false
         }
-        if (!this.compYield.every((c) => c.canEarn(player, this.getSkillYield(player)))) {
+        if (!this.compYield.every((c) => c.canEarn(player, this.getActionYield(player)))) {
             return false
         }
         return true
@@ -131,9 +138,9 @@ class Action extends Counter {
     tick(player) {
         let dt = player.actionManager.dt
         if (this.clickable(player, dt)) {
-            this.progCost.map((c) => c.spend(player, dt * this.getSkillSpeed(player) / this.getSkillEff(player))) 
-            this.progYield.map((y) => y.earn(player, dt * this.getSkillSpeed(player) * this.getSkillYield(player)))
-            this.earn(this.progSpeed * dt * this.getSkillSpeed(player))
+            this.progCost.map((c) => c.spend(player, dt * this.getActionSpeed(player) / this.getActionEff(player))) 
+            this.progYield.map((y) => y.earn(player, dt * this.getActionSpeed(player) * this.getActionYield(player)))
+            this.earn(player, this.progSpeed * dt * this.getActionSpeed(player))
         }
         if (!this.clickable(player, dt)) {
             this.deactivate(player)
@@ -143,7 +150,7 @@ class Action extends Counter {
         }
     }
     start(player) {
-        this.initCost.map((c) => c.spend(player, 1 / this.getSkillEff(player)))
+        this.initCost.map((c) => c.spend(player, 1 / this.getActionEff(player)))
         this.started = true
     }
     complete(player) {
@@ -151,12 +158,12 @@ class Action extends Counter {
         this.current -= this.max
         this.count ++
         if (this.compEvent) {
-            getComponent(player, this.compEvent[0], this.compEvent[1]).call(player)
+            player.getComponent(this.compEvent[0], this.compEvent[1]).call(player)
         }
         if (this.countEvents[this.count] != undefined) {
-            getComponent(player, this.countEvents[this.count][0], this.countEvents[this.count][1]).call(player)
+            player.getComponent(this.countEvents[this.count][0], this.countEvents[this.count][1]).call(player)
         }
-        this.compYield.map((y) => y.earn(player, this.getSkillEff(player)))
+        this.compYield.map((y) => y.earn(player, this.getActionEff(player)))
         if (this.clickable(player)) {
             this.start(player)
         }

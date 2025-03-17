@@ -1,5 +1,5 @@
-import { getComponent } from "../player.js";
 import { format } from "../format.js";
+import { camelCase } from "../player.js";
 
 /*Abstract class for everything that tracks a spendable and/or gainable resource, parent of nearly all visible elements.
 Name is the formal name of the counter used for displaying text.
@@ -19,6 +19,7 @@ class Counter {
         this.allowDeficit = allowDeficit
         this.capped = capped
         this.type = null
+        this.id = camelCase(name)
     }
     show() {
         this.visible = true
@@ -26,11 +27,13 @@ class Counter {
     hide() {
         this.visible = false
     }
-    yieldMod() {
-        return 1
+    yieldMod(player) {
+        let mods = player.getModsNoFlat(this.type, this.id, "yield")
+        return 1 * (1 + mods.inc) * mods.more
     }
-    efficiency() {
-        return 1
+    effMod(player) {
+        let mods = player.getModsNoFlat(this.type, this.id, "eff")
+        return 1 * (1 + mods.inc) * mods.more
     }
     add(n) {
         this.current += n;
@@ -48,32 +51,32 @@ class Counter {
             }
         }
     }
-    getYield(n, flat) {
+    getYield(player, n, flat) {
         if (flat) {
             return n
         }
-        return n * this.yieldMod()
+        return n * this.yieldMod(player)
     }
-    getCost(n, flat) {
+    getCost(player, n, flat) {
         if (flat) {
             return n
         }
-        return n / this.efficiency()
+        return n / this.effMod(player)
     }
     canEarn(capped) {
         return !capped || !this.capped || this.max > this.current
     }
-    canSpend(n, flat = false, allowPartial = false) {
-        return this.allowDeficit || (allowPartial && this.current > 0) || this.getCost(n, flat) <= this.current
+    canSpend(player, n, flat = false, allowPartial = false) {
+        return this.allowDeficit || (allowPartial && this.current > 0) || this.getCost(player, n, flat) <= this.current
     }
-    earn(n, flat = false) {
+    earn(player, n, flat = false) {
         if (this.canEarn()) {
-            this.add(this.getYield(n, flat))
+            this.add(this.getYield(player, n, flat))
         }
     }
-    spend(n, flat = false, allowPartial = false) {
-        if (this.canSpend(n, flat, allowPartial)) {
-            this.remove(this.getCost(n, flat))
+    spend(player, n, flat = false, allowPartial = false) {
+        if (this.canSpend(player, n, flat, allowPartial)) {
+            this.remove(this.getCost(player, n, flat))
             return true
         }
         return false
@@ -99,10 +102,10 @@ class Cost {
         this.allowPartial = allowPartial
     }
     canSpend(player, dt = 1) {
-        return getComponent(player, this.type, this.id).canSpend(this.amount * dt, this.flat, this.allowPartial)
+        return player.getComponent(this.type, this.id).canSpend(player, this.amount * dt, this.flat, this.allowPartial)
     }
     spend(player, dt = 1) {
-        getComponent(player, this.type, this.id).spend(this.amount * dt, this.flat, this.allowPartial)
+        player.getComponent(this.type, this.id).spend(player, this.amount * dt, this.flat, this.allowPartial)
     }
 }
 
@@ -115,10 +118,10 @@ class Yield {
         this.capped = capped
     }
     canEarn(player, dt = 1) {
-        return !this.capped || getComponent(player, this.type, this.id).canEarn(this.capped)
+        return !this.capped || player.getComponent(this.type, this.id).canEarn(this.capped)
     }
     earn(player, dt = 1) {
-        getComponent(player, this.type, this.id).earn(this.amount * dt, this.flat,)
+        player.getComponent(this.type, this.id).earn(player, this.amount * dt, this.flat,)
     }
 }
 
