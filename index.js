@@ -18,6 +18,7 @@ const app = Vue.createApp({
         returnCounters: returnCounters,
     },
     beforeMount() {
+        this.player.init()
         gameloop(this.player)
         startEvent(this.player)
     },

@@ -7,20 +7,38 @@ const skillVisThreshold = 1
 
 const skillEffMod = 0.01
 const skillYieldMod = 0.01
-const skillSpeedMod = 0.01
+const skillSpeedMod = 0.05
 
 const attCostInit = 50
 const attCostMult = 1.2
 const attVisThreshold = 10
 
+const attPrimeBonus = 0.5
+const attSecBonus = 0.25
+const attTertBonus = 0.1
+
 
 class Stat extends Counter {
-    constructor(name, max, mult, visThreshold = 1) {
-        super(name, 0, max, true, false)
-        this.initMax = max
+    constructor(name, type, max, mult, visThreshold = 1, varDefs = []) {
+        let statVarDefs = [["level", 0, true]].concat(varDefs)
+        super(name, type, 0, max, statVarDefs, true, false)
         this.mult = mult
-        this.level = 0
         this.visThreshold = visThreshold
+        this.effectDefs = [
+            ["max", "more", this.type, this.id, () => this.mult ** this.baseLevel]
+        ]
+    }
+    get baseLevel() {
+        return this.vars.level.base
+    }
+    get level() {
+        return this.vars.level.final
+    }
+    get max() {
+        return format(super.max)
+    }
+    get effectScaleFactor() {
+        return this.level
     }
     canEarn() {
         return true
@@ -32,17 +50,17 @@ class Stat extends Counter {
         super.earn(player, n, flat)
         while (this.current >= this.max) {
             this.current -= this.max
-            this.levelUp()
+            this.levelUp(player)
         }
         if (this.visible == false && this.current >= this.visThreshold) {
             this.visible = true
         }
     }
-    spend(n, flat = false, allowPartial = false) {
-        super.spend(n, flat, allowPartial)
+    spend(player, n, flat = false, allowPartial = false) {
+        super.spend(player, n, flat, allowPartial)
         while (this.current < this.max) {
             if (this.level > 0) {
-                this.levelDown()
+                this.levelDown(player)
                 this.current += this.max
             }
             else {
@@ -53,52 +71,53 @@ class Stat extends Counter {
     clickable() {
         return false
     }
-    levelUp() {
-        this.level ++
-        this.max = Math.floor(this.initMax * (this.mult ** this.level))
+    levelUp(player) {
+        this.vars.level.base ++
+        this.vars.level.update(player)
     }
     levelDown() {
-        this.level --
-        this.max = Math.floor(this.initMax * (this.mult ** this.level))
-    }
-    getLevel(player) {
-        return this.level
+        this.vars.level.base --
+        this.vars.level.update(player)
     }
     display(player) {
-        return `<b>${this.name}:</b> Lv ${this.level} (${this.getLevel(player)})<br>Exp: ${format(this.current)} / ${format(this.max)}`
+        return `<b>${this.name}:</b> Lv ${this.baseLevel} (${this.level})<br>Exp: ${format(this.current)} / ${format(this.max)}`
     }
 }
 
 class Skill extends Stat {
-    constructor(name, majorAtt = [], midAtt = [], minorAtt= []) {
-        super(name, skillCostInit, skillCostMult, skillVisThreshold)
-        this.majorAtt = majorAtt
-        this.midAtt = midAtt
-        this.minorAtt = minorAtt
-        this.type = "skill"
-    }
-    getLevel(player) {
-        return this.level + this.skillBonus(player)
-    }
-    skillBonus(player) {
-        return this.majorAtt.reduce((s, a) => s + player.getComponent("attribute", a).level, 0) * 0.5 + 
-        this.midAtt.reduce((s, a) => s + player.getComponent("attribute", a).level, 0) * 0.25 + 
-        this.minorAtt.reduce((s, a) => s + player.getComponent("attribute", a).level, 0) * 0.1
-    }
-    getSkillEff(player) {
-        return this.getLevel(player) * skillEffMod
-    }
-    getSkillYield(player) {
-        return this.getLevel(player) * skillYieldMod
-    }
-    getSkillSpeed(player) {
-        return this.getLevel(player) * skillSpeedMod
+    constructor(name, primeAtt = [], secAtt = [], tertAtt = [], effectDefs = []) {
+        let skillVarDefs = [
+            ["skillSpeed", 1],
+            ["skillEff", 1],
+            ["skillYield", 1]
+        ]
+        super(name, "skill", skillCostInit, skillCostMult, skillVisThreshold, skillVarDefs)
+        
+        this.vars.level.parentDefs = primeAtt.map((d) => ["attribute", d, "primeSkillBonus"]).concat(
+            secAtt.map((d) => ["attribute", d, "secSkillBonus"])
+        ).concat(tertAtt.map((d) => ["attribute", d, "tertSkillBonus"]))
+
+        this.effectDefs = this.effectDefs.concat([
+            ["skillSpeed", "inc", this.type, this.id, (n) => n * skillSpeedMod],
+            ["skillEff", "inc", this.type, this.id, (n) => n * skillEffMod],
+            ["skillYield", "inc", this.type, this.id, (n) => n * skillYieldMod],
+        ]).concat(effectDefs)
     }
 }
 
 class Attribute extends Stat {
-    constructor(name) {
-        super(name, attCostInit, attCostMult, attVisThreshold)
+    constructor(name, effectDefs = []) {
+        let attVarDefs = [
+            ["primeSkillBonus", 0],
+            ["secSkillBonus", 0],
+            ["tertSkillBonus", 0]
+        ].concat(effectDefs)
+        super(name, "attribute", attCostInit, attCostMult, attVisThreshold, attVarDefs)
+        this.effectDefs = this.effectDefs.concat([
+            ["primeSkillBonus", "flat", this.type, this.id, (n) => n * attPrimeBonus],
+            ["secSkillBonus", "flat", this.type, this.id, (n) => n * attSecBonus],
+            ["tertSkillBonus", "flat", this.type, this.id, (n) => n * attTertBonus],
+        ]).concat(effectDefs)
     }
 }
 

@@ -1,3 +1,4 @@
+import { Collection } from "../classes/collection.js"
 import { TextEvent, WaitEvent, CostEvent, YieldEvent, RevealEvent, HideEvent, UpkeepEvent } from "../classes/event.js"
 
 const nullEvent = new TextEvent("Null Event")
@@ -9,7 +10,7 @@ const hatch1 = new RevealEvent("Hatch 1", [["vital", "health"], ["vital", "satie
 const hatch2 = new UpkeepEvent("Hatch 2", [["vital", "satiety", 0.5]])
 const getStone = new RevealEvent("Get Stone", [["resource", "stones"], ["action", "eatStone"]], "Dug up a stone")
 
-const events = {
+const events = new Collection({
     nullEvent,
     start1,
     start2,
@@ -18,6 +19,6 @@ const events = {
     hatch1,
     hatch2,
     getStone,
-}
+})
 
 export { events }

@@ -2,6 +2,7 @@ import { Yield } from "../classes/counter.js"
 import { Action, ActionManager, LimitAction } from "../classes/action.js"
 import { Cost } from "../classes/counter.js"
 import { YieldEvent } from "../classes/event.js"
+import { Collection } from "../classes/collection.js"
 /*
 (name, 
 max, 
@@ -17,7 +18,7 @@ compYeild = []) */
 const breakEgg = new LimitAction(
     "Break Egg", 
     1,
-    null,
+    "eating",
     3,
     [],  
     [new Cost("vital", "stamina", 1, false, true)], 
@@ -39,10 +40,10 @@ const eatEggshell = new LimitAction(
     [new Yield("skill", "eating", 4)]
 )
 
-const limitActions = {
+const limitActions = new Collection({
     breakEgg,
     eatEggshell,
-}
+})
     
 const rest = new Action(
     "Rest", 
@@ -75,7 +76,7 @@ const digStones = new Action(
 const eatStone = new Action(
     "Eat Stone",
     1,
-    null,
+    "eating",
     [new Cost("resource", "stones", 1)],
     [],
     [new Yield("vital", "satiety", 1)],
@@ -84,11 +85,11 @@ const eatStone = new Action(
     ]
 )
 
-const actions = {
+const actions = new Collection({
     rest,
     digStones,
     eatStone,
-}
+})
 
 
 

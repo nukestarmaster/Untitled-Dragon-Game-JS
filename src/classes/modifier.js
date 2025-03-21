@@ -5,10 +5,13 @@ class Modifiers {
         this.more = {}
     }
     setMod(modType, target, origin, magnitude) {
-        if (!this.modType.target.join(".")) {
+        if (!this[modType][target.join(".")]) {
             this[modType][target.join(".")] = {}
         }
         this[modType][target.join(".")][origin.join(".")] = magnitude
+    }
+    update(player, compType, compId, modId) {
+        player.getComponent(compType, compId).vars[modId].update(player)
     }
     getMods(compType, compId, compMod) {
         return{
@@ -36,12 +39,10 @@ class Modifiers {
         return modlist.reduce((a,b) => a*b, 1)
     }
     getMod(type, comp) {
-        try {
-            return this[type][comp].values()
+        if (this[type] && this[type][comp]) {
+            return Object.values(this[type][comp])
         }
-        catch {
-            return []
-        }
+        return []
     }
 }
 
