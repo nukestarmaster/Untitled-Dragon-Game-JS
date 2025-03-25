@@ -1,5 +1,5 @@
 import { vitals } from "./data/vitals.js"
-import { actionManager, actions, limitActions } from "./data/actions.js";
+import { actionManager, actions, buildings, limitActions } from "./data/actions.js";
 import { events } from "./data/events.js";
 import { resources } from "./data/resources.js";
 import { skills, attributes } from "./data/stats.js";
@@ -10,6 +10,7 @@ const player = {
     vitals: vitals,
     actions: actions,
     limitActions: limitActions,
+    buildings: buildings,
     resources: resources,
     skills: skills,
     attributes: attributes,
@@ -22,13 +23,15 @@ const player = {
         return this[type + "s"][id]
     },
     setMod(modType, target, origin, magnitude) {
+        console.log(target, modType, origin, magnitude)
         this.modifiers.setMod(modType, target, origin, magnitude)
+        console.log(this.modifiers)
         if (target[2]) {
             this.getComponent(target[0], target[1]).updateVar(this, target[2])
             return
         }
         for (let c in this[target[0] + "s"]) {
-            this.getComponent(target[0], c).updateVar(this, target[2])
+            this.getComponent(target[0], c).updateVar(this, target[1])
         }
     },
     getMods(compType, compId, compMod) {

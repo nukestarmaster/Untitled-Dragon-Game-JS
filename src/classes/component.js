@@ -46,6 +46,8 @@ class Component {
         if (this.vars[mod]) {
             this.vars[mod].update(player)
         }
+        else {
+        }
     }
     updateEffects(player) {
         for (let m of this.effects) {

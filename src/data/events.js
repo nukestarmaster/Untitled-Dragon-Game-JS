@@ -9,6 +9,7 @@ const tired = new RevealEvent("Tired", [["action", "rest", 0]], "tired")
 const hatch1 = new RevealEvent("Hatch 1", [["vital", "health"], ["vital", "satiety"], ["limitAction", "eatEggshell"], ["action", "digStones"]], "hatched", "hatch2")
 const hatch2 = new UpkeepEvent("Hatch 2", [["vital", "satiety", 0.5]])
 const getStone = new RevealEvent("Get Stone", [["resource", "stones"], ["action", "eatStone"]], "Dug up a stone")
+const tooMuchStone = new RevealEvent("Too Much Stone", [["building", "buildRockpile"]], "The cave is getting crounded with so much stone around, why not organize it into piles?")
 
 const events = new Collection({
     nullEvent,
@@ -19,6 +20,7 @@ const events = new Collection({
     hatch1,
     hatch2,
     getStone,
+    tooMuchStone
 })
 
 export { events }

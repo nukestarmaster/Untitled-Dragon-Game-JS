@@ -1,4 +1,5 @@
 
+import { format } from "../format.js";
 import { Cost, Counter} from "./counter.js";
 
 class ActionManager {
@@ -52,11 +53,11 @@ class ActionManager {
 }
 
 class Action extends Counter {
-    constructor(name, max, skill = null, initCost = [], progCost = [], progYield = [], compYield = [], compEvent, countEvents = {}, effectDefs = [], type = "action") {
+    constructor(name, max, skill = null, initCost = [], progCost = [], progYield = [], compYield = [], compEvent, countEvents = {}, effectDefs = [], varDefs = [], type = "action") {
         let actionVarDefs = [
             ["speed", 1, false, [["skill", skill, "skillSpeed"]]],
             ["eff", 1, false, [["skill", skill, "skillEff"]]],
-            ["yield", 1, false, [["skill", skill, "skillYield"]]]]
+            ["yield", 1, false, [["skill", skill, "skillYield"]]]].concat(varDefs)
         super(name, type, 0, max, actionVarDefs , false, false)
         this.skill = skill
         this.initCost = initCost
@@ -76,6 +77,9 @@ class Action extends Counter {
     }
     getCost(n) {
         return n
+    }
+    get effectScaleFactor() {
+        return this.count
     }
     get speedmod() {
         return this.vars.speed.final
@@ -114,7 +118,7 @@ class Action extends Counter {
             return false
         }
         if (!this.started) {
-            if (!this.initCost.every((c) => c.canSpend(player, 1 / this.effMod))) {
+            if (!this.startable(player)) {
                 return false
             }
         }
@@ -129,6 +133,9 @@ class Action extends Counter {
         }
         return true
     }
+    startable(player) {
+        return this.initCost.every((c) => c.canSpend(player, 1 / this.effMod))
+    }
     tick(player) {
         let dt = player.actionManager.dt
         if (this.clickable(player, dt)) {
@@ -139,7 +146,7 @@ class Action extends Counter {
         if (!this.clickable(player, dt)) {
             this.deactivate(player)
         }
-        while(this.current > (this.max) && this.started) {
+        while((this.current > this.max) && this.started) {
             this.complete(player)
         }
     }
@@ -151,15 +158,18 @@ class Action extends Counter {
         this.started = false
         this.current -= this.max
         this.count ++
+        this.updateEffects(player)
         if (this.compEvent) {
             player.getComponent(this.compEvent[0], this.compEvent[1]).call(player)
         }
-        if (this.countEvents[this.count] != undefined) {
+        if (this.countEvents[this.count]) {
             player.getComponent(this.countEvents[this.count][0], this.countEvents[this.count][1]).call(player)
         }
         this.compYield.map((y) => y.earn(player, this.effMod))
+        this.deactivate(player)
         if (this.clickable(player)) {
             this.start(player)
+            this.activate(player)
         }
     }
     display() {
@@ -169,7 +179,7 @@ class Action extends Counter {
 
 class LimitAction extends Action {
     constructor(name, max, skill = null, limit = 1, initCost = [], progCost = [], progYield = [], compYield = [], compEvent, countEvents = {}, effectDefs = []) {
-        super(name, max, skill, initCost, progCost, progYield, compYield, compEvent, countEvents, [], "limitAction")
+        super(name, max, skill, initCost, progCost, progYield, compYield, compEvent, countEvents, [], [], "limitAction")
         this.limit = limit
         this.effectDefs = effectDefs
     }
@@ -185,4 +195,45 @@ class LimitAction extends Action {
     }
 }
 
-export { ActionManager, Action, LimitAction }
+class Building extends Action {
+    constructor(name, max, mult, effectDefs, initCost, progCost, progYield, compYield, compEvent, countEvents, varDefs = []) {
+        let buildVarDefs = [["cost", 1]].concat(varDefs)
+        super(name, max, "construction", initCost, progCost, progYield, compYield, compEvent, countEvents, [], buildVarDefs, "building")
+        this.effectDefs = [
+            ["cost", "more", this.type, this.id, (n) => mult ** n]
+        ].concat(effectDefs)
+    }
+    get cost() {
+        return this.vars.cost.final
+    }
+    start(player) {
+        this.initCost.map((c) => c.spend(player, this.cost / this.effMod))
+        this.started = true
+    }
+    startable(player) {
+        return this.initCost.every((c) => c.canSpend(player, this.cost / this.effMod))
+    }
+    complete(player) {
+        this.started = false
+        this.current -= this.max
+        this.count ++
+        this.updateEffects(player)
+        if (this.compEvent) {
+            player.getComponent(this.compEvent[0], this.compEvent[1]).call(player)
+        }
+        if (this.countEvents[this.count] != undefined) {
+            player.getComponent(this.countEvents[this.count][0], this.countEvents[this.count][1]).call(player)
+        }
+        this.compYield.map((y) => y.earn(player, this.effMod))
+        this.deactivate(player)
+    }
+    display() {
+        return `<b>${this.name}</b><br>Built: ${this.count}<br>Cost: ${this.displayCost()}`
+    }
+    displayCost() {
+        console.log(this.initCost)
+        return this.initCost.reduce((s, c) => `${s}${format(c.amount * this.cost)} ${c.id} `, "")
+    }
+}
+
+export { ActionManager, Action, LimitAction, Building }

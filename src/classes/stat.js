@@ -111,7 +111,7 @@ class Attribute extends Stat {
             ["primeSkillBonus", 0],
             ["secSkillBonus", 0],
             ["tertSkillBonus", 0]
-        ].concat(effectDefs)
+        ]
         super(name, "attribute", attCostInit, attCostMult, attVisThreshold, attVarDefs)
         this.effectDefs = this.effectDefs.concat([
             ["primeSkillBonus", "flat", this.type, this.id, (n) => n * attPrimeBonus],

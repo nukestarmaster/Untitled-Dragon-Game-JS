@@ -1,5 +1,5 @@
 import { Yield } from "../classes/counter.js"
-import { Action, ActionManager, LimitAction } from "../classes/action.js"
+import { Action, ActionManager, Building, LimitAction } from "../classes/action.js"
 import { Cost } from "../classes/counter.js"
 import { YieldEvent } from "../classes/event.js"
 import { Collection } from "../classes/collection.js"
@@ -70,7 +70,8 @@ const digStones = new Action(
     ],
     undefined,
     {
-        1: ['event', 'getStone']
+        1: ["event", "getStone"],
+        50: ["event", "tooMuchStone"]
     }
 )
 const eatStone = new Action(
@@ -91,10 +92,23 @@ const actions = new Collection({
     eatStone,
 })
 
+const buildRockpile = new Building(
+    "Build Rockpile",
+    5,
+    1.2,
+    [["max", "inc", "resource", null, (n) => n * 0.1]],
+    [new Cost("resource", "stones", 20)],
+    [new Cost("vital", "stamina", 1)],
+    [
+        new Yield("skill", "construction", 1),
+        new Yield("attribute", "dexterity", 1)
+    ]
+)
 
-
-
+const buildings = new Collection({
+    buildRockpile
+})
 
 const actionManager = new ActionManager()
 
-export { actions, actionManager, limitActions }
+export { actions, actionManager, limitActions, buildings }
