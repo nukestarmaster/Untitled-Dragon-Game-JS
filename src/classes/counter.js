@@ -1,5 +1,4 @@
 import { format } from "../format.js";
-import { camelCase } from "../player.js";
 import { Component } from "./component.js"
 
 /*Abstract class for everything that tracks a spendable and/or gainable resource, parent of nearly all visible elements.
