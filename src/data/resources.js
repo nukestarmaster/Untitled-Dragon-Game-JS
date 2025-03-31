@@ -7,6 +7,6 @@ const stones = new Resource("Stones", 0, 100)
 
 const resources = new Collection({
     stones
-})
+}, "Resources")
 
 export { resources }

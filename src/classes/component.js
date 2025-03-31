@@ -1,4 +1,6 @@
 import { camelCase } from "../player.js"
+import { tooltipText } from "../data/text.js"
+
 
 
 /**
@@ -26,9 +28,14 @@ class Component {
         this.id = camelCase(name)
         this.vars = this.initializeVars(varDefs)
         this.effectDefs = []
+        this.flavourText = tooltipText.getTooltip(this.type, this.id)
+        this.effectText = tooltipText.getDescripion(this.type, this.id)
     }
     get effectScaleFactor() {
         return 0
+    }
+    get tooltip() {
+        return this.flavourText + "<br>[Placeholder Text]<br>" + this.effectText
     }
     initializeVars(varDefs) {
         return varDefs.reduce((vars, v) => ({...vars, [v[0]]: new Var(v[0], this.type, this.id, v[1], v[2], v[3])}), {})

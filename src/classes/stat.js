@@ -92,6 +92,9 @@ class Skill extends Stat {
             ["skillYield", 1]
         ]
         super(name, "skill", skillCostInit, skillCostMult, skillVisThreshold, skillVarDefs)
+        this.primeAtt = primeAtt
+        this.secAtt = secAtt
+        this.tertAtt = tertAtt
         
         this.vars.level.parentDefs = primeAtt.map((d) => ["attribute", d, "primeSkillBonus"]).concat(
             secAtt.map((d) => ["attribute", d, "secSkillBonus"])
@@ -102,6 +105,24 @@ class Skill extends Stat {
             ["skillEff", "inc", this.type, this.id, (n) => n * skillEffMod],
             ["skillYield", "inc", this.type, this.id, (n) => n * skillYieldMod],
         ]).concat(effectDefs)
+    }
+    get tooltip() {
+        let primeText
+        if (this.primeAtt.length > 0) {
+            primeText = "<b>Primary Attributes:</b><br>" + this.primeAtt.reduce((str, c) => `${str} ${c}<br>`, "")
+        } else { initCostText = ""}
+
+        let secText
+        if (this.secAtt.length > 0) {
+            secText = "<b>Secondary Attributes:</b><br>" + this.secAtt.reduce((str, c) => `${str} ${c}<br>`, "")
+        } else { initCostText = ""}
+
+        let tertText
+        if (this.primeAtt.length > 0) {
+            tertText = "<b>Tertiary Attributes:</b><br>" + this.tertAtt.reduce((str, c) => `${str} ${c}<br>`, "")
+        } else { initCostText = ""}
+
+        return `${this.flavourText}<br>${primeText}${secText}${tertText}<br>${this.effectText}`
     }
 }
 
@@ -118,6 +139,9 @@ class Attribute extends Stat {
             ["secSkillBonus", "flat", this.type, this.id, (n) => n * attSecBonus],
             ["tertSkillBonus", "flat", this.type, this.id, (n) => n * attTertBonus],
         ]).concat(effectDefs)
+    }
+    get tooltip() {
+        return this.flavourText + "<br>" + this.effectText
     }
 }
 

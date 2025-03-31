@@ -17,7 +17,7 @@ compYeild = []) */
 const breakEgg = new LimitAction(
     "Break Egg", 
     1,
-    "eating",
+    null,
     3,
     [],  
     [new Cost("vital", "stamina", 1, false, true)], 
@@ -31,7 +31,7 @@ const breakEgg = new LimitAction(
 const eatEggshell = new LimitAction(
     "Eat Eggshell",
     1,
-    null,
+    "eating",
     3,
     [],
     [],
@@ -42,7 +42,7 @@ const eatEggshell = new LimitAction(
 const limitActions = new Collection({
     breakEgg,
     eatEggshell,
-})
+}, "Limit Actions")
     
 const rest = new Action(
     "Rest", 
@@ -89,7 +89,7 @@ const actions = new Collection({
     rest,
     digStones,
     eatStone,
-})
+}, "Actions")
 
 const buildRockpile = new Building(
     "Build Rockpile",
@@ -106,7 +106,7 @@ const buildRockpile = new Building(
 
 const buildings = new Collection({
     buildRockpile
-})
+}, "Buildings")
 
 const actionManager = new ActionManager()
 

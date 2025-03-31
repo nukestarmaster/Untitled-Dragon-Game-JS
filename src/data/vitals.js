@@ -9,6 +9,6 @@ const vitals = new Collection({
     health, 
     stamina,
     satiety
-})
+}, "Vitals")
 
 export {vitals}

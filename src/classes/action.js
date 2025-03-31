@@ -72,6 +72,7 @@ class Action extends Counter {
         this.count = 0
         this.capped = false
     }
+
     getYield(n) {
         return n
     }
@@ -81,7 +82,7 @@ class Action extends Counter {
     get effectScaleFactor() {
         return this.count
     }
-    get speedmod() {
+    get speedMod() {
         return this.vars.speed.final
     }
     get effMod() {
@@ -89,6 +90,15 @@ class Action extends Counter {
     }
     get yieldMod() {
         return this.vars.yield.final
+    }
+    get startCostMod() {
+        return 1 / this.effMod
+    }
+    get progCostMod() {
+        return this.speedMod / this.effMod
+    }
+    get progYieldMod() {
+        return this.speedMod * this.yieldMod
     }
     activate(player) {
         player.actionManager.activateAction(player, this)
@@ -122,10 +132,10 @@ class Action extends Counter {
                 return false
             }
         }
-        if (!this.progCost.every((c) => c.canSpend(player, dt * this.speedmod / this.effMod))) {
+        if (!this.progCost.every((c) => c.canSpend(player, dt * this.progCostMod))) {
             return false
         }
-        if (!this.progYield.every((c) => c.canEarn(player, dt * this.speedmod * this.yieldMod))) {
+        if (!this.progYield.every((c) => c.canEarn(player, dt * this.progYieldMod))) {
             return false
         }
         if (!this.compYield.every((c) => c.canEarn(player, this.yieldMod))) {
@@ -134,14 +144,14 @@ class Action extends Counter {
         return true
     }
     startable(player) {
-        return this.initCost.every((c) => c.canSpend(player, 1 / this.effMod))
+        return this.initCost.every((c) => c.canSpend(player, this.startCostMod))
     }
     tick(player) {
         let dt = player.actionManager.dt
         if (this.clickable(player, dt)) {
-            this.progCost.map((c) => c.spend(player, dt * this.speedmod / this.effMod)) 
-            this.progYield.map((y) => y.earn(player, dt * this.speedmod * this.yieldMod))
-            this.earn(player, dt * this.speedmod)
+            this.progCost.map((c) => c.spend(player, dt * this.progCostMod)) 
+            this.progYield.map((y) => y.earn(player, dt * this.progYieldMod))
+            this.earn(player, dt * this.speedMod)
         }
         if (!this.clickable(player, dt)) {
             this.deactivate(player)
@@ -165,7 +175,7 @@ class Action extends Counter {
         if (this.countEvents[this.count]) {
             player.getComponent(this.countEvents[this.count][0], this.countEvents[this.count][1]).call(player)
         }
-        this.compYield.map((y) => y.earn(player, this.effMod))
+        this.compYield.map((y) => y.earn(player, this.yieldMod))
         this.deactivate(player)
         if (this.clickable(player)) {
             this.start(player)
@@ -174,6 +184,36 @@ class Action extends Counter {
     }
     display() {
         return `<b>${this.name}</b><br>Completed: ${this.count}`
+    }
+    get tooltip() {
+        let skillText
+        if (this.skill) {
+            skillText =  `<b>Related Skill:</b> ${this.skill}<br>`
+        } else { skillText = ""}
+
+        let durationText = `<b>Duration:</b> ${format(this.max / this.speedMod, 2)} s<br>`
+
+        let initCostText
+        if (this.initCost.length > 0) {
+            initCostText = "<b>Start Cost:</b><br>" + this.initCost.reduce((str, c) => `${str} ${c.display(this.startCostMod)}<br>`, "")
+        } else { initCostText = ""}
+
+        let progCostText
+        if (this.progCost.length > 0) {
+            progCostText = "<b>Progress Cost</b>:<br>" + this.progCost.reduce((str, c) => `${str} ${c.display(this.progCostMod)}/s<br>`, "")
+        } else { progCostText = ""}
+
+        let progYieldText
+        if (this.progYield.length > 0) {
+            progYieldText = "<b>Progress Yield</b>:<br>" + this.progYield.reduce((str, c) => `${str} ${c.display(this.progYieldMod)}/s<br>`, "")
+        } else { progYieldText = ""}
+
+        let compYieldText
+        if (this.compYield.length > 0) {
+            compYieldText = "<b>Final Yield</b>:<br>" + this.compYield.reduce((str, c) => `${str} ${c.display(this.yieldMod)}<br>`, "")
+        } else { compYieldText = ""}
+
+        return `${this.flavourText}<br>${skillText}${durationText}${initCostText}${progCostText}${progYieldText}${compYieldText}<br${this.effectText}`
     }
 }
 
@@ -203,15 +243,18 @@ class Building extends Action {
             ["cost", "more", this.type, this.id, (n) => mult ** n]
         ].concat(effectDefs)
     }
-    get cost() {
+    get costMod() {
         return this.vars.cost.final
     }
+    get startCostMod() {
+        return this.costMod / this.effMod
+    }
     start(player) {
-        this.initCost.map((c) => c.spend(player, this.cost / this.effMod))
+        this.initCost.map((c) => c.spend(player, this.startCostMod))
         this.started = true
     }
     startable(player) {
-        return this.initCost.every((c) => c.canSpend(player, this.cost / this.effMod))
+        return this.initCost.every((c) => c.canSpend(player, this.startCostMod))
     }
     complete(player) {
         this.started = false
@@ -231,8 +274,7 @@ class Building extends Action {
         return `<b>${this.name}</b><br>Built: ${this.count}<br>Cost: ${this.displayCost()}`
     }
     displayCost() {
-        console.log(this.initCost)
-        return this.initCost.reduce((s, c) => `${s}${format(c.amount * this.cost)} ${c.id} `, "")
+        return this.initCost.reduce((s, c) => `${s}${format(c.amount * this.startCostMod)} ${c.id} `, "")
     }
 }
 

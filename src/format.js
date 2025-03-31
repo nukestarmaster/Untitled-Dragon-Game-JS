@@ -1,6 +1,5 @@
-function format(n) {
-    return Math.floor(n)
-    return n.toFixed(1)
+function format(n, sd = 0) {
+    return +n.toFixed(sd)
 }
 
 export {format}

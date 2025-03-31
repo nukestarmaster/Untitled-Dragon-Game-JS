@@ -98,11 +98,14 @@ class Cost {
         this.flat = flat
         this.allowPartial = allowPartial
     }
-    canSpend(player, dt = 1) {
-        return player.getComponent(this.type, this.id).canSpend(this.amount * dt, this.flat, this.allowPartial)
+    canSpend(player, mult = 1) {
+        return player.getComponent(this.type, this.id).canSpend(this.amount * mult, this.flat, this.allowPartial)
     }
-    spend(player, dt = 1) {
-        player.getComponent(this.type, this.id).spend(player, this.amount * dt, this.flat, this.allowPartial)
+    spend(player, mult = 1) {
+        player.getComponent(this.type, this.id).spend(player, this.amount * mult, this.flat, this.allowPartial)
+    }
+    display(mult = 1) {
+        return `${format(mult * this.amount, 2)} ${this.id}`
     }
 }
 
@@ -119,6 +122,9 @@ class Yield {
     }
     earn(player, dt = 1) {
         player.getComponent(this.type, this.id).earn(player, this.amount * dt, this.flat,)
+    }
+    display(mult = 1) {
+        return `${format(mult * this.amount, 2)} ${this.id}`
     }
 }
 

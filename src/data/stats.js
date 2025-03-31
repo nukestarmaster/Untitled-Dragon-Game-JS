@@ -11,11 +11,13 @@ const skills = new Collection({
     resting,
     eating,
     construction
-})
+}, "Skills")
 
 const strength = new Attribute("Strength")
 const constitution = new Attribute("Constitution", [["max", "flat", "vital", null, (n) => n * 0.5]])
-const dexterity = new Attribute("Dexterity")
+const dexterity = new Attribute("Dexterity", [["speed", "inc", "action", null, (n) => n * 0.05],
+                                              ["speed", "inc", "limitAction", null, (n) => n * 0.05],
+                                              ["speed", "inc", "building", null, (n) => n * 0.05]])
 const metabolism = new Attribute("Metabolism", [["eff", "inc", "vital", null, (n) => n * 0.01],
                                                 ["yield", "inc", "vital", null, (n) => n * 0.01]])
 
@@ -24,6 +26,6 @@ const attributes = new Collection({
     constitution,
     dexterity,
     metabolism
-})
+}, "Attributes")
 
 export { skills, attributes }

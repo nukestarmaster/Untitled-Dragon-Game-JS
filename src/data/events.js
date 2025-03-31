@@ -21,6 +21,6 @@ const events = new Collection({
     hatch2,
     getStone,
     tooMuchStone
-})
+}, "Events")
 
 export { events }

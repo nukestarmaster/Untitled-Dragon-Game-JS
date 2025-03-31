@@ -4,6 +4,7 @@ import { events } from "./data/events.js";
 import { resources } from "./data/resources.js";
 import { skills, attributes } from "./data/stats.js";
 import { Modifiers } from "./classes/modifier.js";
+import { tooltipText } from "./data/text.js";
 
 const player = {
     actionManager: actionManager,
@@ -19,6 +20,7 @@ const player = {
     effects: [],
     inventory: [],
     events: events,
+    flavourText: tooltipText,
     getComponent(type, id) {
         return this[type + "s"][id]
     },
@@ -31,7 +33,10 @@ const player = {
             return
         }
         for (let c in this[target[0] + "s"]) {
-            this.getComponent(target[0], c).updateVar(this, target[1])
+            if (this.getComponent(target[0], c).updateVar) {
+                this.getComponent(target[0], c).updateVar(this, target[1])
+            }
+            
         }
     },
     getMods(compType, compId, compMod) {
