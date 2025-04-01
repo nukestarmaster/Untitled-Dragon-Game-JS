@@ -122,7 +122,7 @@ class Skill extends Stat {
             tertText = "<b>Tertiary Attributes:</b><br>" + this.tertAtt.reduce((str, c) => `${str} ${c}<br>`, "")
         } else { initCostText = ""}
 
-        return `${this.flavourText}<br>${primeText}${secText}${tertText}<br>${this.effectText}`
+        return `${this.flavourText}<br>${primeText}${secText}${tertText}${this.effectText}`
     }
 }
 

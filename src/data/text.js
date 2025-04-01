@@ -46,7 +46,6 @@ const tooltipText = {
 
         building_buildRockpile: "Increases the maximum storage of all resources by 10% for each built.",
 
-        skill_mining: "Test",
 
         attribute_strength: "Secondary effect not yet implemented.",
         attribute_constitution: "Increases the maximum of all vitals by 0.5 for each level",
