@@ -1,3 +1,4 @@
+import { resources } from "./resources"
 
 const tooltipText = {
     flavourText: {
@@ -5,6 +6,7 @@ const tooltipText = {
         actions: "Some actions are constant.",
         limitActions: "Some actions are fleeting.",
         buildings: "It is the shaping of the world to one's will that is the line between Being and Beast.",
+        resources: "Accumulated material resources",
         skills: "Hone your expertise.",
         attributes: "Refine your body.",
 
