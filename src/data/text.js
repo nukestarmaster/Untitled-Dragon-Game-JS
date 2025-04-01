@@ -38,7 +38,7 @@ const tooltipText = {
         actions: "Can be completed an unlimited number of times, may unlock new features after a number of completions.",
         limitActions: "Can be completed a limited number of times before disappearing.",
         buildings: "Can be built an unlimited number of times, but cost increases for each completion. Typically apply a bonus based on number of completions.",
-        skills: "For each effective level in a skill, increase the speed of related actions by 5% and the efficiency and yield of them by 1%. Some actions have additional effects.",
+        skills: "For each effective level in a skill, increase the speed of related actions by 5% and the efficiency and yield of them by 1%. Some skills have additional effects.",
         attributes: "For each effective level in an attribute, give 0.5, 0.25 or 0.1 bonus levels to skills of which it is the primary, secondary or tertiary attribute, respectively. Some attributes have additional effects.",
 
         vital_health: "If this reaches 0, you die (not implemented yet).",
