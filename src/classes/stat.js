@@ -89,7 +89,8 @@ class Skill extends Stat {
         let skillVarDefs = [
             ["skillSpeed", 1],
             ["skillEff", 1],
-            ["skillYield", 1]
+            ["skillYield", 1],
+            ["skillLuck", 1]
         ]
         super(name, "skill", skillCostInit, skillCostMult, skillVisThreshold, skillVarDefs)
         this.primeAtt = primeAtt

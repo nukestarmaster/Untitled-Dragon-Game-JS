@@ -213,7 +213,7 @@ class Action extends Counter {
             compYieldText = "<b>Final Yield</b>:<br>" + this.compYield.reduce((str, c) => `${str} ${c.display(this.yieldMod)}<br>`, "")
         } else { compYieldText = ""}
 
-        return `${this.flavourText}<br>${skillText}${durationText}${initCostText}${progCostText}${progYieldText}${compYieldText}<br${this.effectText}`
+        return `${this.flavourText}<br>${skillText}${durationText}${initCostText}${progCostText}${progYieldText}${compYieldText}${this.effectText}`
     }
 }
 
@@ -264,7 +264,7 @@ class Building extends Action {
         if (this.compEvent) {
             player.getComponent(this.compEvent[0], this.compEvent[1]).call(player)
         }
-        if (this.countEvents[this.count] != undefined) {
+        if (this.countEvents[this.count]) {
             player.getComponent(this.countEvents[this.count][0], this.countEvents[this.count][1]).call(player)
         }
         this.compYield.map((y) => y.earn(player, this.effMod))

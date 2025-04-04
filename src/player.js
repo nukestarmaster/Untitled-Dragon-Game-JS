@@ -1,33 +1,32 @@
 import { vitals } from "./data/vitals.js"
 import { actionManager, actions, buildings, limitActions } from "./data/actions.js";
-import { events } from "./data/events.js";
+import { events, lootTables } from "./data/events.js";
 import { resources } from "./data/resources.js";
 import { skills, attributes } from "./data/stats.js";
 import { Modifiers } from "./classes/modifier.js";
 import { tooltipText } from "./data/text.js";
 
 const player = {
-    actionManager: actionManager,
-    vitals: vitals,
-    actions: actions,
-    limitActions: limitActions,
-    buildings: buildings,
-    resources: resources,
-    skills: skills,
-    attributes: attributes,
+    actionManager,
+    vitals,
+    actions,
+    limitActions,
+    buildings,
+    resources,
+    skills,
+    attributes,
     spiritAttributes: [],
     modifiers: new Modifiers,
     effects: [],
     inventory: [],
-    events: events,
-    flavourText: tooltipText,
+    events,
+    lootTables,
+    tooltipText,
     getComponent(type, id) {
         return this[type + "s"][id]
     },
     setMod(modType, target, origin, magnitude) {
-        console.log(target, modType, origin, magnitude)
         this.modifiers.setMod(modType, target, origin, magnitude)
-        console.log(this.modifiers)
         if (target[2]) {
             this.getComponent(target[0], target[1]).updateVar(this, target[2])
             return

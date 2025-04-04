@@ -1,4 +1,5 @@
 import { camelCase } from "../player.js"
+import { LimitAction } from "./action.js"
 import { Cost, Yield } from "./counter.js"
 
 /*Event is an class for assorted one off effects.
@@ -64,7 +65,10 @@ class YieldEvent extends Event {
 }
 
 class RevealEvent extends Event {
-    func(player, compType, compId) {
+    func(player, compType, compId, magnitude = 0) {
+        if (compType == "limitAction") {
+            player.getComponent(compType, compId).limit += magnitude
+        }
         player.getComponent(compType, compId).visible = true
     }
 }
@@ -87,4 +91,12 @@ class ModEvent extends Event {
     }
 }
 
-export { Event, TextEvent, WaitEvent, CostEvent, YieldEvent, RevealEvent, HideEvent, UpkeepEvent, ModEvent }
+class LootEvent extends Event {
+    func(player, compId, rolls) {
+        for (let i = 0; i < rolls; i++) {
+            player.getComponent("lootTable", compId).call(player)
+        }
+    }
+}
+
+export { Event, TextEvent, WaitEvent, CostEvent, YieldEvent, RevealEvent, HideEvent, UpkeepEvent, ModEvent, LootEvent }

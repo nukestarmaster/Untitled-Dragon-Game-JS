@@ -1,5 +1,3 @@
-import { resources } from "./resources"
-
 const tooltipText = {
     flavourText: {
         vitals: "The natural energies of your body, used to exert your will on the world.",
@@ -14,6 +12,7 @@ const tooltipText = {
         vital_stamina: "Your motive capability, drained by labour.",
         vital_satiety: "Vital nutrition, burns away to fuel activity.",
 
+        resource_gold: "Aurum Vitae, your very soul sings for this shining metal.",
         resource_stones: "Common stones torn from the wall of your rocky prison.",
 
         action_rest: "Rest to recover your strength.",
@@ -22,8 +21,10 @@ const tooltipText = {
 
         limitAction_breakEgg: "The safety you once felt has turned to confinement. You must out!",
         limitAction_eatEggshell: "The walls of your old home, now they feed your hunger.",
+        limitAction_mineGold: "You feel the presence of gold in these walls, you must have it.",
 
         building_buildRockpile: "Your home has become cluttered with rubble torn from the earth, put it in order.",
+        building_buildHoard: "You can feel the power in your gold, with enough you can imprint your will upon it and grow in power.",
 
         skill_mining: "Hone your claws to tear through the bowels of the Earth.",
         skill_resting: "Hasten the restoration of your strength.",
@@ -33,7 +34,8 @@ const tooltipText = {
         attribute_strength: "Might of flesh.",
         attribute_constitution: "Depth of reservoirs.",
         attribute_dexterity: "Precision of claw.",
-        attribute_metabolism: "Effeciency of vital energies."
+        attribute_metabolism: "Effeciency of vital energies.",
+        attribute_luck: "Sway over the Winds of Fate",
     },
     descText: {
         vitals: "Expended as a result of actions.",
@@ -46,12 +48,20 @@ const tooltipText = {
         vital_health: "If this reaches 0, you die (not implemented yet).",
         vital_satiety: "Drains at a constant rate (0.5/s before modifiers) while doing any action.",
 
+        action_digStones: "Has a base 1% chance to find a vein of gold.",
+
+        limitAction_mineGold: "Has a base 20% chance to find further gold.",
+
         building_buildRockpile: "Increases the maximum storage of all resources by 10% for each built.",
+        building_buildHoard: "Increases all attributes by 1 and doubles stored gold for each built",
+
+        skill_mining: "Increases luck with mining related skill by 5% per level",
 
         attribute_strength: "Secondary effect not yet implemented.",
         attribute_constitution: "Increases the maximum of all vitals by 0.5 for each level",
         attribute_dexterity: "Increases speed of all actions by 5% for all actions, additive with skill speed mods.",
-        attribute_metabolism: "Increases efficiency and yield of all vitals by 1% per level (multiplicative with action efficiency and yield)."
+        attribute_metabolism: "Increases efficiency and yield of all vitals by 1% per level (multiplicative with action efficiency and yield).",
+        attribute_luck: "Increases luck for all random events by 5% per level"
     },
     getTooltip(comp, id) {
         if (!id && this.flavourText[comp]) {

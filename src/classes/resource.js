@@ -7,6 +7,12 @@ class Resource extends Counter {
     get tooltip() {
         return this.flavourText + "<br>" + this.effectText
     }
+    earn(player, n, flat = false) {
+        super.earn(player, n, flat)
+        if (this.visible == false && this.current >= 1) {
+            this.visible = true
+        }
+    }
 }
 
 export { Resource }
