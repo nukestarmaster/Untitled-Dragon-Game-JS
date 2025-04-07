@@ -1,5 +1,5 @@
 function format(n, sd = 0) {
-    return +n.toFixed(sd)
+    return Math.floor(n * 10 ** sd) / 10 ** sd
 }
 
 export {format}

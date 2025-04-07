@@ -34,15 +34,16 @@ const digStones = new Action(
     [new Cost("vital", "stamina", 1, false, true)],
     [],
     [new Yield("resource", "stones", 1),
-     new Yield("skill", 'mining', 1),
-     new Yield("attribute", "strength", 1),
-     new Yield("attribute", "constitution", 1),
+     new Yield("skill", 'mining', 0.5),
+     new Yield("attribute", "strength", 0.5),
+     new Yield("attribute", "constitution", 0.5),
     ],
     ["lootTable", "digStonesLT"],
     {
         1: ["event", "getStone"],
         5: ["event", "foundGold"],
-        50: ["event", "tooMuchStone"]
+        50: ["event", "tooMuchStone"],
+        100: ["event", "findCaves"]
     }
 )
 const eatStone = new Action(
@@ -56,11 +57,27 @@ const eatStone = new Action(
      new Yield("attribute", "metabolism", 0.1)
     ]
 )
+const exploreCaves = new Action(
+    "Explore Caves",
+    5,
+    "exploration",
+    [],
+    [new Cost("vital", "stamina", 2)],
+    [
+        new Yield("skill", "exploration", 1),
+        new Yield("attribute", "perception", 0.5),
+        new Yield("attribute", "agility", 0.2),
+        new Yield("attribute", "constitution", 0.1)
+    ],
+    [],
+    ["loottable", "exploreCavesLT"],
+)
 
 const actions = new Collection({
     rest,
     digStones,
     eatStone,
+    exploreCaves
 }, "Actions")
 
 
