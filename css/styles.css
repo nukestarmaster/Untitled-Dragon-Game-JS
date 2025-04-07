@@ -25,7 +25,7 @@
     text-align: center;
 }
 
-.tooltip {
+.tooltip, .lefttooltip {
     position: relative;
 }
 
@@ -40,9 +40,24 @@
     top: -5px;
     left: 105%;
     position: absolute;
+    opacity: 0.8;
 }
 
-.tooltip:hover .tooltiptext {
+.lefttooltip .tooltiptext {
+    visibility: hidden;
+    width: 240px;
+    background-color: #555;
+    color: #fff;
+    padding: 5px 0;
+    border-radius: 6px;
+    z-index: 2;
+    top: -5px;
+    right: 105%;
+    position: absolute;
+    opacity: 0.8;
+}
+
+.tooltip:hover .tooltiptext, .lefttooltip:hover .tooltiptext {
     visibility: visible;
   }
 

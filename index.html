@@ -126,6 +126,24 @@
       </div>
     </div>
 
+    <div class="statContainer" v-if="returnCounters(player.spirits)[0]">
+      <div class="lefttooltip header">
+        {{player.spirits.display()}}
+        <span class="tooltiptext" v-html="player.spirits.tooltip"></span>
+      </div>
+      <div v-for="stat in returnCounters(player.spirits)">
+        <div class="w3-round container lefttooltip"
+          :class="stat.clickable(player) ? 'w3-grey' : 'w3-lightgrey w3-diabled'"
+          type="button" @click="">
+          <div class="w3-round background"
+            :class="stat.clickable(player) ? 'w3-dark-grey' : 'w3-grey'"
+            :style="{width: stat.current / stat.max * 100 + '%' }"></div>
+          <div class="overlayText" v-html="stat.display(player)"></div>
+          <div class="tooltiptext" v-html="stat.tooltip"></div>
+        </div>
+      </div>
+    </div>
+
   </div>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <script type="module" src="src/player.js"></script>

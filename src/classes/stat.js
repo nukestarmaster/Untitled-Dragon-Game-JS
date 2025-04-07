@@ -1,4 +1,4 @@
-import { Counter } from "./counter.js";
+import { Counter, Yield } from "./counter.js";
 import { format } from "../format.js";
 
 const skillCostInit = 10
@@ -16,6 +16,10 @@ const attVisThreshold = 10
 const attPrimeBonus = 0.5
 const attSecBonus = 0.25
 const attTertBonus = 0.1
+
+const spiCostInit = 5
+const spiCostMult = 1.2
+const spiVisThreshold = 2
 
 
 class Stat extends Counter {
@@ -35,7 +39,7 @@ class Stat extends Counter {
         return this.vars.level.final
     }
     get max() {
-        return format(super.max)
+        return Math.floor(super.max)
     }
     get effectScaleFactor() {
         return this.level
@@ -80,7 +84,7 @@ class Stat extends Counter {
         this.vars.level.update(player)
     }
     display(player) {
-        return `<b>${this.name}:</b> Lv ${this.baseLevel} (${this.level})<br>Exp: ${format(this.current)} / ${format(this.max)}`
+        return `<b>${this.name}:</b><br>Lv ${this.baseLevel} (${format(this.level, 2)})<br>Exp: ${format(this.current)} / ${format(this.max)}`
     }
 }
 
@@ -140,10 +144,34 @@ class Attribute extends Stat {
             ["secSkillBonus", "flat", this.type, this.id, (n) => n * attSecBonus],
             ["tertSkillBonus", "flat", this.type, this.id, (n) => n * attTertBonus],
         ]).concat(effectDefs)
+        this.levelYield = new Yield("spirit", this.id, 1)
+    }
+    levelUp(player) {
+        this.levelYield.earn(player)
+        super.levelUp(player)
     }
     get tooltip() {
         return this.flavourText + "<br>" + this.effectText
     }
+    initSpirit() {
+        return new Spirit(this.name)
+    }
 }
 
-export { Skill, Attribute }
+class Spirit extends Stat {
+    constructor(name) {
+        super(name, "spirit", spiCostInit, spiCostMult, spiVisThreshold)
+        this.effectDefs = this.effectDefs.concat([
+            ["level", "flat", "attribute", this.id, (n) => n],
+            ["yield", "more", "attribute", this.id, (n) => 1.01 ** n]
+        ])
+    }
+    get tooltip() {
+        return this.flavourText
+    }
+    display(player) {
+        return `<b>${this.name}:</b><br>Lv ${this.baseLevel}<br>Exp: ${format(this.current)} / ${format(this.max)}`
+    }
+}
+
+export { Skill, Attribute, Spirit }

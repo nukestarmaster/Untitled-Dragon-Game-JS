@@ -7,6 +7,7 @@ const tooltipText = {
         resources: "Accumulated material resources",
         skills: "Hone your expertise.",
         attributes: "Refine your body.",
+        spirits: "Soul mirrors Flesh, Flesh mirrors Soul.",
 
         vital_health: "Your vital lifeforce, staves off death.",
         vital_stamina: "Your motive capability, drained by labour.",
@@ -18,6 +19,7 @@ const tooltipText = {
         action_rest: "Rest to recover your strength.",
         action_digStones: "The stone of these walls sucumb to your claws.",
         action_eatStone: "Your Draconis Fundimentum burns with the Fire of Stars, even these meager lifeless stones can sustain you.",
+        action_exploreCaves: "Mysteries await in these dark crevices, they call to you.",
 
         limitAction_breakEgg: "The safety you once felt has turned to confinement. You must out!",
         limitAction_eatEggshell: "The walls of your old home, now they feed your hunger.",
@@ -29,13 +31,24 @@ const tooltipText = {
         skill_mining: "Hone your claws to tear through the bowels of the Earth.",
         skill_resting: "Hasten the restoration of your strength.",
         skill_eating: "Tame the hungry fires of your Draconis Fundimentum.",
-        skill_construction: "Learn to make the mark of your intellect on this world.",
+        skill_construction: "Make the mark of your intellect on this world.",
+        skill_exploration: "The world is full of mysteries, you will find them.",
 
         attribute_strength: "Might of flesh.",
         attribute_constitution: "Depth of reservoirs.",
         attribute_dexterity: "Precision of claw.",
+        attribute_agility: "Swiftness of foot and wing.",
         attribute_metabolism: "Effeciency of vital energies.",
+        attribute_perception: "Keenness of senses.",
         attribute_luck: "Sway over the Winds of Fate",
+
+        spirit_strength: "Might calls to Might.",
+        spirit_constitution: "Life answers Life.",
+        spirit_dexterity: "Precision for Precision.",
+        spirit_agility: "Gale blows to Gale.",
+        spirit_metabolism: "Fire tempers Fire.",
+        spirit_perception: "Sight beyond Sight",
+        spirit_luck: "Fortune brings Fortune",
     },
     descText: {
         vitals: "Expended as a result of actions.",
@@ -44,18 +57,21 @@ const tooltipText = {
         buildings: "Can be built an unlimited number of times, but cost increases for each completion. Typically apply a bonus based on number of completions.",
         skills: "For each effective level in a skill, increase the speed of related actions by 5% and the efficiency and yield of them by 1%. Some skills have additional effects.",
         attributes: "For each effective level in an attribute, give 0.5, 0.25 or 0.1 bonus levels to skills of which it is the primary, secondary or tertiary attribute, respectively. Some attributes have additional effects.",
+        spirits: "Gains 1 exp for every level gained in related attribute, gives 1 bonus level and a 1.01x multiplier to exp to the related attribute (compounding multiplicatively) for every level.",
 
         vital_health: "If this reaches 0, you die (not implemented yet).",
         vital_satiety: "Drains at a constant rate (0.5/s before modifiers) while doing any action.",
 
         action_digStones: "Has a base 1% chance to find a vein of gold.",
+        action_exploreCaves: "Has a base 10% chance to find a vein of gold",
 
         limitAction_mineGold: "Has a base 20% chance to find further gold.",
 
         building_buildRockpile: "Increases the maximum storage of all resources by 10% for each built.",
-        building_buildHoard: "Increases all attributes by 1 and doubles stored gold for each built",
+        building_buildHoard: "Increases all attributes by 1 and doubles stored gold for each built.",
 
-        skill_mining: "Increases luck with mining related skill by 5% per level",
+        skill_mining: "Increases luck with mining related actions by 1% per level.",
+        skill_exploration: "Increases luck with explortation related actions by 1% per level.",
 
         attribute_strength: "Secondary effect not yet implemented.",
         attribute_constitution: "Increases the maximum of all vitals by 0.5 for each level",

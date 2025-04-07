@@ -2,7 +2,7 @@ import { vitals } from "./data/vitals.js"
 import { actionManager, actions, buildings, limitActions } from "./data/actions.js";
 import { events, lootTables } from "./data/events.js";
 import { resources } from "./data/resources.js";
-import { skills, attributes } from "./data/stats.js";
+import { skills, attributes, spirits } from "./data/stats.js";
 import { Modifiers } from "./classes/modifier.js";
 import { tooltipText } from "./data/text.js";
 
@@ -15,7 +15,7 @@ const player = {
     resources,
     skills,
     attributes,
-    spiritAttributes: [],
+    spirits,
     modifiers: new Modifiers,
     effects: [],
     inventory: [],

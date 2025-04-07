@@ -10,10 +10,8 @@ class LootTable extends Component {
         } else {lootTableActionDefs = ["luck", 1]}
         super(name, "lootTable", lootTableActionDefs)
         this.skill = skill
-        console.log(table)
         this.table = table.map((l) => new TableEntry(l[0], l[1], l[2]))
         this.table.push(new TableEntry("nullEvent", nullWeight, "null"))
-        console.log(this.table)
     }
     get luck() {
         return this.vars.luck.final

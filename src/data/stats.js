@@ -1,5 +1,5 @@
 import { Collection } from "../classes/collection.js";
-import { Attribute, Skill } from "../classes/stat.js";
+import { Attribute, Skill, Spirit } from "../classes/stat.js";
 
 const mining =          new Skill("Mining", ["strength"], ["constitution", "dexterity", "perception"], ["metabolism", "luck"], [["skillLuck", "inc", "skill", "mining", (n) => n * 0.01]])
 const resting =         new Skill("Resting", ["metabolism"], ["constitution"])
@@ -26,7 +26,7 @@ const metabolism =      new Attribute("Metabolism",     [["eff", "inc", "vital",
 const perception =      new Attribute("Perception")
 const luck =            new Attribute("Luck",           [["luck", "inc", "lootTable", null, (n) => n * 0.05]])
 
-const attributes = new Collection({
+const attributeDefs = {
     strength,
     constitution,
     dexterity,
@@ -34,6 +34,16 @@ const attributes = new Collection({
     metabolism,
     perception,
     luck,
-}, "Attributes")
+}
 
-export { skills, attributes }
+const attributes = new Collection(attributeDefs, "Attributes")
+
+const spiritDefs = {}
+
+for (let att in attributeDefs) {
+    spiritDefs[att] = attributeDefs[att].initSpirit()
+}
+
+const spirits = new Collection(spiritDefs, "Spirits")
+
+export { skills, attributes, spirits }
