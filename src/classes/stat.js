@@ -6,8 +6,9 @@ const skillCostMult = 1.1
 const skillVisThreshold = 1
 
 const skillEffMod = 0.01
-const skillYieldMod = 0.01
-const skillSpeedMod = 0.05
+const skillYieldMod = 0.02
+const skillSpeedMod = 0.02
+const skillLuckMod = 0.01
 
 const attCostInit = 50
 const attCostMult = 1.2
@@ -109,6 +110,7 @@ class Skill extends Stat {
             ["skillSpeed", "inc", this.type, this.id, (n) => n * skillSpeedMod],
             ["skillEff", "inc", this.type, this.id, (n) => n * skillEffMod],
             ["skillYield", "inc", this.type, this.id, (n) => n * skillYieldMod],
+            ["skillLuck", "inc", this.type, this.id, (n) => n * skillLuckMod]
         ]).concat(effectDefs)
     }
     get tooltip() {

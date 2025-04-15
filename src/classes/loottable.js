@@ -43,7 +43,7 @@ class TableEntry {
         if (this.type == "good") {
             return this.weight * luck
         }
-        if (this.type == "null" || type == "bad") {
+        if (this.type == "null" || this.type == "bad") {
             return this.weight / luck
         }
         return this.weight

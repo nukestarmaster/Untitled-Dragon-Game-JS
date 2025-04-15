@@ -44,7 +44,8 @@ const digStones = new Action(
         5: ["event", "foundGold"],
         50: ["event", "tooMuchStone"],
         100: ["event", "findCaves"]
-    }
+    },
+    [["max", "flat", "resource", "stones", (n) => n * 0.1]]
 )
 const eatStone = new Action(
     "Eat Stone",
@@ -117,8 +118,9 @@ const mineGold = new LimitAction(
     [],
     [
         new Yield("resource", "gold", 1),
-        new Yield("skill", "mining", 5),
-        new Yield("attribute", "dexterity", 2),
+        new Yield("skill", "mining", 3),
+        new Yield("attribute", "strength", 1),
+        new Yield("attribute", "dexterity", 1),
         new Yield("attribute", "luck", 1)
     ],
     ["lootTable", "mineGoldLT"],
@@ -126,11 +128,49 @@ const mineGold = new LimitAction(
         1: ["event", "mineGold"]
     }
 )
+const lootDeadAdventurer  = new LimitAction(
+    "Loot Dead Adventurer",
+    3,
+    "looting",
+    0,
+    [],
+    [new Cost("vital", "stamina", 1)],
+    [
+        new Yield("skill", "looting", 2),
+        new Yield("attribute", "luck", 2),
+        new Yield("attribute", "perception", 1),
+        new Yield("attribute", "dexterity", 1)
+    ],
+    [
+        new Yield("resource", "gold", 4),
+    ],
+    ["lootTable", "adventurerLT"]
+)
+const readBookofRiddles = new LimitAction(
+    "Read Book of Riddles",
+    5,
+    "studying",
+    0,
+    [],
+    [new Cost("vital", "stamina", 1)],
+    [
+        new Yield("skill", "studying", 2),
+        new Yield("attribute", "intelligence", 2),
+        new Yield("attribute", "perception", 1)
+    ],
+    [new Yield("resource", "books", 1, true)],
+    undefined,
+    {
+        1: ["event", "readBook"]
+    }
+)
 
 const limitActions = new Collection({
     breakEgg,
     eatEggshell,
-    mineGold
+    mineGold,
+    lootDeadAdventurer,
+    readBookofRiddles
 }, "Limit Actions")
 
 
@@ -162,10 +202,30 @@ const buildHoard = new Building(
         new Yield("attribute", "dexterity", 1)
     ]
 )
+const buildLibrary = new Building(
+    "Build Library",
+    5,
+    2,
+    [
+        ["max", "more", "resource", "books", (n) => 2 ** n],
+        ["yield", "more", "skill", null, (n) => 1 + 0.1 * n]
+    ],
+    [
+        new Cost("resource", "books", 10),
+        new Cost("resource", "stones", 100, true)
+    ],
+    [new Cost("vital", "stamina", 1)],
+    [
+        new Yield("skill", "construction", 1),
+        new Yield("attribute", "dexterity", 1),
+        new Yield("attribute", "intelligence", 1)
+    ]
+)
 
 const buildings = new Collection({
     buildRockpile,
-    buildHoard
+    buildHoard,
+    buildLibrary
 }, "Buildings")
 
 const actionManager = new ActionManager()
