@@ -1,5 +1,7 @@
 * {
     box-sizing: border-box;
+    font-size: small;
+    font-family: "Times New Roman", monospace;
 }
 
 #app {

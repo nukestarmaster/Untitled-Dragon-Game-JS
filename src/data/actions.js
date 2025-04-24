@@ -15,6 +15,35 @@ progYield = [],
 progSpeed = 0, 
 compYeild = []) */
    
+const heal = new Action(
+    "Heal",
+    3,
+    "healing",
+    [],
+    [
+        new Cost("vital", "stamina", 1),
+        new Cost("vital", "satiety", 0.5)
+    ],
+    [new Yield("vital", "health", 0.1)],
+    [
+        new Yield("skill", "healing", 3),
+        new Yield("attribute", "adaptability", 4),
+        new Yield("attribute", "metabolism", 2),
+        new Yield("attribute", "constitution", 1),
+        new Yield("attribute", "intelligence", 1)
+    ]
+)
+const eatStone = new Action(
+    "Eat Stone",
+    1,
+    "eating",
+    [new Cost("resource", "stones", 1)],
+    [],
+    [new Yield("vital", "satiety", 1)],
+    [new Yield("skill", "eating", 0.2),
+     new Yield("attribute", "metabolism", 0.2)
+    ]
+)
 const rest = new Action(
     "Rest", 
     5,
@@ -45,25 +74,17 @@ const digStones = new Action(
         50: ["event", "tooMuchStone"],
         100: ["event", "findCaves"]
     },
-    [["max", "flat", "resource", "stones", (n) => n * 0.1]]
-)
-const eatStone = new Action(
-    "Eat Stone",
-    1,
-    "eating",
-    [new Cost("resource", "stones", 1)],
-    [],
-    [new Yield("vital", "satiety", 1)],
-    [new Yield("skill", "eating", 0.2),
-     new Yield("attribute", "metabolism", 0.2)
-    ]
+    [["max", "flat", "resource", "stones", 0.1]]
 )
 const exploreCaves = new Action(
     "Explore Caves",
     3,
     "exploration",
     [],
-    [new Cost("vital", "stamina", 2)],
+    [
+        new Cost("vital", "stamina", 1.5),
+        new Cost("vital", "health", 0.1)
+    ],
     [
         new Yield("skill", "exploration", 1),
         new Yield("attribute", "perception", 1),
@@ -73,12 +94,16 @@ const exploreCaves = new Action(
     ],
     [],
     ["lootTable", "exploreCavesLT"],
+    {
+        1: ["event", "injured"]
+    }
 )
 
 const actions = new Collection({
+    heal,
+    eatStone,
     rest,
     digStones,
-    eatStone,
     exploreCaves
 }, "Actions")
 
@@ -164,13 +189,32 @@ const readBookofRiddles = new LimitAction(
         1: ["event", "readBook"]
     }
 )
+const readConstructionBook = new LimitAction(
+    "Read Construction Book",
+    5,
+    "studying",
+    0,
+    [],
+    [new Cost("vital", "stamina", 1)],
+    [
+        new Yield("skill", "studying", 1),
+        new Yield("skill", "construction", 2),
+        new Yield("attribute", "intelligence", 2),
+    ],
+    [new Yield("resource", "books", 1, true)],
+    undefined,
+    {
+        1: ["event", "readBook"]
+    }
+)
 
 const limitActions = new Collection({
     breakEgg,
     eatEggshell,
     mineGold,
     lootDeadAdventurer,
-    readBookofRiddles
+    readBookofRiddles,
+    readConstructionBook
 }, "Limit Actions")
 
 

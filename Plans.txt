@@ -3,30 +3,32 @@ Untitled Dragon Game Future Updates
 Before Next Update:
 
 Backend:
-Refactor effect to take number or function
-Refactor loot table to accept luck exponents for entries (rather than the base -1, 0 or 1 that is currently the case)
-Add capability of loot tables to call themselves
+*Refactor effect to take number or function
+*Refactor loot table to accept luck exponents for entries (rather than the base -1, 0 or 1 that is currently the case)
+*Add capability of loot tables to call themselves
 
 Content:
-Construction book
+*Construction book
 
 Vitals:
-Add action heal (stamina + satiety => health, skill healing)
-Reduce explore caves stamina cost
-Add explore caves health cost
-Add skill healing (bonus max health)
-Add resting max stamina
-Add eating max satiety
-Add attribute adaptability (bonus attribute exp)
+*Add action heal (stamina + satiety => health, skill healing)
+*Reduce explore caves stamina cost
+*Add explore caves health cost
+*Add skill healing (bonus max health)
+*Add resting max stamina
+*Add eating max satiety
+*Add attribute adaptability (bonus attribute exp)
 
 UI:
-Monospace font
-Reduce font size
+*Monospace font
+*Reduce font size
 
 Saving/Loading:
 Implement saving and loading from text file (presumably JSON)
 
 Distant future:
+
+Combat:
 
 Spell system:
 Spells can be toggled like actions but can be leveled up like skills
@@ -40,7 +42,6 @@ Three primary kinds of spells:
 	- Buff spells (give bonus while active, like a haste spell increasing action speed)
 	- Channelling spells (spend another resource to generate mana)
 	- Production/restoration spells (spends mana to generate resources/vitals)
-
 New vital mana (spent to cast spells and to do some magical actions)
 New action meditate (stamina + satiety => mana, skill mana manipulation)
 New limit action (book) spellbook (gives exp in magical skills/attributes, teaches a new spell with every completion)

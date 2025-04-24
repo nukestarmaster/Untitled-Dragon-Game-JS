@@ -107,10 +107,10 @@ class Skill extends Stat {
         ).concat(tertAtt.map((d) => ["attribute", d, "tertSkillBonus"]))
 
         this.effectDefs = this.effectDefs.concat([
-            ["skillSpeed", "inc", this.type, this.id, (n) => n * skillSpeedMod],
-            ["skillEff", "inc", this.type, this.id, (n) => n * skillEffMod],
-            ["skillYield", "inc", this.type, this.id, (n) => n * skillYieldMod],
-            ["skillLuck", "inc", this.type, this.id, (n) => n * skillLuckMod]
+            ["skillSpeed", "inc", this.type, this.id, skillSpeedMod],
+            ["skillEff", "inc", this.type, this.id, skillEffMod],
+            ["skillYield", "inc", this.type, this.id, skillYieldMod],
+            ["skillLuck", "inc", this.type, this.id, skillLuckMod]
         ]).concat(effectDefs)
     }
     get tooltip() {
@@ -142,9 +142,9 @@ class Attribute extends Stat {
         ]
         super(name, "attribute", attCostInit, attCostMult, attVisThreshold, attVarDefs)
         this.effectDefs = this.effectDefs.concat([
-            ["primeSkillBonus", "flat", this.type, this.id, (n) => n * attPrimeBonus],
-            ["secSkillBonus", "flat", this.type, this.id, (n) => n * attSecBonus],
-            ["tertSkillBonus", "flat", this.type, this.id, (n) => n * attTertBonus],
+            ["primeSkillBonus", "flat", this.type, this.id, attPrimeBonus],
+            ["secSkillBonus", "flat", this.type, this.id, attSecBonus],
+            ["tertSkillBonus", "flat", this.type, this.id, attTertBonus],
         ]).concat(effectDefs)
         this.levelYield = new Yield("spirit", this.id, 1)
     }
@@ -164,7 +164,7 @@ class Spirit extends Stat {
     constructor(name) {
         super(name, "spirit", spiCostInit, spiCostMult, spiVisThreshold)
         this.effectDefs = this.effectDefs.concat([
-            ["level", "flat", "attribute", this.id, (n) => n],
+            ["level", "flat", "attribute", this.id, 1],
             ["yield", "more", "attribute", this.id, (n) => 1.01 ** n]
         ])
     }

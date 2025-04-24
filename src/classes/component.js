@@ -123,7 +123,11 @@ class Effect {
         this.sourceId = sourceId
         this.targetType = targetType
         this.targetId = targetId
-        this.func = func
+        if (typeof func == "number") {
+            this.func = (n) => n * func
+        } else {
+            this.func = func
+        }
     }
     update(player, scaleFactor) {
         if (this.targetId) {

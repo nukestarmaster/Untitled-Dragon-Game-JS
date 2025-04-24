@@ -1,7 +1,7 @@
 import { Component } from "./component.js";
 
 class LootTable extends Component {
-    constructor(name, table, nullWeight, skill = null,) {
+    constructor(name, table, nullWeight, skill = null, repeatWeight = 0) {
         let lootTableActionDefs 
         if (skill) {
             lootTableActionDefs = [
@@ -10,8 +10,9 @@ class LootTable extends Component {
         } else {lootTableActionDefs = ["luck", 1]}
         super(name, "lootTable", lootTableActionDefs)
         this.skill = skill
-        this.table = table.map((l) => new TableEntry(l[0], l[1], l[2]))
-        this.table.push(new TableEntry("nullEvent", nullWeight, "null"))
+        this.table = table.map((l) => new TableEntry(l[0], l[1], l[2], l[3]))
+        this.table.push(new TableEntry("nullEvent", nullWeight, -1))
+        this.table.push(new TableEntry("repeat", repeatWeight, 2, "lootTable"))
     }
     get luck() {
         return this.vars.luck.final
@@ -26,6 +27,11 @@ class LootTable extends Component {
             rngVal -= te.getWeight(this.luck)
             console.log(`Testing table entry ${te.eventId}, weight is ${te.getWeight(this.luck)}, reduced random value is ${rngVal}`)
             if (rngVal <= 0) {
+                if(te.eventId == "repeat") {
+                    this.call(player)
+                    this.call(player)
+                    return
+                }
                 te.call(player)
                 return
             }
@@ -34,22 +40,17 @@ class LootTable extends Component {
 }
 
 class TableEntry {
-    constructor(eventId, weight, type) {
+    constructor(eventId, weight, exp, eventType = "event") {
+        this.eventType = eventType
         this.eventId = eventId
         this.weight = weight
-        this.type = type
+        this.exp = exp
     }
     getWeight(luck) {
-        if (this.type == "good") {
-            return this.weight * luck
-        }
-        if (this.type == "null" || this.type == "bad") {
-            return this.weight / luck
-        }
-        return this.weight
+        return this.weight * luck ** this.exp
     }
     call(player) {
-        player.getComponent("event", this.eventId).call(player)
+        player.getComponent(this.eventType, this.eventId).call(player)
     }
 }
 
