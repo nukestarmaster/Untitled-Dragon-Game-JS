@@ -35,7 +35,7 @@ class ActionManager {
             console.log(this.upkeep)
             return
         }
-        this.upkeep.push(new Cost(type, id, amount))
+        this.upkeep.push(new Cost(type, id, amount, false, true))
     }
 
     tick(player) {
@@ -48,6 +48,22 @@ class ActionManager {
                 this.actions.map((a) => a.deactivate(player))
             }
             this.t0 = t1
+            if (player.getComponent("vital", "satiety").current == 0) {
+                if (player.getComponent("limitAction", "eatEggshell").limit > 0) {
+                    player.getComponent("limitAction", "eatEggshell").click(player)
+                    return
+                }
+                player.getComponent("action", "eatStone").click(player)
+                return
+            }
+            if (player.getComponent("vital", "stamina").current == 0) {
+                player.getComponent("action", "rest").click(player)
+                return
+            }
+            if (player.getComponent("vital", "health").current == 0) {
+                player.getComponent("action", "heal").click(player)
+                return
+            }
         }
     }
 }
