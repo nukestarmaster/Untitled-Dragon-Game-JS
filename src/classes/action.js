@@ -165,7 +165,7 @@ class Action extends Counter {
     tick(player) {
         let dt = player.actionManager.dt
         if (this.clickable(player, dt)) {
-            this.progCost.map((c) => c.spend(player, dt * this.progCostMod)) 
+            this.progCost.map((c) => c.spend(player, dt * this.progCostMod, false, true)) 
             this.progYield.map((y) => y.earn(player, dt * this.progYieldMod))
             this.earn(player, dt * this.speedMod)
         }
