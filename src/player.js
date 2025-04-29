@@ -23,7 +23,7 @@ const player = {
     lootTables,
     tooltipText,
     getComponent(type, id) {
-        return this[type + "s"][id]
+        return this[type + "s"]["data"][id]
     },
     setMod(modType, target, origin, magnitude) {
         this.modifiers.setMod(modType, target, origin, magnitude)
