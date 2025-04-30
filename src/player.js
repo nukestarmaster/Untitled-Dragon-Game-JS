@@ -27,6 +27,9 @@ const player = {
     },
     setMod(modType, target, origin, magnitude) {
         this.modifiers.setMod(modType, target, origin, magnitude)
+        if (target[0] == "actionManager") {
+            this.actionManager.updateVar(this, target[2])
+        }
         if (target[2]) {
             this.getComponent(target[0], target[1]).updateVar(this, target[2])
             return

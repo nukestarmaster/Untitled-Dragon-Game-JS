@@ -1,14 +1,28 @@
 
 import { format } from "../format.js";
+import { Component } from "./component.js";
 import { Cost, Counter} from "./counter.js";
 
-class ActionManager {
+class ActionManager extends Component {
     constructor() {
+        let actiomManagerVarDefs = [
+            ["hungerRate", 0],
+            ["upkeepRate", 1]
+        ]
+        super("Action Manager", "actionManager", actiomManagerVarDefs)
+        
         this.limit = 1
+        this.hunger = new Cost("vital", "satiety", 1, false, true)
         this.upkeep = []
         this.actions = []
         this.t0 = 0
         this.dt = 0
+    }
+    get hungerRate() {
+        return this.vars.hungerRate.final
+    }
+    get upkeepRate() {
+        return this.vars.upkeepRate.final
     }
     activateAction(player, action) {
         this.actions.push(action)
@@ -42,9 +56,13 @@ class ActionManager {
         if (this.actions.length > 0) {
             let t1 = Date.now()
             this.dt = (t1 - this.t0) / 1000
-            this.upkeep.map((c) => c.spend(player, this.dt))
+            this.hunger.spend(player, this.hungerRate * this.dt)
+            this.upkeep.map((c) => c.spend(player, this.upkeepRate * this.dt))
             this.actions.map((a) => a.tick(player))
-            if (!this.upkeep.every((c) => c.canSpend(player, this.dt))) {
+            if (!this.hunger.canSpend(player, this.hungerRate * this.dt)) {
+                this.actions.map((a) => a.deactivate(player))
+            }
+            if (!this.upkeep.every((c) => c.canSpend(player, this.upkeepRate * this.dt))) {
                 this.actions.map((a) => a.deactivate(player))
             }
             this.t0 = t1
