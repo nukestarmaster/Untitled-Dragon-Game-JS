@@ -26,8 +26,9 @@ class Counter extends Component {
     get max() {
         return this.vars["max"].final
     }
-    show() {
+    show(player) {
         this.visible = true
+        player[this.type + "s"].visible = true
     }
     hide() {
         this.visible = false

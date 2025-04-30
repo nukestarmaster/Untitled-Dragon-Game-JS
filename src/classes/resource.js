@@ -10,7 +10,7 @@ class Resource extends Counter {
     earn(player, n, flat = false) {
         super.earn(player, n, flat)
         if (this.visible == false && this.current >= 1) {
-            this.visible = true
+            this.show(player)
         }
     }
 }

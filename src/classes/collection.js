@@ -6,6 +6,7 @@ class Collection {
         this.data = obj
         this.name = name
         this.id = camelCase(name)
+        this.visible = false
         this.flavourText = tooltipText.getTooltip(this.id)
         this.descText = tooltipText.getDescripion(this.id)
     }

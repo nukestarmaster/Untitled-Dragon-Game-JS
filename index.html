@@ -11,7 +11,7 @@
 
 <body>
   <div id="app">
-    <div class="vitalsContainer" v-if="returnCounters(player.vitals.data)[0]">
+    <div class="vitalsContainer" v-if="player.vitals.visible">
       <div class="tooltip header">
         {{player.vitals.display()}}
         <span class="tooltiptext" v-html="player.vitals.tooltip"></span>
@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div class="actionsContainer" v-if="returnCounters(player.actions.data)[0]">
+    <div class="actionsContainer" v-if="player.actions.visible">
       <div class="tooltip header">
         {{player.actions.display()}}
         <span class="tooltiptext" v-html="player.actions.tooltip"></span>
@@ -41,7 +41,7 @@
       </div>
     </div>
 
-    <div class="actionsContainer" v-if="returnCounters(player.limitActions.data)[0]">
+    <div class="actionsContainer" v-if="player.limitActions.visible">
       <div class="tooltip header">
         {{player.limitActions.display()}}
         <span class="tooltiptext" v-html="player.limitActions.tooltip"></span>
@@ -59,7 +59,7 @@
       </div>
     </div>
 
-    <div class="actionsContainer" v-if="returnCounters(player.buildings.data)[0]">
+    <div class="actionsContainer" v-if="player.buildings.visible">
       <div class="tooltip header">
         {{player.buildings.display()}}
         <span class="tooltiptext" v-html="player.buildings.tooltip"></span>
@@ -77,7 +77,7 @@
       </div>
     </div>
 
-    <div class="resourceContainer" v-if="returnCounters(player.resources.data)[0]">
+    <div class="resourceContainer" v-if="player.resources.visible">
       <div class="tooltip header">
         {{player.resources.display()}}
         <span class="tooltiptext" v-html="player.resources.tooltip"></span>
@@ -90,7 +90,7 @@
       </div>
     </div>
 
-    <div class="statContainer" v-if="returnCounters(player.skills.data)[0]">
+    <div class="statContainer" v-if="player.skills.visible">
       <div class="tooltip header">
         {{player.skills.display()}}
         <span class="tooltiptext" v-html="player.skills.tooltip"></span>
@@ -108,7 +108,7 @@
       </div>
     </div>
 
-    <div class="statContainer" v-if="returnCounters(player.attributes.data)[0]">
+    <div class="statContainer" v-if="player.attributes.visible">
       <div class="tooltip header">
         {{player.attributes.display()}}
         <span class="tooltiptext" v-html="player.attributes.tooltip"></span>
@@ -126,7 +126,7 @@
       </div>
     </div>
 
-    <div class="statContainer" v-if="returnCounters(player.spirits.data)[0]">
+    <div class="statContainer" v-if="player.spirits.visible">
       <div class="lefttooltip header">
         {{player.spirits.display()}}
         <span class="tooltiptext" v-html="player.spirits.tooltip"></span>

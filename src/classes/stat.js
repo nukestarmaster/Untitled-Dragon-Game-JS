@@ -58,7 +58,7 @@ class Stat extends Counter {
             this.levelUp(player)
         }
         if (this.visible == false && this.current >= this.visThreshold) {
-            this.visible = true
+            this.show(player)
         }
     }
     spend(player, n, flat = false, allowPartial = false) {

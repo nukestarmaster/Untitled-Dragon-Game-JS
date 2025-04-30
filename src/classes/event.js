@@ -69,13 +69,13 @@ class RevealEvent extends Event {
         if (compType == "limitAction") {
             player.getComponent(compType, compId).limit += magnitude
         }
-        player.getComponent(compType, compId).visible = true
+        player.getComponent(compType, compId).show(player)
     }
 }
 
 class HideEvent extends Event {
     func(player, compType, compId) {
-        player.getComponent(compType, compId).visible = false
+        player.getComponent(compType, compId).hide()
     }
 }
 
