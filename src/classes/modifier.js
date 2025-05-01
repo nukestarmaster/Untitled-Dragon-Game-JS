@@ -44,6 +44,21 @@ class Modifiers {
         }
         return []
     }
+    save() {
+        return {
+            flat: this.flat,
+            inc: this.inc,
+            more: this.more
+        }
+    }
+    load(data, player) {
+        this.flat = data.flat
+        this.inc = data.inc
+        this.more = data.more
+    }
+    update() {
+        return
+    }
 }
 
 export { Modifiers }

@@ -24,6 +24,16 @@
     margin: 5px;
 }
 
+.optionContainer {
+    position: relative;
+    border: 1px solid grey;
+    width: 80px;
+    height: 100%;
+    float: inline-start;
+    margin: 5px;
+    padding: 2px;
+}
+
 .header {
     text-align: center;
 }
@@ -64,9 +74,6 @@
     visibility: visible;
   }
 
-.actionButton {
-    width: 100%;
-}
 
 .container {
     position: relative;

@@ -249,6 +249,14 @@ class Action extends Counter {
 
         return `${this.flavourText}<br>${skillText}${durationText}${initCostText}${progCostText}${progYieldText}${compYieldText}${this.effectText}`
     }
+    save() {
+        return {
+            visible: this.visible,
+            current: this.current,
+            started: this.started,
+            count: this.count
+        }
+    }
 }
 
 class LimitAction extends Action {
@@ -266,6 +274,15 @@ class LimitAction extends Action {
     }
     display() {
         return `<b>${this.name}</b><br>Remaining: ${this.limit}`
+    }
+    save() {
+        return {
+            visible: this.visible,
+            current: this.current,
+            started: this.started,
+            count: this.count,
+            limit: this.limit,
+        }
     }
 }
 

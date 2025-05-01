@@ -23,6 +23,43 @@ class Collection {
     get tooltip() {
         return this.flavourText + this.descText
     }
+    save() {
+        console.log(`Saving ${this.id}\n`)
+        let data = {}
+        for (let k in this.data) {
+            try {
+                let subData = this.data[k].save()
+                if (subData) {
+                    data[k] = subData
+                }
+            } catch(err) {
+                console.log(`${this.id} subobject ${k} does not have save function.`)
+            }
+        }
+        console.log(data)
+        return data
+    }
+    load(data, player) {
+        console.log(`Loading ${this.id}`)
+        console.log(data)
+        for (let k in data) {
+            try {
+                this.data[k].load(data[k], player)
+            } catch (err) {
+                console.log(`${this.id} subobject ${k} does not have load function.`)
+            }
+        }
+    }
+    update(player) {
+        for (let k in this.data) {
+            try {
+                this.data[k].update(player)
+            } catch(err) {
+                console.log(`Player subobject ${k} does not have update function.`)
+                console.log(err)
+            }
+        }
+    }
 }
 
 export { Collection }

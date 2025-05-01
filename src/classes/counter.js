@@ -82,6 +82,18 @@ class Counter extends Component {
     display() {
         return `${this.name}: ${format(this.current)} / ${format(this.max)}`
     }
+    save() {
+        return {
+            visible: this.visible,
+            current: this.current
+        }
+    }
+    load(data, player) {
+        super.load(data)
+        if (data.visible) {
+            this.show(player)
+        }
+    }
 }
 
 

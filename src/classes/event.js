@@ -34,6 +34,12 @@ class Event {
     func(player, compId, compType) {
         return 
     }
+    save() {
+        return
+    }
+    update() {
+        return
+    }
 }
 
 class TextEvent extends Event {

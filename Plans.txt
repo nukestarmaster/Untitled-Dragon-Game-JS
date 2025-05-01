@@ -5,9 +5,75 @@ Before Next Update:
 Saving/Loading:
 Implement saving and loading from text file (presumably JSON)
 
+Near future:
+
+Death and reincarnation: 
+When health <0 or satiety = 0 and out of food, die.
+On death restart game from beginning, keeping spirit levels.
+
+
+
+Growth:
+New stat type, global stats:
+Growth global stat, each level increases all attributes by 1, but also increases hunger rate (passive satiety loss rate).
+Exp gained passively over time while doing any action.
+
+New action eat gold: Consumes gold for large amount of sateity and growth exp.
+
 Distant future:
 
 Combat:
+Introduce opposed skill checks (1d100+skill level vs. 1d100+enemy skill bonus, higher value wins, effect based on difference between values)
+Introduce new combat skills.
+Combat skills marginally increase speed, yield and effeciency of related actions
+When exploring, enemies appear occasionally.
+When an enemy appears global game state changed to combat.
+In combat, normal actions disappear and special combat actions appear.
+In combat, standard upkeep and gain over time is halted.
+Enemies have own combat skill bonuses, vitals and combat actions.
+Enemies have simple logic letting choosing their actions.
+Combat actions (except wait) cannot be changed once chosen.
+Forcefully cancelled actions loose all progress.
+
+At combat start both combatants make a spot vs. stealth check, if both combatants win the check, standard combat starts, combatants who fail are in unaware state. If one succeeds while the other fails, they are in hidden state.
+In unaware state, combatant can only do notice action. Take increased damage.
+In aware state, combatant can do run or find action.
+In hidden state, can do disengage, attack or ambush actions.
+In combat state, can do run, attack, hide actions or defensive actions.
+In running state, can do disengage, hide or attack actions.
+In chasing state, can do disengage, hide or catch actions.
+
+Notice combat action: spot based, opposed spot vs. stealth, on sucess go to hidden or combat state based on opponent state, on fail go to aware state.
+Find combat action: spot based, opposed spot vs. stealth, on sucess go to hidden or combat state based on opponent state, faster than notice.
+Disengage combat action: swiftness based, ends combat, very slow, cancelled if opponent sucessfully completes hostile action.
+Ambush combat action: stealth based, gives free attack (automatically hits) on oppenent that does bonus damage, moves both combatants to combat state, slow, cancelled if opponent succeeds on notice or find action.
+Run combat action: swiftness based, moves to running state, opponent goes to either hidden or chasing state, fails if opponent sucessfully completes hostile action.
+Hide combat action: stealth based, opposed stealth vs. spot, on sucess go to hidden state and oppoent goes to aware state, cancelled if opponent completes hostile action.
+Catch combat action: swiftness based, gives free standard attack on opponent, moves both combatants to combat state.
+Attack combat action: attack based, qpposed attack vs. defense roll, on sucess deals damage based on damage and other combatant's armour.
+Other attack combat actions: Same as attack, but with different durations, vital cost and stat modifiers. Can e used whenever attack can.
+Other defensive combat actions: defense based, defensive actions that have a stat modifier while running, might have other effects.
+Rest combat action: defense based, restores stamina, no other effect. Can be used in any state.
+Wait combat action: Does nothing, can be cancelled at any time. Can be used in any state.
+
+Spot combat skill: Used in stealth/spot checks, perception primary stat.
+Stealth combat skill: Used in stealth/spot checks, agility primary stat.
+Attack combat skill: Used in attack/defense checks, dexterity primary stat.
+Defense combat skill: Used in attack/defense checks, agility primary stat.
+Power combat skill: Increases damage dealt by attacks, strength primary stat.
+Resilience combat skill: Reduced damage taken from attacks, constitution primary stat.
+Swiftness combat skill: Increases speed of combat actions, no primary stat. Related skills have low exp yield.
+
+Martial skill: Increase experience gain of combat skills
+
+Instinct attribute: Increases speed of combat skills, common secondary or teriary attribute for combat skills.
+
+Level global stat: Gain exp from winning combat.
+Gives skill and attribute points one level.
+Skill points can be spent to give bonus skill or combat skill levels.
+Attribute points can be spent to give bonus attribute levels.
+
+
 
 Spell system:
 Spells can be toggled like actions but can be leveled up like skills
@@ -17,17 +83,22 @@ Spells mods are effeciency, yield, spellpower (increases benefits, parent of yie
 Some benefits scale at less than linear with spellpower
 Base upkeep, yield, benefits and drawbacks scale linearly with level (yield slightly faster than upkeep, benefits slightly faster than drawbacks)
 Efficiency, yield, spellpower and resilience scale slightly with level
-Three primary kinds of spells:
+Five primary kinds of spells:
 	- Buff spells (give bonus while active, like a haste spell increasing action speed)
 	- Channelling spells (spend another resource to generate mana)
-	- Production/restoration spells (spends mana to generate resources/vitals)
+	- Production spells (spends mana to generate resources)
+	- Restoration spells (spends mana to restore vitals)
+	- Combat spells (spend mana to use special combat actions)
+
 New vital mana (spent to cast spells and to do some magical actions)
+
 New action meditate (stamina + satiety => mana, skill mana manipulation)
+
 New limit action (book) spellbook (gives exp in magical skills/attributes, teaches a new spell with every completion)
+
 New skill mana manipulation (increases spell effeciency, increases max mana)
 New skill spellcraft (bonus levels to all spells)
+New skill 
+
 New attribute willpower (increases spell resilience)
 New attribute power (increases spell spellpower)
-
-Resurection:
-Restart the game from the beginning, keeping all spirits but removing everything else.

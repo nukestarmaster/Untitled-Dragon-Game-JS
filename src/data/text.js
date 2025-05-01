@@ -116,6 +116,12 @@ const tooltipText = {
             return this.descText[comp + "_" + id]
         }
         return ""
+    },
+    save() {
+        return
+    },
+    update() {
+        return
     }
 }
 

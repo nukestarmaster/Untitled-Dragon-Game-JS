@@ -17,8 +17,6 @@ const player = {
     attributes,
     spirits,
     modifiers: new Modifiers,
-    effects: [],
-    inventory: [],
     events,
     lootTables,
     tooltipText,
@@ -36,7 +34,7 @@ const player = {
             return
         }
         for (let c in this[target[0] + "s"].data) {
-                this.getComponent(target[0], c).updateVar(this, target[1])
+                this.getComponent(target[0], c).updateVar(this, target[1])          
         }
     },
     getMods(compType, compId, compMod) {
@@ -49,6 +47,47 @@ const player = {
         for (let o in this) {
             if (this[o].init) {
                 this[o].init(this)
+            }
+        }
+    },
+    save() {
+        console.log("Saving player\n")
+        let data = {}
+        for (let k in this) {
+            if (typeof this[k] != "function") {
+                try {
+                    let subData = this[k].save()
+                    if (subData) {
+                        data[k] = subData
+                    }
+                } catch(err) {
+                    console.log(`Player subobject ${k} does not have save function.`)
+                }
+            }
+        }
+        console.log(data)
+        return data
+    },
+    load(data) {
+        console.log("Loading player\n")
+        console.log(data)
+        for (let k in data) {
+            try {
+                this[k].load(data[k], this)
+            } catch (err) {
+                console.log(`Player subobject ${k} does not have load function.`)
+            }
+        }
+    },
+    update() {
+        for (let k in this) {
+            if (typeof this[k] != "function") {
+                try {
+                    let subData = this[k].update(this)
+                } catch(err) {
+                    console.log(`Player subobject ${k} does not have update function.`)
+                    console.log(err)
+                }
             }
         }
     }

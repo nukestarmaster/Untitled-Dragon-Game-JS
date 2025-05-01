@@ -36,6 +36,9 @@ class Stat extends Counter {
     get baseLevel() {
         return this.vars.level.base
     }
+    set baseLevel(int) {
+        this.vars.level.base = int
+    }
     get level() {
         return this.vars.level.final
     }
@@ -86,6 +89,13 @@ class Stat extends Counter {
     }
     display(player) {
         return `<b>${this.name}:</b><br>Lv ${this.baseLevel} (${format(this.level, 2)})<br>Exp: ${format(this.current)} / ${format(this.max)}`
+    }
+    save() {
+        return {
+            visible: this.visible,
+            current: this.current,
+            baseLevel: this.baseLevel
+        }
     }
 }
 

@@ -61,6 +61,20 @@ class Component {
             m.update(player, this.effectScaleFactor)
         }
     }
+    update(player) {
+        this.updateEffects(player)
+        for (let v in this.vars) {
+            this.updateVar(player, v)
+        }
+    }
+    save() {
+        return
+    }
+    load(data) {
+        for (let k in data) {
+            this[k] = data[k]
+        }
+    }
 }
 
 class Var {
