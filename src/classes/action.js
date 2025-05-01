@@ -166,7 +166,7 @@ class Action extends Counter {
                 return false
             }
         }
-        if (!this.progCost.every((c) => c.canSpend(player, dt * this.progCostMod))) {
+        if (!this.progCost.every((c) => c.canSpend(player, dt * this.progCostMod, true))) {
             return false
         }
         if (!this.progYield.every((c) => c.canEarn(player, dt * this.progYieldMod))) {
@@ -183,7 +183,7 @@ class Action extends Counter {
     tick(player) {
         let dt = player.actionManager.dt
         if (this.clickable(player, dt)) {
-            this.progCost.map((c) => c.spend(player, dt * this.progCostMod, false, true)) 
+            this.progCost.map((c) => c.spend(player, dt * this.progCostMod, true)) 
             this.progYield.map((y) => y.earn(player, dt * this.progYieldMod))
             this.earn(player, dt * this.speedMod)
         }
