@@ -2,16 +2,18 @@ Untitled Dragon Game Future Updates
 
 Before Next Update:
 
-Saving/Loading:
-Implement saving and loading from text file (presumably JSON)
-
-Near future:
-
 Death and reincarnation: 
 When health <0 or satiety = 0 and out of food, die.
 On death restart game from beginning, keeping spirit levels.
 
+Near future:
 
+UI overhaul:
+Dark theme
+
+Refactor counter, cost and yield classes:
+Remove unneeded functionality.
+Allow actions to get specific cost/yield values.
 
 Growth:
 New stat type, global stats:
@@ -21,6 +23,8 @@ Exp gained passively over time while doing any action.
 New action eat gold: Consumes gold for large amount of sateity and growth exp.
 
 Distant future:
+
+
 
 Combat:
 Introduce opposed skill checks (1d100+skill level vs. 1d100+enemy skill bonus, higher value wins, effect based on difference between values)

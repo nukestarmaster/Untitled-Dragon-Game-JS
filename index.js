@@ -45,10 +45,9 @@ const app = Vue.createApp({
         if (!loaded) {
             startEvent(this.player)
         }
+        window.setInterval(this.save, 30000)
     },
 })
-
-window.onbeforeunload = app.save
     
 app.mount('#app')
 
