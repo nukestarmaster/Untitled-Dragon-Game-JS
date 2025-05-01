@@ -35,11 +35,8 @@ const player = {
             this.getComponent(target[0], target[1]).updateVar(this, target[2])
             return
         }
-        for (let c in this[target[0] + "s"]) {
-            if (this.getComponent(target[0], c).updateVar) {
+        for (let c in this[target[0] + "s"].data) {
                 this.getComponent(target[0], c).updateVar(this, target[1])
-            }
-            
         }
     },
     getMods(compType, compId, compMod) {
