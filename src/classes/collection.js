@@ -24,20 +24,24 @@ class Collection {
         return this.flavourText + this.descText
     }
     save() {
-        console.log(`Saving ${this.id}\n`)
         let data = {}
         for (let k in this.data) {
-            try {
+            if (typeof this.data[k] != "object") {
+                continue
+            }
+            if ("save" in this.data[k]) {
                 let subData = this.data[k].save()
-                if (subData) {
+                if (subData && subData != {}) {
                     data[k] = subData
                 }
-            } catch(err) {
-                console.log(`${this.id} subobject ${k} does not have save function.`)
+            } else {
+                console.log(`SubObject ${k} does not have save function`)
             }
         }
-        console.log(data)
-        return data
+        if (Object.keys(data).length > 0) {
+            return data
+        }
+        
     }
     load(data, player) {
         console.log(`Loading ${this.id}`)

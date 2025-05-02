@@ -18,7 +18,7 @@ const app = Vue.createApp({
         returnCounters: returnCounters,
         save: function save() {
             console.log("Saving ...")
-            localStorage.setItem("player", JSON.stringify(this.player.save()))
+            localStorage.setItem("player", JSON.stringify(this.player))
             console.log("Finished Saving!")
         },
         load: function load() {

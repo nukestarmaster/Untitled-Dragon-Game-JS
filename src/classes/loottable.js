@@ -37,6 +37,9 @@ class LootTable extends Component {
             }
         }
     }
+    save() {
+        return
+    }
 }
 
 class TableEntry {

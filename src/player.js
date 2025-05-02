@@ -50,19 +50,19 @@ const player = {
             }
         }
     },
-    save() {
-        console.log("Saving player\n")
+    toJSON() {
         let data = {}
         for (let k in this) {
-            if (typeof this[k] != "function") {
-                try {
-                    let subData = this[k].save()
-                    if (subData) {
-                        data[k] = subData
-                    }
-                } catch(err) {
-                    console.log(`Player subobject ${k} does not have save function.`)
+            if (typeof this[k] != "object") {
+                continue
+            }
+            if ("save" in this[k]) {
+                let subData = this[k].save()
+                if (subData && subData != {}) {
+                    data[k] = subData
                 }
+            } else {
+                console.log(`SubObject ${k} does not have save function`)
             }
         }
         console.log(data)
