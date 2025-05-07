@@ -45,22 +45,26 @@ class Collection {
     }
     load(data, player) {
         console.log(`Loading ${this.id}`)
-        console.log(data)
         for (let k in data) {
-            try {
+            if (typeof this.data[k] != "object") {
+                continue
+            }
+            if ("load" in this.data[k]) {
                 this.data[k].load(data[k], player)
-            } catch (err) {
-                console.log(`${this.id} subobject ${k} does not have load function.`)
+            } else {
+                console.log(`Subobject ${k} does not have load function`)
             }
         }
     }
     update(player) {
         for (let k in this.data) {
-            try {
+            if (typeof this.data[k] != "object") {
+                continue
+            }
+            if ("update" in this.data[k]) {
                 this.data[k].update(player)
-            } catch(err) {
-                console.log(`Player subobject ${k} does not have update function.`)
-                console.log(err)
+            } else {
+                console.log(`Subobject ${k} does not have update function`)
             }
         }
     }

@@ -72,24 +72,38 @@ const player = {
         console.log("Loading player\n")
         console.log(data)
         for (let k in data) {
-            try {
+            if (typeof this[k] != "object") {
+                continue
+            }
+            if ("load" in this[k]) {
                 this[k].load(data[k], this)
-            } catch (err) {
-                console.log(`Player subobject ${k} does not have load function.`)
+            } else {
+                console.log(`Subobject ${k} does not have load function`)
             }
         }
     },
     update() {
         for (let k in this) {
-            if (typeof this[k] != "function") {
-                try {
-                    let subData = this[k].update(this)
-                } catch(err) {
-                    console.log(`Player subobject ${k} does not have update function.`)
-                    console.log(err)
-                }
+            if (typeof this[k] != "object") {
+                continue
+            }
+            if ("update" in this[k]) {
+                this[k].update(this)
+            } else {
+                console.log(`Subobject ${k} does not have update function`)
             }
         }
+    },
+    die() {
+        console.log("You have died!")
+        this.app.reincarnate()
+    },
+    reincarnate() {
+        let save = {
+            spirits: this.spirits.save()
+        }
+        console.log(save)
+        return save
     }
 }
 

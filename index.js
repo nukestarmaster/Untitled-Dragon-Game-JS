@@ -16,7 +16,7 @@ const app = Vue.createApp({
         },
         format: format,
         returnCounters: returnCounters,
-        save: function save() {
+        saveData: function saveData() {
             console.log("Saving ...")
             localStorage.setItem("player", JSON.stringify(this.player))
             console.log("Finished Saving!")
@@ -36,18 +36,28 @@ const app = Vue.createApp({
         reset: function reset() {
             localStorage.removeItem("player")
             location.reload()
+        },
+        reincarnate: function reincarnate() {
+            localStorage.setItem("player", JSON.stringify(this.player.reincarnate()))
+            location.reload()
         }
     },
     beforeMount() {
+        this.player.app = this
         this.player.init()
-        let loaded = this.load()
+        let loaded = false
+        try {
+            loaded = this.load()
+        } catch(err) {
+            console.log(err)
+        }
+        
         gameloop(this.player)
         if (!loaded) {
             startEvent(this.player)
         }
-        window.setInterval(this.save, 30000)
+        window.setInterval(this.saveData, 30000)
     },
 })
     
 app.mount('#app')
-

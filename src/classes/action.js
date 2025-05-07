@@ -71,8 +71,11 @@ class ActionManager extends Component {
                     player.getComponent("limitAction", "eatEggshell").click(player)
                     return
                 }
-                player.getComponent("action", "eatStone").click(player)
-                return
+                if (player.getComponent("action", "eatStone").clickable(player)) {
+                    player.getComponent("action", "eatStone").click(player)
+                    return
+                }
+                player.die()
             }
             if (player.getComponent("vital", "stamina").current == 0) {
                 player.getComponent("action", "rest").click(player)
