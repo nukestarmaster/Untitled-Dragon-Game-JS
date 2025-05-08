@@ -11,6 +11,13 @@
 
 <body>
   <div id="app">
+    <div class="baseStatsContainer" v-if="player.baseStats.visible">
+      <div class="w3-grey w3-round container downtooltip" v-for="baseStat in returnCounters(player.baseStats.data)">
+        <div class="w3-round background w3-dark-grey" :style="{width: baseStat.current / baseStat.max * 100 + '%' }"></div>
+        <div class="overlayText" v-html="baseStat.display(player)"></div>
+        <div class="tooltiptext" v-html="baseStat.tooltip"></div>
+      </div>
+    </div>
     <div class="vitalsContainer" v-if="player.vitals.visible">
       <div class="tooltip header">
         {{player.vitals.display()}}

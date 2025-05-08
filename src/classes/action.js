@@ -1,18 +1,20 @@
 
 import { format } from "../format.js";
 import { Component } from "./component.js";
-import { Cost, Counter} from "./counter.js";
+import { Cost, Yield, Counter} from "./counter.js";
 
 class ActionManager extends Component {
     constructor() {
         let actiomManagerVarDefs = [
             ["hungerRate", 0],
+            ["growthRate", 0],
             ["upkeepRate", 1]
         ]
         super("Action Manager", "actionManager", actiomManagerVarDefs)
         
         this.limit = 1
         this.hunger = new Cost("vital", "satiety", 1, false, true)
+        this.growth = new Yield("baseStat", "growth", 1)
         this.upkeep = []
         this.actions = []
         this.t0 = 0
@@ -20,6 +22,9 @@ class ActionManager extends Component {
     }
     get hungerRate() {
         return this.vars.hungerRate.final
+    }
+    get growthRate() {
+        return this.vars.growthRate.final
     }
     get upkeepRate() {
         return this.vars.upkeepRate.final
@@ -57,6 +62,7 @@ class ActionManager extends Component {
             let t1 = Date.now()
             this.dt = (t1 - this.t0) / 1000
             this.hunger.spend(player, this.hungerRate * this.dt)
+            this.growth.earn(player, this.growthRate * this.dt)
             this.upkeep.map((c) => c.spend(player, this.upkeepRate * this.dt))
             this.actions.map((a) => a.tick(player))
             if (!this.hunger.canSpend(player, this.hungerRate * this.dt)) {

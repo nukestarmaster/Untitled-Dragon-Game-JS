@@ -9,6 +9,8 @@ const tooltipText = {
         attributes: "Refine your body.",
         spirits: "Soul mirrors Flesh, Flesh mirrors Soul.",
 
+        baseStat_growth: "Time",
+
         vital_health: "Your vital lifeforce, staves off death.",
         vital_satiety: "Vital nutrition, burns away to fuel activity.",
         vital_stamina: "Your motive capability, drained by labour.",

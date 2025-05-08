@@ -7,6 +7,7 @@
 
 #app {
     height: 900px;
+    width: 1500px;
     margin: auto;
 }
 
@@ -34,11 +35,19 @@
     padding: 2px;
 }
 
+.baseStatsContainer {
+    position: relative;
+    border: 1px solid grey;
+    width: 1440px;
+    float: inline-start;
+    margin: 5px;
+}
+
 .header {
     text-align: center;
 }
 
-.tooltip, .lefttooltip {
+.tooltip, .lefttooltip, .downtooltip {
     position: relative;
 }
 
@@ -70,7 +79,21 @@
     opacity: 0.8;
 }
 
-.tooltip:hover .tooltiptext, .lefttooltip:hover .tooltiptext {
+.downtooltip .tooltiptext {
+    visibility: hidden;
+    width: 240px;
+    background-color: #555;
+    color: white;
+    padding: 5px 0;
+    border-radius: 6px;
+    z-index: 2;
+    top: 110%;
+    left: 5px;
+    position: absolute;
+    opacity: 0.8;
+}
+
+.tooltip:hover .tooltiptext, .lefttooltip:hover .tooltiptext, .downtooltip:hover .tooltiptext {
     visibility: visible;
   }
 

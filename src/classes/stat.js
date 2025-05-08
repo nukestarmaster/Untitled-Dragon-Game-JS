@@ -186,4 +186,21 @@ class Spirit extends Stat {
     }
 }
 
-export { Skill, Attribute, Spirit }
+class Growth extends Stat {
+    constructor() {
+        super("Growth", "baseStat", 200, 1, 100, )
+        this.effectDefs = this.effectDefs.concat([
+            ["level", "flat", "attribute", null, 1],
+            ["hungerRate", "flat", "actionManager", "actionManager", 0.25],
+            ["hungerRate", "more", "actionManager", "actionManager", (n) => 1.05 ** n]
+        ])
+    }
+    get tooltip() {
+        return this.flavourText + "<br>" + this.effectText
+    }
+    display(player) {
+        return `<b>${this.name}:</b> Lv ${this.baseLevel} Exp: ${format(this.current)} / ${format(this.max)}`
+    }
+}
+
+export { Skill, Attribute, Spirit, Growth }

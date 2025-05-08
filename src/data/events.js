@@ -9,7 +9,10 @@ const start2 =                  new WaitEvent("Start 2", [["event", "start3", 10
 const start3 =                  new RevealEvent("Start 3", [["vital", "stamina", 0], ["limitAction", "breakEgg", 0]], "event3")
 const tired =                   new RevealEvent("Tired", [["action", "rest", 0]], "tired")
 const hatch1 =                  new RevealEvent("Hatch 1", [["vital", "health"], ["vital", "satiety"], ["limitAction", "eatEggshell"], ["action", "digStones"]], "hatched", "hatch2")
-const hatch2 =                  new ModEvent("Hatch 2", [["flat", ["actionManager", "actionManager", "hungerRate"], 0.5]])
+const hatch2 =                  new ModEvent("Hatch 2", [
+                                                        ["flat", ["actionManager", "actionManager", "hungerRate"], 0.5],
+                                                        ["flat", ["actionManager", "actionManager", "growthRate"], 1]
+                                                        ])
 const getStone =                new RevealEvent("Get Stone", [["action", "eatStone"]], "Dug up a stone")
 const tooMuchStone =            new RevealEvent("Too Much Stone", [["building", "buildRockpile"]], "The cave is getting crounded with so much stone around, why not organize it into piles?")
 const mineGold =                new RevealEvent("Mine Gold", [["building", "buildHoard"]], "You have collected some gold.")

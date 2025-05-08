@@ -1,5 +1,5 @@
 import { Collection } from "../classes/collection.js";
-import { Attribute, Skill, Spirit } from "../classes/stat.js";
+import { Attribute, Growth, Skill, Spirit } from "../classes/stat.js";
 
 const healing       = new Skill("Healing", ["adaptability"], ["metabolism", "constitution"], ["intelligence"], [["max", "flat", "vital", "health", 0.1]])
 const eating        = new Skill("Eating", ["metabolism"], ["constitution"], ["dexterity", "adaptability"], [["max", "flat", "vital", "satiety", 0.1]])
@@ -58,4 +58,10 @@ for (let att in attributeDefs) {
 
 const spirits = new Collection(spiritDefs, "Spirits")
 
-export { skills, attributes, spirits }
+const baseStatDefs = {
+    growth: new Growth()
+}
+
+const baseStats = new Collection(baseStatDefs, "Base Stats")
+
+export { skills, attributes, spirits, baseStats }
