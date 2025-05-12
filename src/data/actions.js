@@ -1,8 +1,8 @@
 import { Yield } from "../classes/counter.js"
-import { Action, ActionManager, Building, LimitAction } from "../classes/action.js"
+import { Action, Building, LimitAction } from "../classes/action.js"
+import { ActionManager } from "../classes/manager.js"
 import { Cost } from "../classes/counter.js"
 import { Collection } from "../classes/collection.js"
-import { lootTables } from "./events.js"
 /*
 (name, 
 max, 
