@@ -26,9 +26,9 @@ class Counter extends Component {
     get max() {
         return this.vars["max"].final
     }
-    show(player) {
+    show() {
         this.visible = true
-        player[this.type + "s"].visible = true
+        this.player[this.type + "s"].visible = true
     }
     hide() {
         this.visible = false
@@ -67,12 +67,12 @@ class Counter extends Component {
     canSpend(n, flat = false, allowPartial = false) {
         return this.allowDeficit || (allowPartial && this.current > 0) || this.getCost(n, flat) <= this.current
     }
-    earn(player, n, flat = false) {
+    earn(n, flat = false) {
         if (this.canEarn()) {
             this.add(this.getYield(n, flat))
         }
     }
-    spend(player, n, flat = false, allowPartial = false) {
+    spend(n, flat = false, allowPartial = false) {
         if (this.canSpend(n, flat, allowPartial)) {
             this.remove(this.getCost(n, flat))
             return true
@@ -111,14 +111,17 @@ class Cost {
         this.flat = flat
         this.allowPartial = allowPartial
     }
+    getCost(player, mult = 1) {
+        return player.getComponent(this.type, this.id).getCost(mult * this.amount, this.flat)
+    }
     canSpend(player, mult = 1, allowPartial) {
         return player.getComponent(this.type, this.id).canSpend(this.amount * mult, this.flat, this.allowPartial || allowPartial)
     }
     spend(player, mult = 1, allowPartial) {
-        player.getComponent(this.type, this.id).spend(player, this.amount * mult, this.flat, this.allowPartial || allowPartial)
+        player.getComponent(this.type, this.id).spend(this.amount * mult, this.flat, this.allowPartial || allowPartial)
     }
-    display(mult = 1) {
-        return `${format(mult * this.amount, 2)} ${this.id}`
+    display(player, mult = 1) {
+        return `${format(this.getCost(player, mult), 2)} ${this.id}`
     }
 }
 
@@ -130,14 +133,17 @@ class Yield {
         this.flat = flat
         this.capped = capped
     }
+    getYield(player, mult) {
+        return player.getComponent(this.type, this.id).getYield(mult * this.amount, this.flat)
+    }
     canEarn(player, dt = 1) {
         return !this.capped || player.getComponent(this.type, this.id).canEarn(this.capped)
     }
     earn(player, dt = 1) {
-        player.getComponent(this.type, this.id).earn(player, this.amount * dt, this.flat,)
+        player.getComponent(this.type, this.id).earn(this.amount * dt, this.flat,)
     }
-    display(mult = 1) {
-        return `${format(mult * this.amount, 2)} ${this.id}`
+    display(player, mult = 1) {
+        return `${format(this.getYield(player, mult), 2)} ${this.id}`
     }
 }
 

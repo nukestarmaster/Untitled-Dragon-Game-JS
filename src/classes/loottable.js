@@ -17,7 +17,7 @@ class LootTable extends Component {
     get luck() {
         return this.vars.luck.final
     }
-    call(player) {
+    call() {
         console.log("Calling", this.name)
         console.log(this.table)
         let totalWeight = this.table.reduce((s, te) => te.getWeight(this.luck) + s, 0)
@@ -28,11 +28,11 @@ class LootTable extends Component {
             console.log(`Testing table entry ${te.eventId}, weight is ${te.getWeight(this.luck)}, reduced random value is ${rngVal}`)
             if (rngVal <= 0) {
                 if(te.eventId == "repeat") {
-                    this.call(player)
-                    this.call(player)
+                    this.call()
+                    this.call()
                     return
                 }
-                te.call(player)
+                te.call(this.player)
                 return
             }
         }

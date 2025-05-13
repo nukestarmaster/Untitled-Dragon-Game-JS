@@ -54,21 +54,21 @@ class Stat extends Counter {
     canSpend(n, flat = false, allowPartial = false) {
         return this.level > 0 || allowPartial && this.level > 0 || this.getCost(n, flat) < this.current
     }
-    earn(player, n, flat = false) {
-        super.earn(player, n, flat)
+    earn(n, flat = false) {
+        super.earn(n, flat)
         while (this.current >= this.max) {
             this.current -= this.max
-            this.levelUp(player)
+            this.levelUp()
         }
         if (this.visible == false && this.current >= this.visThreshold) {
-            this.show(player)
+            this.show()
         }
     }
-    spend(player, n, flat = false, allowPartial = false) {
-        super.spend(player, n, flat, allowPartial)
+    spend(n, flat = false, allowPartial = false) {
+        super.spend(n, flat, allowPartial)
         while (this.current < this.max) {
             if (this.level > 0) {
-                this.levelDown(player)
+                this.levelDown()
                 this.current += this.max
             }
             else {
@@ -79,15 +79,15 @@ class Stat extends Counter {
     clickable() {
         return false
     }
-    levelUp(player) {
+    levelUp() {
         this.vars.level.base ++
-        this.vars.level.update(player)
+        this.vars.level.update(this.player)
     }
     levelDown() {
         this.vars.level.base --
-        this.vars.level.update(player)
+        this.vars.level.update(this.player)
     }
-    display(player) {
+    display() {
         return `<b>${this.name}:</b><br>Lv ${this.baseLevel} (${format(this.level, 2)})<br>Exp: ${format(this.current)} / ${format(this.max)}`
     }
     save() {
@@ -158,9 +158,9 @@ class Attribute extends Stat {
         ]).concat(effectDefs)
         this.levelYield = new Yield("spirit", this.id, 1)
     }
-    levelUp(player) {
-        this.levelYield.earn(player)
-        super.levelUp(player)
+    levelUp() {
+        this.levelYield.earn(this.player)
+        super.levelUp()
     }
     get tooltip() {
         return this.flavourText + "<br>" + this.effectText
@@ -181,7 +181,7 @@ class Spirit extends Stat {
     get tooltip() {
         return this.flavourText
     }
-    display(player) {
+    display() {
         return `<b>${this.name}:</b><br>Lv ${this.baseLevel}<br>Exp: ${format(this.current)} / ${format(this.max)}`
     }
 }
@@ -198,7 +198,7 @@ class Growth extends Stat {
     get tooltip() {
         return this.flavourText + "<br>" + this.effectText
     }
-    display(player) {
+    display() {
         return `<b>${this.name}:</b> Lv ${this.baseLevel} Exp: ${format(this.current)} / ${format(this.max)}`
     }
 }

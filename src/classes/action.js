@@ -50,86 +50,86 @@ class Action extends Counter {
     get progYieldMod() {
         return this.speedMod * this.yieldMod
     }
-    activate(player) {
-        player.actionManager.activateAction(player, this)
+    activate() {
+        this.player.actionManager.activateAction(this.player, this)
         this.active = true
     }
-    deactivate(player) {
-        player.actionManager.deactivateAction(this)
+    deactivate() {
+        this.player.actionManager.deactivateAction(this)
         this.active = false
     }
-    click(player) {
-        player.actionManager.t0 = Date.now()
+    click() {
+        this.player.actionManager.t0 = Date.now()
         if (this.active) {
-            this.deactivate(player)
+            this.deactivate()
             return
         }
-        if (!this.clickable(player, player.actionManager.dt)) {
+        if (!this.clickable()) {
             return
         }
         if (!this.started) {
-            this.start(player)
+            this.start()
         }
-        this.activate(player)
+        this.activate()
     }
-    clickable(player) {
-        let dt = player.actionManager.dt
+    clickable() {
+        let dt = this.player.actionManager.dt
         if (!this.visible) {
             return false
         }
         if (!this.started) {
-            if (!this.startable(player)) {
+            if (!this.startable()) {
                 return false
             }
         }
-        if (!this.progCost.every((c) => c.canSpend(player, dt * this.progCostMod, true))) {
+        if (!this.progCost.every((c) => c.canSpend(this.player, dt * this.progCostMod, true))) {
             return false
         }
-        if (!this.progYield.every((c) => c.canEarn(player, dt * this.progYieldMod))) {
+        if (!this.progYield.every((c) => c.canEarn(this.player, dt * this.progYieldMod))) {
             return false
         }
-        if (!this.compYield.every((c) => c.canEarn(player, this.yieldMod))) {
+        if (!this.compYield.every((c) => c.canEarn(this.player, this.yieldMod))) {
             return false
         }
         return true
     }
-    startable(player) {
-        return this.initCost.every((c) => c.canSpend(player, this.startCostMod))
+    startable() {
+        return this.initCost.every((c) => c.canSpend(this.player, this.startCostMod))
     }
-    tick(player) {
-        let dt = player.actionManager.dt
-        if (this.clickable(player, dt)) {
-            this.progCost.map((c) => c.spend(player, dt * this.progCostMod, true)) 
-            this.progYield.map((y) => y.earn(player, dt * this.progYieldMod))
-            this.earn(player, dt * this.speedMod)
+    tick() {
+        let dt = this.player.actionManager.dt
+        if (this.clickable()) {
+            this.progCost.map((c) => c.spend(this.player, dt * this.progCostMod, true)) 
+            this.progYield.map((y) => y.earn(this.player, dt * this.progYieldMod))
+            this.earn(dt * this.speedMod)
         }
-        if (!this.clickable(player, dt)) {
-            this.deactivate(player)
+        if (!this.clickable()) {
+            this.deactivate()
         }
         while((this.current > this.max) && this.started) {
-            this.complete(player)
+            this.complete()
         }
     }
-    start(player) {
-        this.initCost.map((c) => c.spend(player, 1 / this.effMod))
+    start() {
+        this.initCost.map((c) => c.spend(this.player, 1 / this.effMod))
         this.started = true
     }
-    complete(player) {
+    complete() {
         this.started = false
         this.current -= this.max
         this.count ++
-        this.updateEffects(player)
+        this.updateEffects()
         if (this.compEvent) {
-            player.getComponent(this.compEvent[0], this.compEvent[1]).call(player)
+            this.player.getComponent(this.compEvent[0], this.compEvent[1]).call(this.player)
         }
         if (this.countEvents[this.count]) {
-            player.getComponent(this.countEvents[this.count][0], this.countEvents[this.count][1]).call(player)
+            this.player.getComponent(this.countEvents[this.count][0], this.countEvents[this.count][1]).call(this.player)
         }
-        this.compYield.map((y) => y.earn(player, this.yieldMod))
-        this.deactivate(player)
-        if (this.clickable(player)) {
-            this.start(player)
-            this.activate(player)
+        this.compYield.map((y) => y.earn(this.player, this.yieldMod))
+        this.deactivate()
+        if (this.clickable()) {
+            this.start()
+            this.activate()
         }
     }
     display() {
@@ -145,22 +145,22 @@ class Action extends Counter {
 
         let initCostText
         if (this.initCost.length > 0) {
-            initCostText = "<b>Start Cost:</b><br>" + this.initCost.reduce((str, c) => `${str} ${c.display(this.startCostMod)}<br>`, "")
+            initCostText = "<b>Start Cost:</b><br>" + this.initCost.reduce((str, c) => `${str} ${c.display(this.player, this.startCostMod)}<br>`, "")
         } else { initCostText = ""}
 
         let progCostText
         if (this.progCost.length > 0) {
-            progCostText = "<b>Progress Cost</b>:<br>" + this.progCost.reduce((str, c) => `${str} ${c.display(this.progCostMod)}/s<br>`, "")
+            progCostText = "<b>Progress Cost</b>:<br>" + this.progCost.reduce((str, c) => `${str} ${c.display(this.player, this.progCostMod)}/s<br>`, "")
         } else { progCostText = ""}
 
         let progYieldText
         if (this.progYield.length > 0) {
-            progYieldText = "<b>Progress Yield</b>:<br>" + this.progYield.reduce((str, c) => `${str} ${c.display(this.progYieldMod)}/s<br>`, "")
+            progYieldText = "<b>Progress Yield</b>:<br>" + this.progYield.reduce((str, c) => `${str} ${c.display(this.player, this.progYieldMod)}/s<br>`, "")
         } else { progYieldText = ""}
 
         let compYieldText
         if (this.compYield.length > 0) {
-            compYieldText = "<b>Final Yield</b>:<br>" + this.compYield.reduce((str, c) => `${str} ${c.display(this.yieldMod)}<br>`, "")
+            compYieldText = "<b>Final Yield</b>:<br>" + this.compYield.reduce((str, c) => `${str} ${c.display(this.player, this.yieldMod)}<br>`, "")
         } else { compYieldText = ""}
 
         return `${this.flavourText}<br>${skillText}${durationText}${initCostText}${progCostText}${progYieldText}${compYieldText}${this.effectText}`
@@ -181,12 +181,12 @@ class LimitAction extends Action {
         this.limit = limit
         this.effectDefs = effectDefs
     }
-    complete(player) {
+    complete() {
         this.limit --
         if (this.limit <= 0) {
             this.visible = false
         }
-        super.complete(player)
+        super.complete()
     }
     display() {
         return `<b>${this.name}</b><br>Remaining: ${this.limit}`
@@ -216,26 +216,26 @@ class Building extends Action {
     get startCostMod() {
         return this.costMod / this.effMod
     }
-    start(player) {
-        this.initCost.map((c) => c.spend(player, this.startCostMod))
+    start() {
+        this.initCost.map((c) => c.spend(this.player, this.startCostMod))
         this.started = true
     }
-    startable(player) {
-        return this.initCost.every((c) => c.canSpend(player, this.startCostMod))
+    startable() {
+        return this.initCost.every((c) => c.canSpend(this.player, this.startCostMod))
     }
-    complete(player) {
+    complete() {
         this.started = false
         this.current -= this.max
         this.count ++
-        this.updateEffects(player)
+        this.updateEffects()
         if (this.compEvent) {
-            player.getComponent(this.compEvent[0], this.compEvent[1]).call(player)
+            this.player.getComponent(this.compEvent[0], this.compEvent[1]).call(this.player)
         }
         if (this.countEvents[this.count]) {
-            player.getComponent(this.countEvents[this.count][0], this.countEvents[this.count][1]).call(player)
+            this.player.getComponent(this.countEvents[this.count][0], this.countEvents[this.count][1]).call(this.player)
         }
-        this.compYield.map((y) => y.earn(player, this.effMod))
-        this.deactivate(player)
+        this.compYield.map((y) => y.earn(this.player, this.effMod))
+        this.deactivate()
     }
     display() {
         return `<b>${this.name}</b><br>Built: ${this.count}<br>Cost: ${this.displayCost()}`

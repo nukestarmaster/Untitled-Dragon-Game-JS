@@ -30,6 +30,7 @@ class Component {
         this.effectDefs = []
         this.flavourText = tooltipText.getTooltip(this.type, this.id)
         this.effectText = tooltipText.getDescripion(this.type, this.id)
+        this.player = null
     }
     get effectScaleFactor() {
         return 0
@@ -44,27 +45,26 @@ class Component {
         return effectDefs.map((m) => new Effect(m[0], m[1], this.type, this.id, m[2], m[3], m[4]))
     }
     init(player) {
+        this.player = player
         this.effects = this.initializeEffects(this.effectDefs)
         for (let v in this.vars) {
             this.vars[v].init(player)
         }
     }
-    updateVar(player, mod) {
+    updateVar(mod) {
         if (this.vars[mod]) {
-            this.vars[mod].update(player)
-        }
-        else {
+            this.vars[mod].update(this.player)
         }
     }
-    updateEffects(player) {
+    updateEffects() {
         for (let m of this.effects) {
-            m.update(player, this.effectScaleFactor)
+            m.update(this.player, this.effectScaleFactor)
         }
     }
-    update(player) {
-        this.updateEffects(player)
+    update() {
+        this.updateEffects(this.player)
         for (let v in this.vars) {
-            this.updateVar(player, v)
+            this.updateVar(v)
         }
     }
     save() {

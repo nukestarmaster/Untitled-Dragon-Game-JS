@@ -15,6 +15,7 @@ class ActionManager extends Component {
         this.growth = new Yield("baseStat", "growth", 1)
         this.upkeep = []
         this.actions = []
+        this.starving = false
         this.t0 = 0
         this.dt = 0
     }
@@ -55,38 +56,41 @@ class ActionManager extends Component {
         this.upkeep.push(new Cost(type, id, amount, false, true))
     }
 
-    tick(player) {
+    tick() {
         if (this.actions.length > 0) {
             let t1 = Date.now()
             this.dt = (t1 - this.t0) / 1000
-            this.hunger.spend(player, this.hungerRate * this.dt)
-            this.growth.earn(player, this.growthRate * this.dt)
-            this.upkeep.map((c) => c.spend(player, this.upkeepRate * this.dt))
-            this.actions.map((a) => a.tick(player))
-            if (!this.hunger.canSpend(player, this.hungerRate * this.dt)) {
-                this.actions.map((a) => a.deactivate(player))
-            }
-            if (!this.upkeep.every((c) => c.canSpend(player, this.upkeepRate * this.dt))) {
-                this.actions.map((a) => a.deactivate(player))
+            this.hunger.spend(this.player, this.hungerRate * this.dt)
+            this.growth.earn(this.player, this.growthRate * this.dt)
+            this.upkeep.map((c) => c.spend(this.player, this.upkeepRate * this.dt))
+            this.actions.map((a) => a.tick())
+            if (!this.upkeep.every((c) => c.canSpend(this.player, this.upkeepRate * this.dt))) {
+                this.actions.map((a) => a.deactivate())
             }
             this.t0 = t1
-            if (player.getComponent("vital", "satiety").current == 0) {
-                if (player.getComponent("limitAction", "eatEggshell").limit > 0) {
-                    player.getComponent("limitAction", "eatEggshell").click(player)
+            if (this.player.getComponent("vital", "satiety").current == 0) {
+                if (this.player.getComponent("limitAction", "eatEggshell").clickable()) {
+                    this.player.getComponent("limitAction", "eatEggshell").click()
                     return
                 }
-                if (player.getComponent("action", "eatStone").clickable(player)) {
-                    player.getComponent("action", "eatStone").click(player)
+                if (this.player.getComponent("action", "eatStone").clickable()) {
+                    this.player.getComponent("action", "eatStone").click()
                     return
                 }
-                player.die()
+                this.starving = true
+                this.player.getComponent("vital", "health").remove(this.hunger.getCost(this.player, this.hungerRate * this.dt) * 2)
+                if (this.player.getComponent("vital", "health").current == 0) {
+                    this.player.die()
+                }
+            } else {
+                this.starving = false
             }
-            if (player.getComponent("vital", "stamina").current == 0) {
-                player.getComponent("action", "rest").click(player)
+            if (this.player.getComponent("vital", "stamina").current == 0) {
+                this.player.getComponent("action", "rest").click()
                 return
             }
-            if (player.getComponent("vital", "health").current == 0) {
-                player.getComponent("action", "heal").click(player)
+            if (this.player.getComponent("vital", "health").current == 0) {
+                this.player.getComponent("action", "heal").click()
                 return
             }
         }
