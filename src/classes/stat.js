@@ -196,10 +196,15 @@ class Growth extends Stat {
         ])
     }
     get tooltip() {
-        return this.flavourText + "<br>" + this.effectText
+        return `${this.flavourText}<br>
+        Satiety Upkeep: ${format(this.player.actionManager.hunger.getCost(this.player, this.player.actionManager.hungerRate), 2)}/s<br>
+        Gain: ${format(this.player.actionManager.growth.getYield(this.player, this.player.actionManager.growthRate), 2)}/s<br>
+        ${this.effectText}`
     }
     display() {
-        return `<b>${this.name}:</b> Lv ${this.baseLevel} Exp: ${format(this.current)} / ${format(this.max)}`
+        return `<b>${this.name}:</b> 
+        
+        Lv ${this.baseLevel} Exp: ${format(this.current)} / ${format(this.max)}`
     }
 }
 

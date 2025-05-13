@@ -9,7 +9,7 @@ const tooltipText = {
         attributes: "Refine your body.",
         spirits: "Soul mirrors Flesh, Flesh mirrors Soul.",
 
-        baseStat_growth: "Time",
+        baseStat_growth: "Time passes, power and hunger grow in lockstep.",
 
         vital_health: "Your vital lifeforce, staves off death.",
         vital_satiety: "Vital nutrition, burns away to fuel activity.",
@@ -74,14 +74,16 @@ const tooltipText = {
         attributes: "For each effective level in an attribute, give 0.5, 0.25 or 0.1 bonus levels to skills of which it is the primary, secondary or tertiary attribute, respectively. Most attributes have additional effects.",
         spirits: "Gains 1 exp for every level gained in related attribute, gives 1 bonus level and a 1.01x multiplier to exp to the related attribute (compounding multiplicatively) for every level.",
 
-        vital_health: "If this goes below 0, you die (not implemented yet).",
-        vital_satiety: "Drains at a constant rate (0.5/s before modifiers) while doing any action.",
+        baseStat_growth:"Grows at a constant rate while doing any action. Each level increases all attributes by 1, but also increases base Satiety drain by 0.25/s and multiplies Satiety drain by 1.05 compounding multiplicatively.",
+
+        vital_health: "If this goes below 0, you die.",
+        vital_satiety: "Drains at a constant rate while doing any action.",
 
         action_digStones: "Each completion increases held stones by 0.1 and has a base 1% chance to find a vein of gold.",
         action_exploreCaves: "Has a base 10% chance to find a vein of gold and 20% chance to find a dead adventurer.",
 
         limitAction_mineGold: "Has a base 20% chance to find further gold.",
-        limitAction_lootDeadAdventurer: "Has a base 50% chance to find a book.",
+        limitAction_lootDeadAdventurer: "Has a base 100% chance to find a book.",
 
         building_buildRockpile: "Increases the maximum storage of all resources by 10% for each built.",
         building_buildHoard: "Increases all attributes by 1 and doubles stored gold for each built.",
@@ -90,15 +92,15 @@ const tooltipText = {
         skill_healing: "Increase max health by 0.1 per level.",
         skill_eating: "Increase max satiety by 0.1 per level.",
         skill_resting: "Increase max stamina by 0.1 per level.",
-        skill_studying: "Increases all skill experience earned by 1% per level, additive with similar bonuses but multiplicative with action yield (bonus not reflected in action tooltip).",
+        skill_studying: "Increases all skill experience earned by 1% per level, additive with similar bonuses but multiplicative with action yield.",
 
         attribute_strength: "Secondary effect not yet implemented.",
         attribute_constitution: "Increases the maximum of all vitals by 0.5 for each level",
         attribute_dexterity: "Increases efficiency of all actions by 1% per level, additive with skill efficiency mods.",
         attribute_agility: "Increases speed of all actions by 2% per level, additive with skill speed mods.",
         attribute_metabolism: "Increases efficiency and yield of all vitals by 1% per level (multiplicative with action efficiency and yield).",
-        attribute_adaptability: "Increase all attribute experience earned by 1% per level, additive with similar bonuses but multiplicative with action yield (bonus not reflected in action tooltip).",
-        attribute_intelligence: "Increases all skill experience earned by 5% per level, additive with similar bonuses but multiplicative with action yield (bonus not reflected in action tooltip).",
+        attribute_adaptability: "Increase all attribute experience earned by 1% per level, additive with similar bonuses but multiplicative with action yield.",
+        attribute_intelligence: "Increases all skill experience earned by 5% per level, additive with similar bonuses but multiplicative with action yield.",
         attribute_luck: "Increases luck for all random events by 2% per level."
     },
     getTooltip(comp, id) {
