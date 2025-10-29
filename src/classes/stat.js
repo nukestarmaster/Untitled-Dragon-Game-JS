@@ -6,7 +6,7 @@ const skillCostMult = 1.1
 const skillVisThreshold = 1
 
 const skillEffMod = 0.01
-const skillYieldMod = 0.02
+const skillYieldMod = 0.01
 const skillSpeedMod = 0.02
 const skillLuckMod = 0.01
 
@@ -16,10 +16,10 @@ const attVisThreshold = 10
 
 const attPrimeBonus = 0.5
 const attSecBonus = 0.25
-const attTertBonus = 0.1
+const attTertBonus = 0.125
 
 const spiCostInit = 5
-const spiCostMult = 1.2
+const spiCostMult = 1.1
 const spiVisThreshold = 2
 
 

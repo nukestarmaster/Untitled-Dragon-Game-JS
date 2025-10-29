@@ -66,6 +66,8 @@ const digStones = new Action(
      new Yield("skill", 'mining', 1),
      new Yield("attribute", "strength", 1),
      new Yield("attribute", "constitution", 1),
+     new Yield("attribute", "dexterity", 0.05),
+     new Yield("attribute", "luck", 0.01)
     ],
     ["lootTable", "digStonesLT"],
     {
