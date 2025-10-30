@@ -16,7 +16,7 @@ const hatch2 =                  new ModEvent("Hatch 2", [
 const getStone =                new RevealEvent("Get Stone", [["action", "eatStone"]], "Dug up a stone")
 const tooMuchStone =            new RevealEvent("Too Much Stone", [["building", "buildRockpile"]], "The cave is getting crounded with so much stone around, why not organize it into piles?")
 const mineGold =                new RevealEvent("Mine Gold", [["building", "buildHoard"]], "You have collected some gold.")
-const findCaves =               new RevealEvent("Find Caves", [["action", "exploreCaves"]],  "You have broken into a network of dark caves")
+const findCaves =               new RevealEvent("Find Caves", [["action", "exploreCaves"], ["spell", "test"]],  "You have broken into a network of dark caves")
 const readBook =                new RevealEvent("Read Book", [["building", "buildLibrary"]], "Maybe you can build a place to keep these books?")
 const injured =                 new RevealEvent("Injured", [["action", "heal"]], "You have cut yourself slightly on the rocks, but you can heal yourself.")
 

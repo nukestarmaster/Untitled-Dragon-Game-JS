@@ -1,6 +1,17 @@
 import { Counter, Yield } from "./counter.js";
 import { format } from "../format.js";
 
+const spellMaxInit = 20
+const spellMaxMult = 1.2
+const spellVisThreshold = 100
+
+const spellYieldMod = 0.01
+const spellUpkeepMod = 0.005
+const spellEffectMod = 0.01
+const spellDrawbackMod = 0.005
+
+const spellPowerExp = 0.9
+
 const skillCostInit = 10
 const skillCostMult = 1.1
 const skillVisThreshold = 1
@@ -95,6 +106,109 @@ class Stat extends Counter {
             visible: this.visible,
             current: this.current,
             baseLevel: this.baseLevel
+        }
+    }
+}
+
+class Spell extends Stat {
+    constructor(name, skill, progCost = [], progYield = [], spellEffectDefs = [], spellDrawbackDefs = [], effectDefs = []) {
+        let varDefs = [
+            ["bonusLevel", 0],
+            ["spellEff", 1],
+            ["spellRes", 1],
+            ["spellPower", 1],
+            ["spellYield", 1],
+            ["spellUpkeep", 1],
+            ["spellEffect", 1],
+            ["spellDrawback", 1],
+
+        ]
+        super(name, "spell", spellMaxInit, spellMaxMult, spellVisThreshold, varDefs)
+        this.skill = skill
+        this.progCost = progCost
+        this.progYield = progYield
+        this.active = false
+        this.spellEffectDefs = spellEffectDefs
+        this.spellDrawbackDefs = spellDrawbackDefs
+        for (let d of spellEffectDefs) {
+            let base = d[4]
+            if (d[1] == "more") {
+                d[4] = () => 1 + base * this.effect
+            } else {
+                d[4] = () => base * this.effect
+            }
+        }
+        for (let d of spellDrawbackDefs) {
+            let base = d[4]
+            if (d[1] == "more") {
+                d[4] = () => 1 + base * this.drawback
+            } else {
+                d[4] = () => base * this.drawback
+            }
+        }
+
+        this.effectDefs = this.effectDefs.concat([
+            ["spellYield", "inc", this.type, this.id, spellYieldMod],
+            ["spellUpkeep", "inc", this.type, this.id, spellUpkeepMod],
+            ["spellEffect", "inc", this.type, this.id, spellEffectMod],
+            ["spellDrawback", "inc", this.type, this.id, spellDrawbackMod]
+        ]).concat(spellEffectDefs).concat(spellDrawbackDefs).concat(effectDefs)
+    }
+    get effect() {
+        return this.active * this.vars.spellEffect.final * this.vars.spellPower.final ** spellPowerExp   
+    }
+    get drawback() {
+        return this.active * this.vars.spellDrawback.final / this.vars.spellRes.final
+    }
+    get progYieldMod() {
+        return this.vars.spellYield.final * this.vars.spellPower.final
+    }
+    get progCostMod() {
+        return this.vars.spellUpkeep.final / this.vars.spellEff.final
+    }
+    activate() {
+        this.player.spellManager.activateSpell(this)
+        this.active = true
+        this.updateEffects()
+        console.log(this.effectDefs)
+    }
+    deactivate() {
+        this.player.spellManager.deactivateSpell(this)
+        this.active = false
+        this.updateEffects()
+        console.log(this.effectDefs)
+    }
+    click() {
+        if (this.active) {
+            this.deactivate()
+            return
+        }
+        if (!this.clickable()) {
+            return
+        }
+        this.activate()
+    }
+    clickable() {
+        let dt = this.player.dt
+        if (!this.visible) {
+            return false
+        }
+        if (!this.progCost.every((c) => c.canSpend(this.player, dt * this.progCostMod, true))) {
+            return false
+        }
+        if (!this.progYield.every((c) => c.canEarn(this.player, dt * this.progYieldMod))) {
+            return false
+        }
+        return true
+    }
+    tick() {
+        let dt = this.player.dt
+        if (this.clickable()) {
+            this.progCost.map((c) => c.spend(this.player, dt * this.progCostMod, true)) 
+            this.progYield.map((y) => y.earn(this.player, dt * this.progYieldMod))
+        }
+        if (!this.clickable()) {
+            this.deactivate()
         }
     }
 }
@@ -208,4 +322,4 @@ class Growth extends Stat {
     }
 }
 
-export { Skill, Attribute, Spirit, Growth }
+export { Spell, Skill, Attribute, Spirit, Growth }

@@ -1,5 +1,6 @@
 import { vitals } from "./data/vitals.js"
 import { actionManager, actions, buildings, limitActions } from "./data/actions.js";
+import { spellManager, spells } from "./data/spells.js";
 import { events, lootTables } from "./data/events.js";
 import { resources } from "./data/resources.js";
 import { skills, attributes, spirits, baseStats } from "./data/stats.js";
@@ -8,11 +9,13 @@ import { tooltipText } from "./data/text.js";
 
 const player = {
     actionManager,
+    spellManager,
     vitals,
     actions,
     limitActions,
     buildings,
     resources,
+    spells,
     skills,
     attributes,
     spirits,

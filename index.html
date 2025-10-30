@@ -97,6 +97,24 @@
       </div>
     </div>
 
+    <div class="actionsContainer" v-if="player.spells.visible">
+      <div class="tooltip header">
+        {{player.spells.display()}}
+        <span class="tooltiptext" v-html="player.spells.tooltip"></span>
+      </div>
+      <div v-for="action in returnCounters(player.spells.data)">
+        <div class="w3-round container tooltip"
+          :class="action.active ? 'w3-dark-grey' : action.clickable(player) ? 'w3-grey' : 'w3-lightgrey w3-diabled'"
+          type="button" @click="click(action, player.actionManager)">
+          <div class="w3-round background"
+            :class="action.active ? 'w3-black' : action.clickable(player) ? 'w3-dark-grey' : 'w3-grey'"
+            :style="{width: action.current / action.max * 100 + '%' }"></div>
+          <div class="overlayText" v-html="action.display(player)"></div>
+          <div class="tooltiptext" v-html="action.tooltip"></div>
+        </div>
+      </div>
+    </div>
+
     <div class="statContainer" v-if="player.skills.visible">
       <div class="tooltip header">
         {{player.skills.display()}}

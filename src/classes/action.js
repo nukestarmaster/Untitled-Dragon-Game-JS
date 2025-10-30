@@ -51,7 +51,7 @@ class Action extends Counter {
         return this.speedMod * this.yieldMod
     }
     activate() {
-        this.player.actionManager.activateAction(this.player, this)
+        this.player.actionManager.activateAction(this)
         this.active = true
     }
     deactivate() {
@@ -59,7 +59,6 @@ class Action extends Counter {
         this.active = false
     }
     click() {
-        this.player.actionManager.t0 = Date.now()
         if (this.active) {
             this.deactivate()
             return
@@ -73,7 +72,7 @@ class Action extends Counter {
         this.activate()
     }
     clickable() {
-        let dt = this.player.actionManager.dt
+        let dt = this.player.dt
         if (!this.visible) {
             return false
         }
@@ -97,7 +96,7 @@ class Action extends Counter {
         return this.initCost.every((c) => c.canSpend(this.player, this.startCostMod))
     }
     tick() {
-        let dt = this.player.actionManager.dt
+        let dt = this.player.dt
         if (this.clickable()) {
             this.progCost.map((c) => c.spend(this.player, dt * this.progCostMod, true)) 
             this.progYield.map((y) => y.earn(this.player, dt * this.progYieldMod))
@@ -243,6 +242,10 @@ class Building extends Action {
     displayCost() {
         return this.initCost.reduce((s, c) => `${s}${format(c.amount * this.startCostMod)} ${c.id} `, "")
     }
+}
+
+class Spell extends Action {
+
 }
 
 export { Action, LimitAction, Building }
