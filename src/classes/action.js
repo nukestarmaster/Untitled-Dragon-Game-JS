@@ -21,6 +21,7 @@ class Action extends Counter {
         this.active = false
         this.count = 0
         this.capped = false
+        this.minEffects = 0
     }
 
     getYield(n) {
@@ -162,7 +163,12 @@ class Action extends Counter {
             compYieldText = "<b>Final Yield</b>:<br>" + this.compYield.reduce((str, c) => `${str} ${c.display(this.player, this.yieldMod)}<br>`, "")
         } else { compYieldText = ""}
 
-        return `${this.flavourText}<br>${skillText}${durationText}${initCostText}${progCostText}${progYieldText}${compYieldText}${this.effectText}`
+        let effectsText
+        if (this.effects.length > this.minEffects) {
+            effectsText = "<b>Effects</b>:<br>" + this.effects.slice(this.minEffects).reduce((str, c) => `${str} ${c.display(this.player, this.count)}<br>`, "")
+        } else { effectsText = ""}
+
+        return `${this.flavourText}<br>${skillText}${durationText}${initCostText}${progCostText}${progYieldText}${compYieldText}${effectsText}${this.effectText}`
     }
     save() {
         return {
@@ -208,6 +214,7 @@ class Building extends Action {
         this.effectDefs = [
             ["cost", "more", this.type, this.id, (n) => mult ** n]
         ].concat(effectDefs)
+        this.minEffects = 1
     }
     get costMod() {
         return this.vars.cost.final

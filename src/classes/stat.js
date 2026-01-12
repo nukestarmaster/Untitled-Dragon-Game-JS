@@ -10,7 +10,7 @@ const spellUpkeepMod = 0.005
 const spellEffectMod = 0.01
 const spellDrawbackMod = 0.005
 
-const spellPowerExp = 0.9
+const spellPowExp = 0.5
 
 const skillCostInit = 10
 const skillCostMult = 1.1
@@ -20,6 +20,9 @@ const skillEffMod = 0.01
 const skillYieldMod = 0.01
 const skillSpeedMod = 0.02
 const skillLuckMod = 0.01
+const skillSpellEffMod = 0.01
+const skillSpellPowMod = 0.005
+const skillSpellResMod = 0.005
 
 const attCostInit = 50
 const attCostMult = 1.2
@@ -111,12 +114,11 @@ class Stat extends Counter {
 }
 
 class Spell extends Stat {
-    constructor(name, skill, progCost = [], progYield = [], spellEffectDefs = [], spellDrawbackDefs = [], effectDefs = []) {
+    constructor(name, skill, expYield = 1, progCost = [], progYield = [], spellEffectDefs = [], spellDrawbackDefs = [], effectDefs = []) {
         let varDefs = [
-            ["bonusLevel", 0],
-            ["spellEff", 1],
-            ["spellRes", 1],
-            ["spellPower", 1],
+            ["spellEff", 1, [["skill", skill, "skillSpellEff"]]],
+            ["spellRes", 1, [["skill", skill, "skillSpellRes"]]],
+            ["spellPow", 1, [["skill", skill, "skillSpellPow"]]],
             ["spellYield", 1],
             ["spellUpkeep", 1],
             ["spellEffect", 1],
@@ -127,9 +129,11 @@ class Spell extends Stat {
         this.skill = skill
         this.progCost = progCost
         this.progYield = progYield
+        this.progYield.unshift(new Yield("spell", this.id, expYield))
         this.active = false
         this.spellEffectDefs = spellEffectDefs
         this.spellDrawbackDefs = spellDrawbackDefs
+        this.effectDefs = effectDefs
         for (let d of spellEffectDefs) {
             let base = d[4]
             if (d[1] == "more") {
@@ -146,6 +150,14 @@ class Spell extends Stat {
                 d[4] = () => base * this.drawback
             }
         }
+        for (let d of effectDefs) {
+            let base = d[4]
+            if (d[1] == "more") {
+                d[4] = () => 1 + base * this.vars.level.base
+            } else {
+                d[4] = () => base * this.vars.level.base
+            }
+        }
 
         this.effectDefs = this.effectDefs.concat([
             ["spellYield", "inc", this.type, this.id, spellYieldMod],
@@ -155,13 +167,13 @@ class Spell extends Stat {
         ]).concat(spellEffectDefs).concat(spellDrawbackDefs).concat(effectDefs)
     }
     get effect() {
-        return this.active * this.vars.spellEffect.final * this.vars.spellPower.final ** spellPowerExp   
+        return this.active * this.vars.spellEffect.final * this.vars.spellPow.final ** spellPowExp   
     }
     get drawback() {
         return this.active * this.vars.spellDrawback.final / this.vars.spellRes.final
     }
     get progYieldMod() {
-        return this.vars.spellYield.final * this.vars.spellPower.final
+        return this.vars.spellYield.final * this.vars.spellPow.final
     }
     get progCostMod() {
         return this.vars.spellUpkeep.final / this.vars.spellEff.final
@@ -211,6 +223,24 @@ class Spell extends Stat {
             this.deactivate()
         }
     }
+    get tooltip() {
+        let skillText
+        if (this.skill) {
+            skillText =  `<b>Related Skill:</b> ${this.skill}<br>`
+        } else { skillText = ""}
+
+        let progCostText
+        if (this.progCost.length > 0) {
+            progCostText = "<b>Progress Cost</b>:<br>" + this.progCost.reduce((str, c) => `${str} ${c.display(this.player, this.progCostMod)}/s<br>`, "")
+        } else { progCostText = ""}
+
+        let progYieldText
+        if (this.progYield.length > 0) {
+            progYieldText = "<b>Progress Yield</b>:<br>" + this.progYield.reduce((str, c) => `${str} ${c.display(this.player, this.progYieldMod)}/s<br>`, "")
+        } else { progYieldText = ""}
+
+        return `${this.flavourText}<br>${skillText}${progCostText}${progYieldText}${this.effectText}`
+    }
 }
 
 class Skill extends Stat {
@@ -219,7 +249,10 @@ class Skill extends Stat {
             ["skillSpeed", 1],
             ["skillEff", 1],
             ["skillYield", 1],
-            ["skillLuck", 1]
+            ["skillLuck", 1],
+            ["skillSpellEff", 1],
+            ["skillSpellRes", 1],
+            ["skillSpellPow", 1]
         ]
         super(name, "skill", skillCostInit, skillCostMult, skillVisThreshold, skillVarDefs)
         this.primeAtt = primeAtt
@@ -234,7 +267,10 @@ class Skill extends Stat {
             ["skillSpeed", "inc", this.type, this.id, skillSpeedMod],
             ["skillEff", "inc", this.type, this.id, skillEffMod],
             ["skillYield", "inc", this.type, this.id, skillYieldMod],
-            ["skillLuck", "inc", this.type, this.id, skillLuckMod]
+            ["skillLuck", "inc", this.type, this.id, skillLuckMod],
+            ["skillSpellEff", "inc", this.type, this.id, skillSpellEffMod],
+            ["skillSpellRes", "inc", this.type, this.id, skillSpellResMod],
+            ["skillSpellPow", "inc", this.type, this.id, skillSpellPowMod]
         ]).concat(effectDefs)
     }
     get tooltip() {

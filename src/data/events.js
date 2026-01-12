@@ -16,14 +16,23 @@ const hatch2 =                  new ModEvent("Hatch 2", [
 const getStone =                new RevealEvent("Get Stone", [["action", "eatStone"]], "Dug up a stone")
 const tooMuchStone =            new RevealEvent("Too Much Stone", [["building", "buildRockpile"]], "The cave is getting crounded with so much stone around, why not organize it into piles?")
 const mineGold =                new RevealEvent("Mine Gold", [["building", "buildHoard"]], "You have collected some gold.")
-const findCaves =               new RevealEvent("Find Caves", [["action", "exploreCaves"], ["spell", "test"]],  "You have broken into a network of dark caves")
+const findCaves =               new RevealEvent("Find Caves", [["action", "exploreCaves"]],  "You have broken into a network of dark caves")
 const readBook =                new RevealEvent("Read Book", [["building", "buildLibrary"]], "Maybe you can build a place to keep these books?")
 const injured =                 new RevealEvent("Injured", [["action", "heal"]], "You have cut yourself slightly on the rocks, but you can heal yourself.")
 
 const foundGold =               new RevealEvent("Found Gold", [["limitAction", "mineGold", 1]], "You have found a small vein of native gold.")
 const foundAdventurer =         new RevealEvent("Found Adventurer", [["limitAction", "lootDeadAdventurer", 1]], "You have found the corpse of a long dead humanoid, what killed him?")
+const foundMage =               new RevealEvent("Found Mage", [["limitAction", "lootDeadMage", 1]], "The corpse of a humanoid mage, cloth did little to protect him.")
+
 const foundRiddleBook =         new RevealEvent("Found Riddle Book", [["limitAction", "readBookofRiddles", 1]], "It is a book of riddles.")
 const foundConstructionBook =   new RevealEvent("Found Construction Book", [["limitAction", "readConstructionBook", 1]], "It is a book on the construction of structures.")
+const foundMagicBook =          new RevealEvent("Found Magic Book", [["limitAction", "readMagicBook", 1]], "It is a book on the intricacies of spellcraft.")
+
+const readMagic1 =              new RevealEvent("Read Magic 1", [["action", "meditate"], ["spell", "prestidigitation"], ["vital", "mana"]], "You have learned the basices of mana manipulation and some simple cantrips.")
+const readMagic2 =              new RevealEvent("Read Magic 2", [["spell", "grace"]], "You have learned to use mana to enhance your precision of claw.")
+const readMagic3 =              new RevealEvent("Read Magic 3", [["spell", "vitality"]], "You have learned to use mana to enhance your vitals.")
+const readMagic4 =              new RevealEvent("Read Magic 4", [["spell", "clarity"]], "You have learned to use mana to enhance your mind.")
+const readMagic5 =              new RevealEvent("Read Magic 5", [["spell", "fortune"]], "You have learned to use mana to enhance your luck.")
 
 const events = new Collection({
     nullEvent,
@@ -43,21 +52,32 @@ const events = new Collection({
 
     foundGold,
     foundAdventurer,
+    foundMage,
+
     foundRiddleBook,
-    foundConstructionBook
+    foundConstructionBook,
+    foundMagicBook,
+
+    readMagic1,
+    readMagic2,
+    readMagic3,
+    readMagic4,
+    readMagic5
 }, "Events")
 
-const digStonesLT =     new LootTable("Dig Stone", [["foundGold", 1, 1]], 98.9, "mining", 0.1)
+const digStonesLT =     new LootTable("Dig Stone", [["foundGold", 2, 1]], 97.9, "mining", 0.1)
 const mineGoldLT =      new LootTable("Mine Stone", [["foundGold", 20, 1]], 79, "mining", 1)
-const exploreCavesLT =  new LootTable("Explore Caves", [["foundGold", 10, 1], ["foundAdventurer", 20, 1]], 69, "exploration", 1)
+const exploreCavesLT =  new LootTable("Explore Caves", [["foundGold", 10, 1], ["foundAdventurer", 20, 1], ["foundMage", 5, 1]], 64, "exploration", 1)
 const adventurerLT =    new LootTable("Adventurer", [["bookLT", 95, 1, "lootTable"]], 0, "looting", 5)
-const bookLT =          new LootTable("Book", [["foundRiddleBook", 50, 0], ["foundConstructionBook", 50, 0]], 0, "looting")
+const mageLT =          new LootTable("Mage", [["bookLT", 20, 0, "lootTable"], ["foundMagicBook", 70, 0]], 0, "looting", 10)
+const bookLT =          new LootTable("Book", [["foundRiddleBook", 50, 0], ["foundConstructionBook", 35, 0], ["foundMagicBook", 10, 0]], 0, "looting", 5)
 
 const lootTables = new Collection({
     digStonesLT,
     mineGoldLT,
     exploreCavesLT,
     adventurerLT,
+    mageLT,
     bookLT,
 }, "Loot Tables")
 

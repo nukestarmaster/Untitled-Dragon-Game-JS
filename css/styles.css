@@ -7,7 +7,7 @@
 
 #app {
     height: 900px;
-    width: 1500px;
+    width: auto;
     margin: auto;
 }
 
@@ -38,7 +38,7 @@
 .baseStatsContainer {
     position: relative;
     border: 1px solid grey;
-    width: 1440px;
+    width: 95%;
     float: inline-start;
     margin: 5px;
 }

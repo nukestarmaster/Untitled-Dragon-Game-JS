@@ -150,6 +150,12 @@ class Effect {
         }
         player.setMod(this.modType, [this.targetType, this.mod], [this.sourceType, this.sourceId], this.func(scaleFactor))
     }
+    display(player, scaleFactor) {
+        if (this.targetId) {
+            return `${this.mod} ${this.modType} ${player.getComponent(this.targetType, this.targetId).name} ${this.func(scaleFactor)}`
+        }
+        return `${this.mod} ${this.modType} ${this.targetType} ${this.func(scaleFactor)}`
+    }
 }
 
 export { Component }

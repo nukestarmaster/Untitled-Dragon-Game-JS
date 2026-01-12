@@ -54,6 +54,20 @@ const rest = new Action(
      new Yield("attribute", "metabolism", 2)
     ]
 )
+const meditate = new Action(
+    "Meditate",
+    3,
+    "manaManipulation",
+    [],
+    [
+        new Cost("vital", "stamina", 1)
+    ],
+    [
+        new Yield("vital", "mana", 0.1),
+        new Yield("skill", "manaManipulation", 1),
+        new Yield("attribute", "will", 1)
+    ]
+)
 const digStones = new Action(
     "Dig Stones",
     0.5,
@@ -104,6 +118,7 @@ const actions = new Collection({
     heal,
     eatStone,
     rest,
+    meditate,
     digStones,
     exploreCaves
 }, "Actions")
@@ -172,6 +187,24 @@ const lootDeadAdventurer  = new LimitAction(
     ],
     ["lootTable", "adventurerLT"]
 )
+const lootDeadMage = new LimitAction(
+    "Loot Dead Mage",
+    3,
+    "looting",
+    0,
+    [],
+    [new Cost("vital", "stamina", 1)],
+    [
+        new Yield("skill", "looting", 2),
+        new Yield("attribute", "luck", 2),
+        new Yield("attribute", "perception", 1),
+        new Yield("attribute", "dexterity", 1)
+    ],
+    [
+        new Yield("resource", "gold", 6)
+    ],
+    ["lootTable", "mageLT"]
+)
 const readBookofRiddles = new LimitAction(
     "Read Book of Riddles",
     5,
@@ -208,14 +241,40 @@ const readConstructionBook = new LimitAction(
         1: ["event", "readBook"]
     }
 )
+const readMagicBook = new LimitAction(
+    "Read Magic Book",
+    8,
+    "studying",
+    0,
+    [],
+    [new Cost("vital", "stamina", 1)],
+    [
+        new Yield("skill", "studying", 1),
+        new Yield("skill", "spellcraft", 2),
+        new Yield("skill", "manaManipulation", 1),
+        new Yield("attribute", "intelligence", 2),
+        new Yield("attribute", "will", 0.5)
+    ],
+    [new Yield("resource", "books", 1, true)],
+    undefined,
+    {
+        1: ["event", "readMagic1"],
+        2: ["event", "readMagic2"],
+        3: ["event", "readMagic3"],
+        4: ["event", "readMagic4"],
+        5: ["event", "readMagic5"]
+    }
+)
 
 const limitActions = new Collection({
     breakEgg,
     eatEggshell,
     mineGold,
     lootDeadAdventurer,
+    lootDeadMage,
     readBookofRiddles,
-    readConstructionBook
+    readConstructionBook,
+    readMagicBook
 }, "Limit Actions")
 
 
