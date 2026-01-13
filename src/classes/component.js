@@ -137,6 +137,7 @@ class Effect {
         this.sourceId = sourceId
         this.targetType = targetType
         this.targetId = targetId
+        this.value = 0
         if (typeof func == "number") {
             this.func = (n) => n * func
         } else {
@@ -144,11 +145,16 @@ class Effect {
         }
     }
     update(player, scaleFactor) {
-        if (this.targetId) {
-            player.setMod(this.modType, [this.targetType, this.targetId, this.mod], [this.sourceType, this.sourceId], this.func(scaleFactor))
+        let newValue = this.func(scaleFactor)
+        if ((newValue - this.value) < 0.000001) {
             return
         }
-        player.setMod(this.modType, [this.targetType, this.mod], [this.sourceType, this.sourceId], this.func(scaleFactor))
+        this.value = newValue
+        if (this.targetId) {
+            player.setMod(this.modType, [this.targetType, this.targetId, this.mod], [this.sourceType, this.sourceId], newValue)
+            return
+        }
+        player.setMod(this.modType, [this.targetType, this.mod], [this.sourceType, this.sourceId], newValue)
     }
     display(player, scaleFactor) {
         if (this.targetId) {
