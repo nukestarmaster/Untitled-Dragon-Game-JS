@@ -87,9 +87,6 @@ const player = {
         }
         let spirits = this.spirits.data
         for (let s in spirits) {
-            console.log(spirits[s].id)
-            console.log(spirits[s].visible)
-            console.log(spirits[s].baseLevel)
             if(spirits[s].visible && spirits[s].baseLevel >= 1) {
                 this.attributes.data[spirits[s].id].show()
             }
