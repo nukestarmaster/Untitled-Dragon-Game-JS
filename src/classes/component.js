@@ -1,5 +1,6 @@
 import { camelCase } from "../player.js"
 import { tooltipText } from "../data/text.js"
+import { format } from "../format.js"
 
 
 
@@ -158,7 +159,7 @@ class Effect {
     }
     display(player, scaleFactor) {
         if (this.targetId) {
-            return `${this.mod} ${this.modType} ${player.getComponent(this.targetType, this.targetId).name} ${this.func(scaleFactor)}`
+            return `${this.mod} ${this.modType} ${player.getComponent(this.targetType, this.targetId).name} ${format(this.func(scaleFactor))}`
         }
         return `${this.mod} ${this.modType} ${this.targetType} ${this.func(scaleFactor)}`
     }
