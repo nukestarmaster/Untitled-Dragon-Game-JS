@@ -147,7 +147,7 @@ class Effect {
     }
     update(player, scaleFactor) {
         let newValue = this.func(scaleFactor)
-        if ((newValue - this.value) < 0.000001) {
+        if (Math.abs(newValue - this.value) < 0.000001) {
             return
         }
         this.value = newValue

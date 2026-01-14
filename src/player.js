@@ -6,6 +6,7 @@ import { resources } from "./data/resources.js";
 import { skills, attributes, spirits, baseStats } from "./data/stats.js";
 import { Modifiers } from "./classes/modifier.js";
 import { tooltipText } from "./data/text.js";
+import { parseCommand } from "./commands.js";
 
 const player = {
     actionManager,
@@ -25,7 +26,10 @@ const player = {
     lootTables,
     tooltipText,
     getComponent(type, id) {
-        return this[type + "s"]["data"][id]
+        return this.getComponentClass(type)[id]
+    },
+    getComponentClass(type) {
+        return this[type + "s"].data
     },
     setMod(modType, target, origin, magnitude) {
         this.modifiers.setMod(modType, target, origin, magnitude)
@@ -37,7 +41,7 @@ const player = {
             this.getComponent(target[0], target[1]).updateVar(target[2])
             return
         }
-        for (let c in this[target[0] + "s"].data) {
+        for (let c in this.getComponentClass(target[0])) {
                 this.getComponent(target[0], c).updateVar(target[1])          
         }
     },
@@ -114,6 +118,21 @@ const player = {
         }
         console.log(save)
         return save
+    },
+    devCommand(input) {
+        console.log(typeof input)
+        if (typeof input != "string") {
+            console.log("Command aborted")
+            return
+        }
+        console.log(`Initiating command with input ${input}`)
+        let args = input.split(" ")
+        if (args.lenght < 1) {
+            console.log("No command written")
+            return
+        }
+        let command = args.shift()
+        parseCommand(this, command, ...args)
     }
 }
 

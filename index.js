@@ -40,6 +40,11 @@ const app = Vue.createApp({
         reincarnate: function reincarnate() {
             localStorage.setItem("player", JSON.stringify(this.player.reincarnate()))
             location.reload()
+        },
+        command: function command() {
+            let input = prompt("Please enter command and args.")
+            console.log(input)
+            this.player.devCommand(input)
         }
     },
     beforeMount() {

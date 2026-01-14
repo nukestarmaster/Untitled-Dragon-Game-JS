@@ -17,9 +17,9 @@ const prestidigitation = new Spell(
         new Yield("attribute", "power", 0.1)
     ],
     [
-        ["yield", "inc", "skill", null, 0.01],
-        ["eff", "inc", "skill", null, 0.01],
-        ["speed", "inc", "skill", null, 0.01]
+        ["skillYield", "inc", "skill", null, 0.01],
+        ["skillEff", "inc", "skill", null, 0.01],
+        ["skillSpeed", "inc", "skill", null, 0.01]
     ]
 )
 
@@ -40,13 +40,13 @@ const grace = new Spell(
         new Yield("attribute", "power", 0.1)
     ],
     [
-        ["eff", "more", "skill", null, 0.2]
+        ["skillEff", "more", "skill", null, 0.2]
     ],
     [
-        ["yield", "more", "skill", null, -0.1]
+        ["skillYield", "more", "skill", null, -0.1]
     ],
     [
-        ["eff", "inc", "skill", null, 0.02],
+        ["skillEff", "inc", "skill", null, 0.02],
         ["level", "flat", "attribute", "agility", 0.25],
         ["level", "flat", "attribute", "perception", 0.25]
     ]
@@ -60,7 +60,7 @@ const vitality = new Spell(
         new Cost("vital", "mana", 0.7),
     ],
     [
-        new Yield("vital", "stamina", 0.1),
+        new Yield("vital", "stamina", 0.1, false, false),
         new Yield("skill", "enhancement", 1),
         new Yield("skill", "spellcraft", 0.5),
         new Yield("attribute", "constitution", 1),
@@ -75,7 +75,7 @@ const vitality = new Spell(
         ["yield", "more", "vital", null, 0.1]
     ],
     [
-        ["speed", "more", "skill", null, -0.1]
+        ["skillSpeed", "more", "skill", null, -0.1]
     ],
     [
         ["eff", "inc", "vital", null, 0.01],
@@ -94,6 +94,7 @@ const clarity = new Spell(
         new Cost("vital", "mana", 1)
     ],
     [
+        new Yield("vital", "mana", 0.1, false, false),
         new Yield("skill", "enhancement", 1),
         new Yield("skill", "spellcraft", 0.5),
         new Yield("skill", "manaManipulation", 0.5),
@@ -107,9 +108,9 @@ const clarity = new Spell(
         ["yield", "more", "skill", null, 0.1]
     ],
     [
-        ["speed", "more", "skill", null, -0.05],
-        ["eff", "more", "skill", null, -0.05],
-        ["yield", "more", "skill", null, -0.05]
+        ["skillSpeed", "more", "skill", null, -0.05],
+        ["skillEff", "more", "skill", null, -0.05],
+        ["skillYield", "more", "skill", null, -0.05]
     ],
     [
         ["spellEff", "inc", "spell", null, 0.01],
@@ -136,14 +137,14 @@ const fortune = new Spell(
         new Yield("attribute", "power", 0.1)
     ],
     [
-        ["yield", "more", "skill", null, 0.1],
+        ["skillYield", "more", "skill", null, 0.1],
         ["luck", "more", "lootTable", null, 0.1]
     ],
     [
-        ["eff", "more", "skill", null, -0.1]
+        ["skillEff", "more", "skill", null, -0.1]
     ],
     [
-        ["yield", "inc", "skill", null, 0.01],
+        ["skillYield", "inc", "skill", null, 0.01],
         ["luck", "inc", "lootTable", null, 0.01],
         ["level", "flat", "attribute", "luck", 0.5]
     ]

@@ -5,10 +5,10 @@ const spellMaxInit = 20
 const spellMaxMult = 1.2
 const spellVisThreshold = 100
 
-const spellYieldMod = 0.01
-const spellUpkeepMod = 0.005
-const spellEffectMod = 0.01
-const spellDrawbackMod = 0.005
+const spellYieldMod = 0.05
+const spellUpkeepMod = 0.025
+const spellEffectMod = 0.05
+const spellDrawbackMod = 0.025
 
 const spellPowExp = 0.5
 
@@ -137,17 +137,17 @@ class Spell extends Stat {
         for (let d of spellEffectDefs) {
             let base = d[4]
             if (d[1] == "more") {
-                d[4] = () => 1 + base * this.effect
+                d[4] = () => 1 + base * this.effect * this.active
             } else {
-                d[4] = () => base * this.effect
+                d[4] = () => base * this.effect * this.active
             }
         }
         for (let d of spellDrawbackDefs) {
             let base = d[4]
             if (d[1] == "more") {
-                d[4] = () => 1 + base * this.drawback
+                d[4] = () => 1 + base * this.drawback * this.active
             } else {
-                d[4] = () => base * this.drawback
+                d[4] = () => base * this.drawback * this.active
             }
         }
         for (let d of effectDefs) {
@@ -167,10 +167,10 @@ class Spell extends Stat {
         ]).concat(spellEffectDefs).concat(spellDrawbackDefs).concat(effectDefs)
     }
     get effect() {
-        return this.active * this.vars.spellEffect.final * this.vars.spellPow.final ** spellPowExp   
+        return this.vars.spellEffect.final * this.vars.spellPow.final ** spellPowExp   
     }
     get drawback() {
-        return this.active * this.vars.spellDrawback.final / this.vars.spellRes.final
+        return this.vars.spellDrawback.final / this.vars.spellRes.final
     }
     get progYieldMod() {
         return this.vars.spellYield.final * this.vars.spellPow.final
@@ -182,13 +182,13 @@ class Spell extends Stat {
         this.player.spellManager.activateSpell(this)
         this.active = true
         this.updateEffects()
-        console.log(this.effectDefs)
+        console.log(this)
     }
     deactivate() {
         this.player.spellManager.deactivateSpell(this)
         this.active = false
         this.updateEffects()
-        console.log(this.effectDefs)
+        console.log(this)
     }
     click() {
         if (this.active) {
@@ -216,11 +216,11 @@ class Spell extends Stat {
     tick() {
         let dt = this.player.dt
         if (this.clickable()) {
-            this.progCost.map((c) => c.spend(this.player, dt * this.progCostMod, true)) 
+            this.progCost.map((c) => c.spend(this.player, dt * this.progCostMod, true))
+            if (!this.clickable()) {
+                this.deactivate()
+            }
             this.progYield.map((y) => y.earn(this.player, dt * this.progYieldMod))
-        }
-        if (!this.clickable()) {
-            this.deactivate()
         }
     }
     get tooltip() {

@@ -63,7 +63,7 @@ const meditate = new Action(
         new Cost("vital", "stamina", 1)
     ],
     [
-        new Yield("vital", "mana", 0.1),
+        new Yield("vital", "mana", 0.2),
         new Yield("skill", "manaManipulation", 1),
         new Yield("attribute", "will", 1)
     ]

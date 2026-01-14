@@ -10,7 +10,7 @@ const construction      = new Skill("Construction",     ["dexterity"],          
 const exploration       = new Skill("Exploration",      ["perception", "luck"],     ["agility", "constitution"],                    ["dexterity", "metabolism", "intelligence", "will"])
 const looting           = new Skill("Looting",          ["luck"],                   ["dexterity", "perception"],                    ["intelligence", "power"])
 const studying          = new Skill("Studying",         ["intelligence"],           ["perception", "will"],                         ["power"],                              [["yield", "inc", "skill", null, 0.01]])
-const spellcraft        = new Skill("Spellcraft",       ["power"],                  ["intelligence", "perception"],                 ["will"],                               [["level", "flat", "spell", null, 0.1]])
+const spellcraft        = new Skill("Spellcraft",       ["power"],                  ["intelligence", "perception"],                 ["will"],                               [["level", "flat", "spell", null, 0.125]])
 const enhancement       = new Skill("Enhancement",      ["power", "adaptability"],  ["intelligence", "constitution"],               ["will", "metabolism"],                 [["yield", "inc", "attribute", null, 0.01]])
 
 
