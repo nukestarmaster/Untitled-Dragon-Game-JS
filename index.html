@@ -10,22 +10,23 @@
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 
-<body>
+<body class="app-container">
   <div id="app">
     <div class="baseStatsContainer" v-if="player.baseStats.visible">
-      <div class="w3-grey w3-round container downtooltip" v-for="baseStat in returnCounters(player.baseStats.data)">
-        <div class="w3-round background w3-dark-grey" :style="{width: baseStat.current / baseStat.max * 100 + '%' }"></div>
+      <div class="w3-round container downtooltip action_inactive" v-for="baseStat in returnCounters(player.baseStats.data)">
+        <div class="w3-round background action_bar_inactive" :style="{width: baseStat.current / baseStat.max * 100 + '%' }"></div>
         <div class="overlayText" v-html="baseStat.display(player)"></div>
         <div class="tooltiptext" v-html="baseStat.tooltip"></div>
       </div>
     </div>
+
     <div class="vitalsContainer" v-if="player.vitals.visible">
       <div class="tooltip header">
         {{player.vitals.display()}}
         <span class="tooltiptext" v-html="player.vitals.tooltip"></span>
       </div>
-      <div class="w3-grey w3-round container tooltip" v-for="vital in returnCounters(player.vitals.data)">
-        <div class="w3-round background" :class="vital.colour" :style="{width: vital.current / vital.max * 100 + '%' }"></div>
+      <div class="w3-round container tooltip action_inactive" v-for="vital in returnCounters(player.vitals.data)">
+        <div class="w3-round background" :class="vital.id" :style="{width: vital.current / vital.max * 100 + '%' }"></div>
         <div class="overlayText tooltip" v-html="vital.display(player)"></div>
         <div class="tooltiptext" v-html="vital.tooltip"></div>
       </div>
@@ -38,10 +39,10 @@
       </div>
       <div v-for="action in returnCounters(player.actions.data)">
         <div class="w3-round container tooltip"
-          :class="action.active ? 'w3-dark-grey' : action.clickable(player) ? 'w3-grey' : 'w3-lightgrey w3-diabled'"
+          :class="action.active ? 'action_active' : action.clickable(player) ? 'action_inactive' : 'action_disabled'"
           type="button" @click="click(action, player.actionManager)">
           <div class="w3-round background"
-            :class="action.active ? 'w3-black' : action.clickable(player) ? 'w3-dark-grey' : 'w3-grey'"
+            :class="action.active ? 'action_bar_active' : action.clickable(player) ? 'action_bar_inactive' : 'action_bar_disabled'"
             :style="{width: action.current / action.max * 100 + '%' }"></div>
           <div class="overlayText" v-html="action.display(player)"></div>
           <div class="tooltiptext" v-html="action.tooltip"></div>
@@ -56,10 +57,10 @@
       </div>
       <div v-for="action in returnCounters(player.limitActions.data)">
         <div class="w3-round container tooltip"
-          :class="action.active ? 'w3-dark-grey' : action.clickable(player) ? 'w3-grey' : 'w3-lightgrey w3-diabled'"
+          :class="action.active ? 'action_active' : action.clickable(player) ? 'action_inactive' : 'action_disabled'"
           type="button" @click="click(action, player.actionManager)">
           <div class="w3-round background"
-            :class="action.active ? 'w3-black' : action.clickable(player) ? 'w3-dark-grey' : 'w3-grey'"
+            :class="action.active ? 'action_bar_active' : action.clickable(player) ? 'action_bar_inactive' : 'action_bar_disabled'"
             :style="{width: action.current / action.max * 100 + '%' }"></div>
           <div class="overlayText" v-html="action.display(player)"></div>
           <div class="tooltiptext" v-html="action.tooltip"></div>
@@ -74,10 +75,10 @@
       </div>
       <div v-for="action in returnCounters(player.buildings.data)">
         <div class="w3-round container tooltip"
-          :class="action.active ? 'w3-dark-grey' : action.clickable(player) ? 'w3-grey' : 'w3-lightgrey w3-diabled'"
+          :class="action.active ? 'action_active' : action.clickable(player) ? 'action_inactive' : 'action_disabled'"
           type="button" @click="click(action, player.actionManager)">
           <div class="w3-round background"
-            :class="action.active ? 'w3-black' : action.clickable(player) ? 'w3-dark-grey' : 'w3-grey'"
+            :class="action.active ? 'action_bar_active' : action.clickable(player) ? 'action_bar_inactive' : 'action_bar_disabled'"
             :style="{width: action.current / action.max * 100 + '%' }"></div>
           <div class="overlayText" v-html="action.display(player)"></div>
           <div class="tooltiptext" v-html="action.tooltip"></div>
@@ -90,8 +91,8 @@
         {{player.resources.display()}}
         <span class="tooltiptext" v-html="player.resources.tooltip"></span>
       </div>
-      <div class="w3-grey w3-round container tooltip" v-for="rec in returnCounters(player.resources.data)">
-        <div class="w3-round background w3-dark-grey" :style="{width: rec.current / rec.max * 100 + '%' }">
+      <div class="w3-round container tooltip action_inactive" v-for="rec in returnCounters(player.resources.data)">
+        <div class="w3-round background action_bar_inactive" :style="{width: rec.current / rec.max * 100 + '%' }">
         </div>
         <div class="overlayText" v-html="rec.display(player)"></div>
         <div class="tooltiptext" v-html="rec.tooltip"></div>
@@ -104,11 +105,11 @@
         <span class="tooltiptext" v-html="player.spells.tooltip"></span>
       </div>
       <div v-for="action in returnCounters(player.spells.data)">
-        <div class="w3-round container tooltip"
-          :class="action.active ? 'w3-dark-grey' : action.clickable(player) ? 'w3-grey' : 'w3-lightgrey w3-diabled'"
+       <div class="w3-round container tooltip"
+          :class="action.active ? 'spell_active' : action.clickable(player) ? 'action_inactive' : 'action_disabled'"
           type="button" @click="click(action, player.actionManager)">
           <div class="w3-round background"
-            :class="action.active ? 'w3-black' : action.clickable(player) ? 'w3-dark-grey' : 'w3-grey'"
+            :class="action.active ? 'spell_bar_active' : action.clickable(player) ? 'action_bar_inactive' : 'action_bar_disabled'"
             :style="{width: action.current / action.max * 100 + '%' }"></div>
           <div class="overlayText" v-html="action.display(player)"></div>
           <div class="tooltiptext" v-html="action.tooltip"></div>
@@ -122,11 +123,9 @@
         <span class="tooltiptext" v-html="player.skills.tooltip"></span>
       </div>
       <div v-for="stat in returnCounters(player.skills.data)">
-        <div class="w3-round container tooltip"
-          :class="stat.clickable(player) ? 'w3-grey' : 'w3-lightgrey w3-diabled'"
+        <div class="w3-round container tooltip action_inactive"
           type="button" @click="">
-          <div class="w3-round background"
-            :class="stat.clickable(player) ? 'w3-dark-grey' : 'w3-grey'"
+          <div class="w3-round background action_bar_inactive"
             :style="{width: stat.current / stat.max * 100 + '%' }"></div>
           <div class="overlayText" v-html="stat.display(player)"></div>
           <div class="tooltiptext" v-html="stat.tooltip"></div>
@@ -140,11 +139,9 @@
         <span class="tooltiptext" v-html="player.attributes.tooltip"></span>
       </div>
       <div v-for="stat in returnCounters(player.attributes.data)">
-        <div class="w3-round container tooltip"
-          :class="stat.clickable(player) ? 'w3-grey' : 'w3-lightgrey w3-diabled'"
+        <div class="w3-round container tooltip action_inactive"
           type="button" @click="">
-          <div class="w3-round background"
-            :class="stat.clickable(player) ? 'w3-dark-grey' : 'w3-grey'"
+          <div class="w3-round background action_bar_inactive"
             :style="{width: stat.current / stat.max * 100 + '%' }"></div>
           <div class="overlayText" v-html="stat.display(player)"></div>
           <div class="tooltiptext" v-html="stat.tooltip"></div>
@@ -158,11 +155,9 @@
         <span class="tooltiptext" v-html="player.spirits.tooltip"></span>
       </div>
       <div v-for="stat in returnCounters(player.spirits.data)">
-        <div class="w3-round container lefttooltip"
-          :class="stat.clickable(player) ? 'w3-grey' : 'w3-lightgrey w3-diabled'"
+        <div class="w3-round container tooltip action_inactive"
           type="button" @click="">
-          <div class="w3-round background"
-            :class="stat.clickable(player) ? 'w3-dark-grey' : 'w3-grey'"
+          <div class="w3-round background action_bar_inactive"
             :style="{width: stat.current / stat.max * 100 + '%' }"></div>
           <div class="overlayText" v-html="stat.display(player)"></div>
           <div class="tooltiptext" v-html="stat.tooltip"></div>
@@ -171,10 +166,10 @@
     </div>
 
     <div class="optionContainer">
-      <button class="w3-button w3-round w3-border w3-padding-small" @click="saveData()">Save</button>
-      <button class="w3-button w3-round w3-border w3-padding-small" @click="reset()">Hard Reset</button>
-      <button class="w3-button w3-round w3-border w3-padding-small" @click="reincarnate()">Soft Reset</button>
-      <button class="w3-button w3-round w3-border w3-padding-small" @click="command()">Dev</button>
+      <button class="w3-button w3-black w3-hover-indigo w3-border-grey w3-text-grey w3-round w3-border w3-padding-small button" @click="saveData()">Save</button>
+      <button class="w3-button w3-black w3-hover-indigo w3-border-grey w3-text-grey w3-round w3-border w3-padding-small button" @click="reset()">Hard Reset</button>
+      <button class="w3-button w3-black w3-hover-indigo w3-border-grey w3-text-grey w3-round w3-border w3-padding-small button" @click="reincarnate()">Soft Reset</button>
+      <button class="w3-button w3-black w3-hover-indigo w3-border-grey w3-text-grey w3-round w3-border w3-padding-small button" @click="command()">Dev</button>
     </div>
   </div>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>

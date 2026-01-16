@@ -3,22 +3,95 @@
     font-size: small;
     font-family: "Times New Roman", monospace;
     user-select: none;
+    --background_colour: #100030;
+    --border_colour: #200070;
+    --tooltip_colour: #200050;
+    --text_colour: #aaaa00;
+    --tooltip_text_colour: #bbbb00;
+    --action_disabled_colour-1: #383050;
+    --action_disabled_colour-2: #403070;
+    --action_inactive_colour_1: #180040;
+    --action_inactive_colour_2: #200060;
+    --action_active_colour_1: #400018;
+    --action_active_colour_2: #600020;
+    --spell_active_colour_1: #001840;
+    --spell_active_colour_2: #002060;
+    --health-colour: #990000;
+    --satiety-colour: #995500;
+    --stamina-colour: #555500;
+    --mana-colour: #000099;
+}
+
+.app-container {
+    background-color: var(--background_colour);
 }
 
 #app {
-    height: 900px;
+    height: 95vh;
     width: auto;
-    margin: auto;
+    display: block;
+    padding: 0px;
 }
 
-.w3-button {
+.action_disabled {
+    background-color: var(--action_disabled_colour-1);
+}
+
+.action_bar_disabled {
+    background-color: var(--action_disabled_colour-2);
+}
+
+.action_inactive {
+    background-color: var(--action_inactive_colour_1);
+}
+
+.action_bar_inactive {
+    background-color: var(--action_inactive_colour_2);
+}
+
+.action_active {
+    background-color: var(--action_active_colour_1);
+}
+
+.action_bar_active {
+    background-color: var(--action_active_colour_2);
+}
+
+.spell_active {
+    background-color: var(--spell_active_colour_1);
+}
+
+.spell_bar_active {
+    background-color: var(--spell_active_colour_2);
+}
+
+.health {
+    background-color: var(--health-colour);
+}
+
+.satiety {
+    background-color: var(--satiety-colour);
+}
+
+.stamina {
+    background-color: var(--stamina-colour);
+}
+
+.mana {
+    background-color: var(--mana-colour);
+}
+
+
+
+.button {
     width: 100%;
     text-wrap-mode: wrap;
+    color: var(--text_colour);
 }
 
 .vitalsContainer, .actionsContainer, .statContainer, .resourceContainer {
     position: relative;
-    border: 1px solid grey;
+    border: 1px solid var(--border_colour);
     width: 160px;
     height: 100%;
     float: inline-start;
@@ -27,7 +100,7 @@
 
 .optionContainer {
     position: relative;
-    border: 1px solid grey;
+    border: 1px solid var(--border_colour);
     width: 80px;
     height: 100%;
     float: inline-start;
@@ -37,7 +110,7 @@
 
 .baseStatsContainer {
     position: relative;
-    border: 1px solid grey;
+    border: 1px solid var(--border_colour);
     width: 95%;
     float: inline-start;
     margin: 5px;
@@ -45,6 +118,7 @@
 
 .header {
     text-align: center;
+    color: var(--text_colour);
 }
 
 .tooltip, .lefttooltip, .downtooltip {
@@ -54,8 +128,8 @@
 .tooltip .tooltiptext {
     visibility: hidden;
     width: 240px;
-    background-color: #555;
-    color: white;
+    background-color: var(--tooltip_colour);
+    color: var(--tooltip_text_colour);
     padding: 5px 0;
     border-radius: 6px;
     z-index: 2;
@@ -68,8 +142,8 @@
 .lefttooltip .tooltiptext {
     visibility: hidden;
     width: 240px;
-    background-color: #555;
-    color: white;
+    background-color: var(--tooltip_colour);
+    color: var(--tooltip_text_colour);
     padding: 5px 0;
     border-radius: 6px;
     z-index: 2;
@@ -82,8 +156,8 @@
 .downtooltip .tooltiptext {
     visibility: hidden;
     width: 240px;
-    background-color: #555;
-    color: white;
+    background-color: var(--tooltip_colour);
+    color: var(--tooltip_text_colour)rey;
     padding: 5px 0;
     border-radius: 6px;
     z-index: 2;
@@ -100,7 +174,8 @@
 
 .container {
     position: relative;
-    border: 1px solid black;
+    border: 1px solid var(--border_colour);
+    color: var(--text_colour);
     margin: 2px;
 }
 
@@ -114,6 +189,7 @@
 
 .overlayText {
     z-index: 1;
+    color: var(--text_colour);
     width: 100%;
     height: 100%;
     position: relative;
