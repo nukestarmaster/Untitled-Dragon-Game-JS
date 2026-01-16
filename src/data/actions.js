@@ -165,9 +165,6 @@ const mineGold = new LimitAction(
         new Yield("attribute", "luck", 1)
     ],
     ["lootTable", "mineGoldLT"],
-    {
-        1: ["event", "mineGold"]
-    }
 )
 const lootDeadAdventurer  = new LimitAction(
     "Loot Dead Adventurer",
@@ -218,10 +215,6 @@ const readBookofRiddles = new LimitAction(
         new Yield("attribute", "perception", 1)
     ],
     [new Yield("resource", "books", 1, true)],
-    undefined,
-    {
-        1: ["event", "readBook"]
-    }
 )
 const readConstructionBook = new LimitAction(
     "Read Construction Book",
@@ -236,10 +229,6 @@ const readConstructionBook = new LimitAction(
         new Yield("attribute", "intelligence", 2),
     ],
     [new Yield("resource", "books", 1, true)],
-    undefined,
-    {
-        1: ["event", "readBook"]
-    }
 )
 const readMagicBook = new LimitAction(
     "Read Magic Book",

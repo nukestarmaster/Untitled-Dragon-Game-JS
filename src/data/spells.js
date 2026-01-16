@@ -114,8 +114,8 @@ const clarity = new Spell(
     ],
     [
         ["spellEff", "inc", "spell", null, 0.01],
-        ["spellYield", "inc", "spell", null, 0.01],
-        ["yield", "inc", "skill", null, 0.01],
+        ["spellPower", "inc", "spell", null, 0.01],
+        ["spellRes", "inc", "spell", null, 0.01],
         ["level", "flat", "attribute", "intelligence", 0.25],
         ["level", "flat", "attribute", "will", 0.25]
     ]
