@@ -39,7 +39,7 @@ const agility =         new Attribute("Agility",        [["speed", "inc", "actio
 const metabolism =      new Attribute("Metabolism",     [["eff", "inc", "vital", null, 0.01],
                                                          ["yield", "inc", "vital", null, 0.01]])
 const adaptability =    new Attribute("Adaptability",   [["yield", "inc", "attribute", null, 0.01]])
-const perception =      new Attribute("Perception",     [["spellEff", "inc", "spell", null, 0.01]])
+const perception =      new Attribute("Perception",     [["spellEff", "inc", "spell", null, 0.02]])
 const will =            new Attribute("Will",           [["spellRes", "inc", "spell", null, 0.01]])
 const intelligence =    new Attribute("Intelligence",   [["yield", "inc", "skill", null, 0.05],
                                                          ["yield", "inc", "spell", null, 0.02]])

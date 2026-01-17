@@ -2,7 +2,7 @@ import { Counter, Yield } from "./counter.js";
 import { format } from "../format.js";
 
 const spellMaxInit = 20
-const spellMaxMult = 1.2
+const spellMaxMult = 1.05
 const spellVisThreshold = 100
 
 const spellYieldMod = 0.05
@@ -10,7 +10,7 @@ const spellUpkeepMod = 0.025
 const spellEffectMod = 0.05
 const spellDrawbackMod = 0.025
 
-const spellPowExp = 0.5
+const spellPowExp = 0.75
 
 const skillCostInit = 10
 const skillCostMult = 1.1
@@ -21,8 +21,8 @@ const skillYieldMod = 0.01
 const skillSpeedMod = 0.02
 const skillLuckMod = 0.01
 const skillSpellEffMod = 0.01
-const skillSpellPowMod = 0.005
-const skillSpellResMod = 0.005
+const skillSpellPowMod = 0.01
+const skillSpellResMod = 0.01
 
 const attCostInit = 50
 const attCostMult = 1.2
@@ -115,7 +115,7 @@ class Stat extends Counter {
 
 class Spell extends Stat {
     constructor(name, skill, expYield = 1, progCost = [], progYield = [], spellEffectDefs = [], spellDrawbackDefs = [], effectDefs = []) {
-        let varDefs = [
+        let spellVarDefs = [
             ["spellEff", 1, [["skill", skill, "skillSpellEff"]]],
             ["spellRes", 1, [["skill", skill, "skillSpellRes"]]],
             ["spellPow", 1, [["skill", skill, "skillSpellPow"]]],
@@ -125,7 +125,7 @@ class Spell extends Stat {
             ["spellDrawback", 1],
 
         ]
-        super(name, "spell", spellMaxInit, spellMaxMult, spellVisThreshold, varDefs)
+        super(name, "spell", spellMaxInit, spellMaxMult, spellVisThreshold, spellVarDefs)
         this.skill = skill
         this.progCost = progCost
         this.progYield = progYield
@@ -133,7 +133,6 @@ class Spell extends Stat {
         this.active = false
         this.spellEffectDefs = spellEffectDefs
         this.spellDrawbackDefs = spellDrawbackDefs
-        this.effectDefs = effectDefs
         for (let d of spellEffectDefs) {
             let base = d[4]
             if (d[1] == "more") {
@@ -239,7 +238,11 @@ class Spell extends Stat {
             progYieldText = "<b>Progress Yield</b>:<br>" + this.progYield.reduce((str, c) => `${str} ${c.display(this.player, this.progYieldMod)}/s<br>`, "")
         } else { progYieldText = ""}
 
-        return `${this.flavourText}<br>${skillText}${progCostText}${progYieldText}${this.effectText}`
+        let effectText = "<b>Effect Scale</b>: " + format(this.effect, 3) + "<br>"
+
+        let drawbackText = "<b> Drawback Scale</b>: " + format(this.drawback, 3) + "<br>"
+
+        return `${this.flavourText}<br>${skillText}${progCostText}${progYieldText}${effectText}${drawbackText}${this.effectText}`
     }
 }
 

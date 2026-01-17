@@ -17,9 +17,9 @@ const prestidigitation = new Spell(
         new Yield("attribute", "power", 0.1)
     ],
     [
-        ["skillYield", "inc", "skill", null, 0.01],
-        ["skillEff", "inc", "skill", null, 0.01],
-        ["skillSpeed", "inc", "skill", null, 0.01]
+        ["skillYield", "inc", "skill", null, 0.02],
+        ["skillEff", "inc", "skill", null, 0.02],
+        ["skillSpeed", "inc", "skill", null, 0.02]
     ]
 )
 
