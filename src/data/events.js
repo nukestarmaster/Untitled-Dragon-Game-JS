@@ -15,10 +15,11 @@ const hatch2 =                  new ModEvent("Hatch 2", [
                                                         ])
 const getStone =                new RevealEvent("Get Stone", [["action", "eatStone"]], "Dug up a stone")
 const tooMuchStone =            new RevealEvent("Too Much Stone", [["building", "buildRockpile"]], "The cave is getting crounded with so much stone around, why not organize it into piles?")
-const mineGold =                new RevealEvent("Mine Gold", [["building", "buildHoard"]], "You have collected some gold.")
 const findCaves =               new RevealEvent("Find Caves", [["action", "exploreCaves"]],  "You have broken into a network of dark caves")
-const readBook =                new RevealEvent("Read Book", [["building", "buildLibrary"]], "Maybe you can build a place to keep these books?")
 const injured =                 new RevealEvent("Injured", [["action", "heal"]], "You have cut yourself slightly on the rocks, but you can heal yourself.")
+
+const mineGold =                new RevealEvent("Mine Gold", [["building", "buildHoard"], ["action", "eatGold"]], "You have collected some gold.")
+const readBook =                new RevealEvent("Read Book", [["building", "buildLibrary"]], "Maybe you can build a place to keep these books?")
 
 const foundGold =               new RevealEvent("Found Gold", [["limitAction", "mineGold", 1]], "You have found a small vein of native gold.")
 const foundAdventurer =         new RevealEvent("Found Adventurer", [["limitAction", "lootDeadAdventurer", 1]], "You have found the corpse of a long dead humanoid, what killed him?")
@@ -45,10 +46,11 @@ const events = new Collection({
     hatch2,
     getStone,
     tooMuchStone,
-    mineGold,
     findCaves,
-    readBook,
     injured,
+
+    mineGold,
+    readBook,
 
     foundGold,
     foundAdventurer,

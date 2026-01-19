@@ -23,6 +23,7 @@ const tooltipText = {
 
         action_heal: "Focus your energy on restoring your wounds.",
         action_eatStone: "Your Draconis Fundimentum burns with the Fire of Stars, even these meager lifeless stones can sustain you.",
+        action_eatGold: "The sweet taste of this magnificent metal is tainted by loss deep felt within your soul, you can't help but prefer the lifeless stones. Nonetheless, no amount of gold helps a dreagon dead of starvation.",
         action_rest: "Rest to recover your strength.",
         action_meditate: "Focus to accumulate power.",
         action_digStones: "The stone of these walls sucumb to your claws.",

@@ -54,6 +54,7 @@ function setLevel(player, type, id, level) {
     }
     if (component.baseLevel) {
         component.baseLevel = Math.floor(level)
+        component.level.update(player)
         return 1
     } else {
         console.log(`Components of type ${type} do not have levels.`)

@@ -78,6 +78,10 @@ class ActionManager extends Component {
                 this.player.getComponent("action", "eatStone").click()
                 return
             }
+            if (this.player.getComponent("action", "eatGold").clickable()) {
+                this.player.getComponent("action", "eatGold").click()
+                return
+            }
             this.starving = true
             this.player.getComponent("vital", "health").remove(this.hunger.getCost(this.player, this.hungerRate * dt) * 2)
             if (this.player.getComponent("vital", "health").current == 0) {

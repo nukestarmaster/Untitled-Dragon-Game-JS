@@ -39,8 +39,22 @@ const eatStone = new Action(
     [new Cost("resource", "stones", 1)],
     [],
     [new Yield("vital", "satiety", 1)],
-    [new Yield("skill", "eating", 0.2),
-     new Yield("attribute", "metabolism", 0.2)
+    [
+        new Yield("skill", "eating", 0.2),
+        new Yield("attribute", "metabolism", 0.2)
+    ]
+)
+const eatGold = new Action(
+    "Eat Gold",
+    1,
+    "eating",
+    [new Cost("resource", "gold", 1)],
+    [],
+    [new Yield("vital", "satiety", 2)],
+    [
+        new Yield("skill", "eating", 1),
+        new Yield("attribute", "metabolism", 1),
+        new Yield("attribute", "power", 0.2)
     ]
 )
 const rest = new Action(
@@ -68,6 +82,7 @@ const meditate = new Action(
         new Yield("attribute", "will", 1)
     ]
 )
+
 const digStones = new Action(
     "Dig Stones",
     0.5,
@@ -117,8 +132,10 @@ const exploreCaves = new Action(
 const actions = new Collection({
     heal,
     eatStone,
+    eatGold,
     rest,
     meditate,
+
     digStones,
     exploreCaves
 }, "Actions")
@@ -288,7 +305,7 @@ const buildHoard = new Building(
         ["max", "more", "resource", "gold", (n) => 2 ** n],
         ["level", "flat", "attribute", null, (n) => n]
     ],
-    [new Cost("resource", "gold", 10)],
+    [new Cost("resource", "gold", 8)],
     [new Cost("vital", "stamina", 1)],
     [
         new Yield("skill", "construction", 1),
