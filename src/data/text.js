@@ -19,6 +19,7 @@ const tooltipText = {
 
         resource_gold: "Aurum Vitae, your very soul sings for this shining metal.",
         resource_stones: "Common stones torn from the wall of your rocky prison.",
+        resource_sand: "It's fine and soft and it gets everywhere.",
         resource_books: "Even holding no new knowledge, their words still hold Power.",
 
         action_heal: "Focus your energy on restoring your wounds.",
@@ -27,6 +28,7 @@ const tooltipText = {
         action_rest: "Rest to recover your strength.",
         action_meditate: "Focus to accumulate power.",
         action_digStones: "The stone of these walls sucumb to your claws.",
+        action_crushStones: "Crush these stones until naught remains but powder.",
         action_exploreCaves: "Mysteries await in these dark crevices, they call to you.",
 
         limitAction_breakEgg: "The safety you once felt has turned to confinement. You must out!",
@@ -39,6 +41,8 @@ const tooltipText = {
         limitAction_readMagicBook: "The runes of High Draconic in these pages call to your very soul.",
 
         building_buildRockpile: "Your home has become cluttered with rubble torn from the earth, put it in order.",
+        building_buildTable: "Legends tell of humanoids driven mad by eating without a table. You have no such weakness, but it's nice to have; dragons are not uncivilized beings, despite the lies.",
+        building_buildBed: "Sand makes a much softer surface than bare rock.",
         building_buildHoard: "You can feel the power in your gold, with enough you can imprint your will upon it and grow in power.",
         building_buildLibrary: "Much like a hoard, but for books. A book-hoard.",
 
@@ -54,6 +58,7 @@ const tooltipText = {
         skill_manaManipulation: "Draw in and control cosmic power.",
         skill_mining: "Hone your claws to tear through the bowels of the Earth.",
         skill_construction: "Make the mark of your intellect on this world.",
+        skill_manufacture: "Enforce your might upon the material world, force a change of form.",
         skill_exploration: "The world is full of mysteries, you will find them.",
         skill_looting: "Oh, what delightful stores of wealth you have found.",
         skill_studying: "Plumb texts for their secrets.",
@@ -108,6 +113,8 @@ const tooltipText = {
         limitAction_readMagicBook: "Unlocks mana and meditation the first time read. Unlocks a new spell the first 5 times read.",
 
         building_buildRockpile: "Increases the maximum storage of all resources by 10% for each built.",
+        building_buildTable: "5% more efficiency, speed and yield of eating related actions per level.",
+        building_buildBed: "5% more efficiency, speed and yield of resting related actions per level.",
         building_buildHoard: "Increases all attributes by 1 and doubles stored gold for each built.",
         building_buildLibrary: "Earn 10% more experience (additive with self multiplicative with other mods) and double maximum books per level.",
 
@@ -121,6 +128,7 @@ const tooltipText = {
         skill_eating: "Increase max satiety by 0.1 per level.",
         skill_resting: "Increase max stamina by 0.1 per level.",
         skill_manaManipulation: "Increases spell efficiency by 1% per level.",
+        skill_manufacture: "Increases resource yield by 1% per level.",
         skill_studying: "Increases all skill experience earned by 1% per level, additive with similar bonuses but multiplicative with action yield.",
         skill_spellcraft: "Gives 0.125 bonus levels to all spells per level.",
         skill_enhancement: "Increases all attribute experience earned by 1% per level.",
