@@ -99,11 +99,11 @@ class Action extends Counter {
     tick() {
         let dt = this.player.dt
         if (this.clickable()) {
+            this.progYield.map((y) => y.earn(this.player, dt * this.progYieldMod))
             this.progCost.map((c) => c.spend(this.player, dt * this.progCostMod, true))
             if (!this.clickable()) {
                 this.deactivate()
             }
-            this.progYield.map((y) => y.earn(this.player, dt * this.progYieldMod))
             this.earn(dt * this.speedMod)
         } else {
             this.deactivate()

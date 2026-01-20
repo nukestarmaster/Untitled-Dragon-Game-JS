@@ -29,6 +29,9 @@ const foundRiddleBook =         new RevealEvent("Found Riddle Book", [["limitAct
 const foundConstructionBook =   new RevealEvent("Found Construction Book", [["limitAction", "readConstructionBook", 1]], "It is a book on the construction of structures.")
 const foundMagicBook =          new RevealEvent("Found Magic Book", [["limitAction", "readMagicBook", 1]], "It is a book on the intricacies of spellcraft.")
 
+const readCon1 =                new RevealEvent("Read Con 1", [["building", "buildTable"]], "You have learned the mysteries of the table")
+const readCon2 =                new RevealEvent("Read Con 2", [["action", "crushStones"], ["building", "buildBed"]], "This sand seems more comfortable than bare stone.")
+
 const readMagic1 =              new RevealEvent("Read Magic 1", [["action", "meditate"], ["spell", "prestidigitation"], ["vital", "mana"]], "You have learned the basices of mana manipulation and some simple cantrips.")
 const readMagic2 =              new RevealEvent("Read Magic 2", [["spell", "grace"]], "You have learned to use mana to enhance your precision of claw.")
 const readMagic3 =              new RevealEvent("Read Magic 3", [["spell", "vitality"]], "You have learned to use mana to enhance your vitals.")
@@ -59,6 +62,9 @@ const events = new Collection({
     foundRiddleBook,
     foundConstructionBook,
     foundMagicBook,
+
+    readCon1,
+    readCon2,
 
     readMagic1,
     readMagic2,

@@ -50,10 +50,11 @@ const eatGold = new Action(
     "eating",
     [new Cost("resource", "gold", 1)],
     [],
-    [new Yield("vital", "satiety", 2)],
+    [new Yield("vital", "satiety", 1.5)],
     [
         new Yield("skill", "eating", 1),
-        new Yield("attribute", "metabolism", 1),
+        new Yield("attribute", "metabolism", 2),
+        new Yield("attribute", "adaptability", 0.5),
         new Yield("attribute", "power", 0.2)
     ]
 )
@@ -77,9 +78,15 @@ const meditate = new Action(
         new Cost("vital", "stamina", 1)
     ],
     [
-        new Yield("vital", "mana", 0.2),
-        new Yield("skill", "manaManipulation", 1),
-        new Yield("attribute", "will", 1)
+        new Yield("vital", "mana", 0.2, false, false),
+       
+    ],
+    [
+        new Yield("skill", "manaManipulation", 3),
+        new Yield("attribute", "will", 2),
+        new Yield("attribute", "intelligence", 1),
+        new Yield("attribute", "perception", 1),
+        new Yield("attribute", "adaptability", 0.5)
     ]
 )
 
@@ -88,14 +95,15 @@ const digStones = new Action(
     0.5,
     "mining",
     [],
-    [new Cost("vital", "stamina", 1, false, true)],
+    [new Cost("vital", "stamina", 1)],
     [],
-    [new Yield("resource", "stones", 1),
-     new Yield("skill", 'mining', 1),
-     new Yield("attribute", "strength", 1),
-     new Yield("attribute", "constitution", 1),
-     new Yield("attribute", "dexterity", 0.05),
-     new Yield("attribute", "luck", 0.01)
+    [
+        new Yield("resource", "stones", 1),
+        new Yield("skill", 'mining', 1),
+        new Yield("attribute", "strength", 1),
+        new Yield("attribute", "constitution", 1),
+        new Yield("attribute", "dexterity", 0.05),
+        new Yield("attribute", "luck", 0.01)
     ],
     ["lootTable", "digStonesLT"],
     {
@@ -105,6 +113,18 @@ const digStones = new Action(
         100: ["event", "findCaves"]
     },
     [["max", "flat", "resource", "stones", 0.1]]
+)
+const crushStones = new Action(
+    "Crush Stones",
+    3,
+    "manufacture",
+    [new Cost("resource", "stones", 5)],
+    [new Cost("vital", "stamina", 1)],
+    [
+        new Yield("resource", "sand", 1),
+        new Yield("skill", "manufacture", 2),
+        new Yield("attribute", "strength", 1)
+    ]
 )
 const exploreCaves = new Action(
     "Explore Caves",
@@ -137,6 +157,7 @@ const actions = new Collection({
     meditate,
 
     digStones,
+    crushStones,
     exploreCaves
 }, "Actions")
 
@@ -148,7 +169,7 @@ const breakEgg = new LimitAction(
     null,
     3,
     [],  
-    [new Cost("vital", "stamina", 1, false, true)], 
+    [new Cost("vital", "stamina", 1)], 
     [],
     [],
     undefined,
@@ -178,8 +199,9 @@ const mineGold = new LimitAction(
         new Yield("resource", "gold", 1),
         new Yield("skill", "mining", 3),
         new Yield("attribute", "strength", 1),
-        new Yield("attribute", "dexterity", 1),
-        new Yield("attribute", "luck", 1)
+        new Yield("attribute", "constitution", 1),
+        new Yield("attribute", "dexterity", 0.5),
+        new Yield("attribute", "luck", 0.5)
     ],
     ["lootTable", "mineGoldLT"],
 )
@@ -246,6 +268,11 @@ const readConstructionBook = new LimitAction(
         new Yield("attribute", "intelligence", 2),
     ],
     [new Yield("resource", "books", 1, true)],
+    undefined,
+    {
+        1: ["event", "readCon1"],
+        2: ["event", "readCon2"]
+    }
 )
 const readMagicBook = new LimitAction(
     "Read Magic Book",
@@ -297,6 +324,44 @@ const buildRockpile = new Building(
         new Yield("attribute", "dexterity", 1)
     ]
 )
+const buildTable = new Building(
+    "Build Table",
+    4,
+    2,
+    [
+        ["skillSpeed", "more", "skill", "eating", (n) => 1 + 0.05 * n],
+        ["skillEff", "more", "skill", "eating", (n) => 1 + 0.05 * n],
+        ["skillYield", "more", "skill", "eating", (n) => 1 + 0.05 * n]
+    ],
+    [
+        new Cost("resource", "stones", 20),
+        new Cost("resource", "gold", 4)
+    ],
+    [new Cost("vital", "stamina", 1)],
+    [
+        new Yield("skill", "construction", 1),
+        new Yield("attribute", "dexterity", 1)
+    ]
+)
+const buildBed = new Building(
+    "Build Bed",
+    4,
+    2,
+    [
+        ["skillSpeed", "more", "skill", "resting", (n) => 1 + 0.05 * n],
+        ["skillEff", "more", "skill", "resting", (n) => 1 + 0.05 * n],
+        ["skillYield", "more", "skill", "resting", (n) => 1 + 0.05 * n]
+    ],
+    [
+        new Cost("resource", "sand", 10),
+        new Cost("resource", "gold", 4)
+    ],
+    [new Cost("vital", "stamina", 1)],
+    [
+        new Yield("skill", "construction", 1),
+        new Yield("attribute", "dexterity", 1)
+    ]
+)
 const buildHoard = new Building(
     "Build Hoard",
     5,
@@ -334,6 +399,8 @@ const buildLibrary = new Building(
 
 const buildings = new Collection({
     buildRockpile,
+    buildTable,
+    buildBed,
     buildHoard,
     buildLibrary
 }, "Buildings")

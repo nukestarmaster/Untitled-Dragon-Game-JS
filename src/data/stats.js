@@ -7,6 +7,7 @@ const resting           = new Skill("Resting",          ["metabolism"],         
 const manaManipulation  = new Skill("Mana Manipulation",["intelligence"],           ["perception", "will", "power"],                ["metabolism", "adaptability"],         [["spellEff", "inc", "spell", null, 0.01]])
 const mining            = new Skill("Mining",           ["strength"],               ["constitution", "dexterity", "perception"],    ["metabolism", "intelligence", "luck"])
 const construction      = new Skill("Construction",     ["dexterity"],              ["strength", "constitution", "intelligence"],   ["perception"])
+const manufacture       = new Skill("Manufacture",      ["dexterity"],              ["strength", "constitution", "intelligence"],   ["metabolism", "adaptability", "power"],[["yield", "inc", "resource", null, 0.01]])
 const exploration       = new Skill("Exploration",      ["perception", "luck"],     ["agility", "constitution"],                    ["dexterity", "metabolism", "intelligence", "will"])
 const looting           = new Skill("Looting",          ["luck"],                   ["dexterity", "perception"],                    ["intelligence", "power"])
 const studying          = new Skill("Studying",         ["intelligence"],           ["perception", "will"],                         ["power"],                              [["yield", "inc", "skill", null, 0.01]])
@@ -21,6 +22,7 @@ const skills = new Collection({
     manaManipulation,
     mining,
     construction,
+    manufacture,
     exploration,
     looting,
     studying,

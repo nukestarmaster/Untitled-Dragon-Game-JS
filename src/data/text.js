@@ -92,7 +92,7 @@ const tooltipText = {
         spells: "Toggleable abilities somewhere between actions and skills. Have upkeep and produciton like actions, but can be leveled like skills. Any number of spells may be active at the same time, and they give bonuses while active, but most spells also have drawbacks (reduced by resilience). Many spells also have additional passive effects based on raw spell level (doesn't include bonuses to spell level like from spellcraft). Every level increases yield and positive effect by 5% but also increases upkeep and drawback by 2.5%.",
         skills: "For each effective level in a skill, increase the speed, efficiency and yield of related actions by 2%, 1% and 1% respectively, the luck of related loot tables by 1% and the efficiency, power and resilience of related spells by 1%. Some skills have additional effects.",
         attributes: "For each effective level in an attribute, give 0.5, 0.25 or 0.1 bonus levels to skills of which it is the primary, secondary or tertiary attribute, respectively. Most attributes have additional effects.",
-        spirits: "Gains 1 exp for every level gained in related attribute, gives 1 bonus level and a 1.01x multiplier to exp to the related attribute (compounding multiplicatively) for every level.",
+        spirits: "Gains 1 exp for every level gained in related attribute, gives 1 bonus level and a 1.01x multiplier to exp to the related attribute (compounding multiplicatively) for every level. Spirits (both experience and levels) are retained on death.",
 
         baseStat_growth:"Grows at a constant rate while doing any action. Each level increases all attributes by 1, but also increases base Satiety drain by 0.25/s and multiplies Satiety drain by 1.05 compounding multiplicatively.",
 
