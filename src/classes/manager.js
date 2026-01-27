@@ -7,12 +7,18 @@ class ActionManager extends Component {
             ["hungerRate", 0],
             ["growthRate", 0],
             ["upkeepRate", 1],
+            ["healthRegen", 0],
+            ["staminaRegen", 0],
+            ["manaRegen", 0],
             ["limit", 1]
         ]
         super("Action Manager", "actionManager", actiomManagerVarDefs)
         
         this.hunger = new Cost("vital", "satiety", 1, false, true)
         this.growth = new Yield("baseStat", "growth", 1)
+        this.healthRegen = new Yield("vital", "health", 1)
+        this.stamianRegen = new Yield("vital", "stamina", 1)
+        this.manaRegen = new Yield("vital", "mana", 1)
         this.upkeep = []
         this.actions = []
         this.starving = false
@@ -25,6 +31,15 @@ class ActionManager extends Component {
     }
     get upkeepRate() {
         return this.vars.upkeepRate.final
+    }
+    get healthRegenRate() {
+        return this.vars.healthRegen.final
+    }
+    get staminaRegenRate() {
+        return this.vars.staminaRegen.final
+    }
+    get manaRegenRate() {
+        return this.vars.manaRegen.final
     }
     get limit() {
         return Math.floor(this.vars.limit.final)
@@ -64,11 +79,11 @@ class ActionManager extends Component {
     tick(dt) {
         this.hunger.spend(this.player, this.hungerRate * dt)
         this.growth.earn(this.player, this.growthRate * dt)
+        this.healthRegen.earn(this.player, this.healthRegenRate * dt)
+        this.stamianRegen.earn(this.player, this.staminaRegenRate * dt)
+        this.manaRegen.earn(this.player, this.manaRegenRate * dt)
         this.upkeep.map((c) => c.spend(this.player, this.upkeepRate * dt))
         this.actions.map((a) => a.tick())
-        if (!this.upkeep.every((c) => c.canSpend(this.player, this.upkeepRate * dt))) {
-            this.actions.map((a) => a.deactivate())
-        }
         if (this.player.getComponent("vital", "satiety").current == 0) {
             if (this.player.getComponent("limitAction", "eatEggshell").clickable()) {
                 this.player.getComponent("limitAction", "eatEggshell").click()
@@ -82,9 +97,13 @@ class ActionManager extends Component {
                 this.player.getComponent("action", "eatGold").click()
                 return
             }
+            if (this.player.getComponent("action", "eatCrystal").clickable()) {
+                this.player.getComponent("action", "eatCrystal").click()
+                return
+            }
             this.starving = true
             this.player.getComponent("vital", "health").remove(this.hunger.getCost(this.player, this.hungerRate * dt) * 2)
-            if (this.player.getComponent("vital", "health").current == 0) {
+            if (this.player.getComponent("vital", "health").current < 0.01) {
                 this.player.die()
             }
         } else {

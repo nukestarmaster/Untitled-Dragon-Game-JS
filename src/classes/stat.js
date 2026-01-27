@@ -60,7 +60,7 @@ class Stat extends Counter {
         return Math.floor(super.max)
     }
     get effectScaleFactor() {
-        return this.level
+        return this.level * this.visible
     }
     canEarn() {
         return true
@@ -349,9 +349,24 @@ class Growth extends Stat {
         ])
     }
     get tooltip() {
+        let healthRegenText = ""
+        if (this.player.actionManager.healthRegenRate) {
+            healthRegenText = `Health Regen: ${this.player.actionManager.healthRegen.getYield(this.player, this.player.actionManager.healthRegenRate)}/s<br>`
+        }
+        let staminaRegenText = ""
+        if (this.player.actionManager.staminaRegenRate) {
+            staminaRegenText = `Stamina Regen: ${this.player.actionManager.staminaRegen.getYield(this.player, this.player.actionManager.staminaRegenRate)}/s<br>`
+        }
+        let manaRegenText = ""
+        if (this.player.actionManager.manaRegenRate) {
+            manaRegenText = `Mana Regen: ${this.player.actionManager.manaRegen.getYield(this.player, this.player.actionManager.manaRegenRate)}/s<br>`
+        }
         return `${this.flavourText}<br>
         Satiety Upkeep: ${format(this.player.actionManager.hunger.getCost(this.player, this.player.actionManager.hungerRate), 2)}/s<br>
         Gain: ${format(this.player.actionManager.growth.getYield(this.player, this.player.actionManager.growthRate), 2)}/s<br>
+        ${healthRegenText}
+        ${staminaRegenText}
+        ${manaRegenText}
         ${this.effectText}`
     }
     display() {

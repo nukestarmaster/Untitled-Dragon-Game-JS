@@ -5,8 +5,9 @@ const healing           = new Skill("Healing",          ["adaptability"],       
 const eating            = new Skill("Eating",           ["metabolism"],             ["constitution"],                               ["dexterity", "adaptability"],          [["max", "flat", "vital", "satiety", 0.1]])
 const resting           = new Skill("Resting",          ["metabolism"],             ["constitution", "adaptability"],               ["will", "power"],                      [["max", "flat", "vital", "stamina", 0.1]])
 const manaManipulation  = new Skill("Mana Manipulation",["intelligence"],           ["perception", "will", "power"],                ["metabolism", "adaptability"],         [["spellEff", "inc", "spell", null, 0.01]])
-const mining            = new Skill("Mining",           ["strength"],               ["constitution", "dexterity", "perception"],    ["metabolism", "intelligence", "luck"])
+const mining            = new Skill("Mining",           ["strength"],               ["constitution", "dexterity", "perception"],    ["metabolism", "intelligence", "luck", "power"])
 const construction      = new Skill("Construction",     ["dexterity"],              ["strength", "constitution", "intelligence"],   ["perception"])
+const organization      = new Skill("Organization",     ["intelligence"],           ["dexterity", "perception"],                    ["adaptability", "will", "power"]       [["max", "inc", "resource", null, 0.05]])
 const manufacture       = new Skill("Manufacture",      ["dexterity"],              ["strength", "constitution", "intelligence"],   ["metabolism", "adaptability", "power"],[["yield", "inc", "resource", null, 0.01]])
 const exploration       = new Skill("Exploration",      ["perception", "luck"],     ["agility", "constitution"],                    ["dexterity", "metabolism", "intelligence", "will"])
 const looting           = new Skill("Looting",          ["luck"],                   ["dexterity", "perception"],                    ["intelligence", "power"])
@@ -22,6 +23,7 @@ const skills = new Collection({
     manaManipulation,
     mining,
     construction,
+    organization,
     manufacture,
     exploration,
     looting,

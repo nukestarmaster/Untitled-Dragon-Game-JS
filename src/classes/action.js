@@ -165,12 +165,8 @@ class Action extends Counter {
             compYieldText = "<b>Final Yield</b>:<br>" + this.compYield.reduce((str, c) => `${str} ${c.display(this.player, this.yieldMod)}<br>`, "")
         } else { compYieldText = ""}
 
-        let effectsText
-        if (this.effects.length > this.minEffects) {
-            effectsText = "<b>Effects</b>:<br>" + this.effects.slice(this.minEffects).reduce((str, c) => `${str} ${c.display(this.player, this.count)}<br>`, "")
-        } else { effectsText = ""}
 
-        return `${this.flavourText}<br>${skillText}${durationText}${initCostText}${progCostText}${progYieldText}${compYieldText}${effectsText}${this.effectText}`
+        return `${this.flavourText}<br>${skillText}${durationText}${initCostText}${progCostText}${progYieldText}${compYieldText}${this.effectText}`
     }
     save() {
         return {
