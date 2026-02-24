@@ -1,7 +1,7 @@
 import { vitals } from "./data/vitals.js"
 import { actionManager, actions, buildings, limitActions } from "./data/actions.js";
 import { spellManager, spells } from "./data/spells.js";
-import { events, lootTables } from "./data/events.js";
+import { events, lootTables, permFlags, tempFlags } from "./data/events.js";
 import { resources } from "./data/resources.js";
 import { skills, attributes, spirits, baseStats } from "./data/stats.js";
 import { Modifiers } from "./classes/modifier.js";
@@ -24,6 +24,8 @@ const player = {
     modifiers: new Modifiers,
     events,
     lootTables,
+    tempFlags,
+    permFlags,
     tooltipText,
     getComponent(type, id) {
         return this.getComponentClass(type)[id]
@@ -114,7 +116,8 @@ const player = {
     },
     reincarnate() {
         let save = {
-            spirits: this.spirits.save()
+            spirits: this.spirits.save(),
+            permFlags: this.permFlags.save()
         }
         console.log(save)
         return save

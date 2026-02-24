@@ -96,7 +96,7 @@ const meditate = new Action(
         new Cost("vital", "stamina", 1)
     ],
     [
-        new Yield("vital", "mana", 0.2, false, false),
+        new Yield("vital", "mana", 0.2,),
        
     ],
     [
@@ -258,7 +258,7 @@ const mineGold = new LimitAction(
 )
 const mineCrystal = new LimitAction(
     "Mine Crystal",
-    2,
+    1,
     "mining",
     0,
     [],
@@ -266,8 +266,8 @@ const mineCrystal = new LimitAction(
     [],
     [
         new Yield("resource", "crystal", 1),
-        new Yield("skill", "mining", 8),
-        new Yield("skill", "manaManipulation", 2),
+        new Yield("skill", "mining", 6),
+        new Yield("skill", "manaManipulation", 1),
         new Yield("attribute", "strength", 2),
         new Yield("attribute", "constitution", 2),
         new Yield("attribute", "power", 0.1)
@@ -344,12 +344,7 @@ const readConstructionBook = new LimitAction(
         new Yield("attribute", "intelligence", 2),
     ],
     [new Yield("resource", "books", 1, true)],
-    undefined,
-    {
-        1: ["event", "readCon1"],
-        2: ["event", "readCon2"],
-        3: ["event", "readCon3"]
-    }
+    ["event", "readCon"]
 )
 const readMagicBook = new LimitAction(
     "Read Magic Book",
@@ -366,14 +361,7 @@ const readMagicBook = new LimitAction(
         new Yield("attribute", "will", 0.5)
     ],
     [new Yield("resource", "books", 1, true)],
-    undefined,
-    {
-        1: ["event", "readMagic1"],
-        2: ["event", "readMagic2"],
-        3: ["event", "readMagic3"],
-        4: ["event", "readMagic4"],
-        5: ["event", "readMagic5"]
-    }
+    ["event", "readMagic"]
 )
 
 const limitActions = new Collection({

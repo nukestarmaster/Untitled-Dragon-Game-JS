@@ -12,10 +12,15 @@ export function parseCommand(player, command, ...args) {
 }
 
 const commands = {
+    "echo": echo,
     "fireEvent": fireEvent,
     "setLevel": setLevel,
     "setAllLevel": setAllLevel,
     "die": die,
+}
+
+function echo(player, ...text) {
+    window.alert(text.join(" "))
 }
 
 function fireEvent(player, eventId) {

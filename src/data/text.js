@@ -157,6 +157,9 @@ const tooltipText = {
         attribute_luck: "Increases luck for all random events by 2% per level.",
         attribute_power: "Increases spell power (boosting both yield and positive effects of spells) by 1% per level."
     },
+    eventText: {
+        start_1: "Test"
+    },
     getTooltip(comp, id) {
         if (!id && this.flavourText[comp]) {
             return italicize(this.flavourText[comp])
@@ -172,6 +175,12 @@ const tooltipText = {
         }
         if (this.descText[comp + "_" + id]) {
             return this.descText[comp + "_" + id]
+        }
+        return ""
+    },
+    getEventText(id, n) {
+        if (this.eventText[id + "_" + n]) {
+            return this.eventText[id + "_" + n]
         }
         return ""
     },

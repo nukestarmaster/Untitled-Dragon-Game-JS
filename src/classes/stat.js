@@ -68,6 +68,10 @@ class Stat extends Counter {
     canSpend(n, flat = false, allowPartial = false) {
         return this.level > 0 || allowPartial && this.level > 0 || this.getCost(n, flat) < this.current
     }
+    show() {
+        super.show()
+        this.updateEffects()
+    }
     earn(n, flat = false) {
         super.earn(n, flat)
         while (this.current >= this.max) {

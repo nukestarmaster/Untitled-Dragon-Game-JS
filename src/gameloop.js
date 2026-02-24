@@ -11,7 +11,7 @@ function tick(player) {
         let t0 = player.lastUpdate
         let t1 = Date.now()
         player.lastUpdate = t1
-        player.dt = (t1 - t0) / 1000
+        player.dt = Math.min((t1 - t0) / 1000, 0.1)
         player.actionManager.tick(player.dt)
         player.spellManager.tick(player.dt)
     } else {

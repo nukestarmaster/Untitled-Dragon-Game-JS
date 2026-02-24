@@ -42,8 +42,15 @@ class Event {
 }
 
 class TextEvent extends Event {
-    constructor(name, eventText) {
-        super(name, [], 0, eventText)
+    constructor(name, eventText, nextEvent) {
+        super(name, [], eventText, nextEvent)
+    }
+    call(player) {
+        window.alert(this.eventText)
+        if (this.nextEvent != null) {
+            let nextEvent = player.getComponent("event", this.nextEvent)
+            nextEvent.call(player)
+        }
     }
 }
 
@@ -52,6 +59,69 @@ class WaitEvent extends Event {
         let nextEvent = player.getComponent(compType, compId)
         let boundCall = nextEvent.call.bind(nextEvent, player)
         setTimeout(boundCall, magnitude)
+    }
+}
+
+class CallEvent extends Event {
+    func(player, compType, compId) {
+        player.getComponent(compType, compId).call(player)
+    }
+}
+
+class AndEvent extends Event {
+    constructor(name, flags, events, text, nextEvent) {
+        super(name, flags, text, nextEvent)
+        this.events = events
+    }
+    call(player) {
+        player.eventTrigger = true
+        if (this.eventText != null) {
+            console.log(this.eventText)
+        }
+        this.fireEvents(player, this.loop(player))
+        player.eventTrigger = false
+        if (this.nextEvent != null) {
+            let nextEvent = player.getComponent("event", this.nextEvent)
+            nextEvent.call(player)
+        }
+    }
+    loop(player) {
+        let n = 1
+        for (let i of this.components) {
+            n *= this.func(player, i[0], i[1], i[2])
+        }
+        return n
+    }
+    func(player, flagType, flagId, threshold) {
+        return player.getComponent(flagType, flagId).check(threshold)
+    }
+    fireEvents(player, val) {
+        console.log("Firing Events with value of at least", val)
+        if (Array.isArray(this.events)) {
+            for (let i = 0; i < val; i += this.events[2]) {
+                player.getComponent(this.events[0], this.events[1]).call(player)
+            }
+            return
+        }
+        if (typeof this.events == "object") {
+            for (let n in this.events) {
+                if (val >= n) {
+                    player.getComponent(this.events[n][0], this.events[n][1]).call(player)
+                }
+            }
+            return
+        }
+        throw Error("Invalid events type", typeof this.events)
+    }
+}
+
+class OrEvent extends Event {
+    loop(player) {
+        let n = 0
+        for (let i of this.components) {
+            n += this.func(player, i[0], i[1], i[2])
+        }
+        return n
     }
 }
 
@@ -104,4 +174,4 @@ class LootEvent extends Event {
     }
 }
 
-export { Event, TextEvent, WaitEvent, CostEvent, YieldEvent, RevealEvent, HideEvent, UpkeepEvent, ModEvent, LootEvent }
+export { Event, TextEvent, WaitEvent, CallEvent, OrEvent, AndEvent, CostEvent, YieldEvent, RevealEvent, HideEvent, UpkeepEvent, ModEvent, LootEvent }
