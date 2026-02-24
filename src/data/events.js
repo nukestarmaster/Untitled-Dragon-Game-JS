@@ -1,9 +1,9 @@
 import { Collection } from "../classes/collection.js"
-import { TextEvent, WaitEvent, CostEvent, YieldEvent, RevealEvent, HideEvent, UpkeepEvent, LootEvent, ModEvent, CallEvent, AndEvent } from "../classes/event.js"
+import { Event, TextEvent, WaitEvent, CostEvent, YieldEvent, RevealEvent, HideEvent, UpkeepEvent, LootEvent, ModEvent, CallEvent, AndEvent } from "../classes/event.js"
 import { LootTable } from "../classes/loottable.js"
 import { Flag } from "../classes/flag.js"
 
-const nullEvent =               new TextEvent("Null Event")
+const nullEvent =               new Event("Null Event", [[]])
 const testEvent =               new TextEvent("Test Event", "Hello World")
 
 const start1 =                  new WaitEvent("Start 1", [["event", "start2", 1000]], "event1")
