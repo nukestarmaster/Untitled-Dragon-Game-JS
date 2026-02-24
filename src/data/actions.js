@@ -66,7 +66,7 @@ const eatCrystal = new Action(
     [],
     [
         new Yield("vital", "satiety", 1.2),
-        new Yield("vital", "mana", 1)
+        new Yield("vital", "mana", 1, false, false)
     ],
     [
         new Yield("skill", "eating", 1),
