@@ -2,7 +2,7 @@ import { Counter, Yield } from "./counter.js";
 import { format } from "../format.js";
 
 const spellMaxInit = 20
-const spellMaxMult = 1.05
+const spellMaxMult = 1.2
 const spellVisThreshold = 100
 
 const spellYieldMod = 0.05

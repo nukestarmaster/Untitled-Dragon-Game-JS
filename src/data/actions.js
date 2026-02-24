@@ -141,6 +141,7 @@ const crushStones = new Action(
     "manufacture",
     [new Cost("resource", "stones", 5)],
     [new Cost("vital", "stamina", 1)],
+    [],
     [
         new Yield("resource", "sand", 1),
         new Yield("skill", "manufacture", 2),
@@ -401,9 +402,9 @@ const buildTable = new Building(
     4,
     2,
     [
-        ["skillSpeed", "more", "skill", "eating", (n) => 1 + 0.05 * n],
-        ["skillEff", "more", "skill", "eating", (n) => 1 + 0.05 * n],
-        ["skillYield", "more", "skill", "eating", (n) => 1 + 0.05 * n]
+        ["skillSpeed", "more", "skill", "eating", (n) => 1 + 0.02 * n],
+        ["skillEff", "more", "skill", "eating", (n) => 1 + 0.02 * n],
+        ["skillYield", "more", "skill", "eating", (n) => 1 + 0.02 * n]
     ],
     [
         new Cost("resource", "stones", 20),
@@ -420,9 +421,9 @@ const buildBed = new Building(
     4,
     2,
     [
-        ["skillSpeed", "more", "skill", "resting", (n) => 1 + 0.05 * n],
-        ["skillEff", "more", "skill", "resting", (n) => 1 + 0.05 * n],
-        ["skillYield", "more", "skill", "resting", (n) => 1 + 0.05 * n]
+        ["skillSpeed", "more", "skill", "resting", (n) => 1 + 0.02 * n],
+        ["skillEff", "more", "skill", "resting", (n) => 1 + 0.02 * n],
+        ["skillYield", "more", "skill", "resting", (n) => 1 + 0.02 * n]
     ],
     [
         new Cost("resource", "sand", 10),
@@ -440,7 +441,7 @@ const buildStorage = new Building(
     2,
     [
         ["max", "more", "resource", null, (n) => 1 + 0.1 * n],
-        ["eff", "more", "resource", null, (n) => 1 + 0.05 * n]
+        ["eff", "more", "resource", null, (n) => 1 + 0.02 * n]
     ],
     [
         new Cost("resource", "stones", 20),
@@ -453,6 +454,7 @@ const buildStorage = new Building(
         new Yield("attribute", "dexterity", 1)
     ],
     [],
+    null,
     {
         1: ["event", "builtStorage"]
     }
@@ -463,7 +465,7 @@ const buildHoard = new Building(
     2,
     [
         ["max", "more", "resource", "gold", (n) => 1 + n],
-        ["level", "flat", "attribute", null, (n) => n]
+        ["level", "flat", "attribute", null, 1]
     ],
     [new Cost("resource", "gold", 8)],
     [new Cost("vital", "stamina", 1)],
@@ -498,9 +500,9 @@ const buildPylon = new Building(
     5,
     2,
     [
-        ["spellEff", "more", "spell", null, 0.05],
-        ["spellPower", "more", "spell", null, 0.05],
-        ["spellRes", "more", "spell", null, 0.05],
+        ["spellEff", "more", "spell", null, (n) => 1 + 0.02 * n],
+        ["spellPower", "more", "spell", null, (n) => 1 + 0.02 * n],
+        ["spellRes", "more", "spell", null, (n) => 1 + 0.02 * n],
         ["manaRegen", "flat", "actionManager", "actionManager", 0.01]
     ],
     [

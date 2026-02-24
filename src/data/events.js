@@ -115,7 +115,7 @@ const events = new Collection({
 }, "Events")
 
 const digStonesLT =     new LootTable("Dig Stone", [["foundGold", 2, 1], ["foundCrystal", 1, 1]], 97.9, "mining", 0.1)
-const exploreCavesLT =  new LootTable("Explore Caves", [["foundGold", 10, 1], ["foundCrystal", 5, 1] ["foundAdventurer", 20, 1], ["foundMage", 5, 1]], 59, "exploration", 1)
+const exploreCavesLT =  new LootTable("Explore Caves", [["foundGold", 10, 1], ["foundCrystal", 5, 1], ["foundAdventurer", 20, 1], ["foundMage", 5, 1]], 59, "exploration", 1)
 
 const mineGoldLT =      new LootTable("Mine Gold", [["foundGold", 20, 1]], 79, "mining", 1)
 const mineCrystalLT =   new LootTable("Mine Crystal", [["foundCrystal", 10, 1]], 89, "mining", 1)
