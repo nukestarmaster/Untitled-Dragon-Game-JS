@@ -33,6 +33,16 @@ const app = Vue.createApp({
             }
             return true
         },
+        exportSave: function exportSave() {
+            console.log("Exporting ...")
+            navigator.clipboard.writeText(JSON.stringify(this.player))
+            alert("Data copied to clipboard.")
+        },
+        importSave: function importSave() {
+            let data = prompt("Paste data here:")
+            this.player.load(JSON.parse(data))
+            this.player.update(this)
+        },
         reset: function reset() {
             localStorage.removeItem("player")
             location.reload()

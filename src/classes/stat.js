@@ -355,15 +355,15 @@ class Growth extends Stat {
     get tooltip() {
         let healthRegenText = ""
         if (this.player.actionManager.healthRegenRate) {
-            healthRegenText = `Health Regen: ${this.player.actionManager.healthRegen.getYield(this.player, this.player.actionManager.healthRegenRate)}/s<br>`
+            healthRegenText = `Health Regen: ${format(this.player.actionManager.healthRegen.getYield(this.player, this.player.actionManager.healthRegenRate), 2)}/s<br>`
         }
         let staminaRegenText = ""
         if (this.player.actionManager.staminaRegenRate) {
-            staminaRegenText = `Stamina Regen: ${this.player.actionManager.staminaRegen.getYield(this.player, this.player.actionManager.staminaRegenRate)}/s<br>`
+            staminaRegenText = `Stamina Regen: ${format(this.player.actionManager.staminaRegen.getYield(this.player, this.player.actionManager.staminaRegenRate), 2)}/s<br>`
         }
         let manaRegenText = ""
         if (this.player.actionManager.manaRegenRate) {
-            manaRegenText = `Mana Regen: ${this.player.actionManager.manaRegen.getYield(this.player, this.player.actionManager.manaRegenRate)}/s<br>`
+            manaRegenText = `Mana Regen: ${format(this.player.actionManager.manaRegen.getYield(this.player, this.player.actionManager.manaRegenRate), 2)}/s<br>`
         }
         return `${this.flavourText}<br>
         Satiety Upkeep: ${format(this.player.actionManager.hunger.getCost(this.player, this.player.actionManager.hungerRate), 2)}/s<br>

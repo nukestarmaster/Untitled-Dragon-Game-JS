@@ -245,7 +245,7 @@ class Building extends Action {
         return `<b>${this.name}</b><br>Built: ${this.count}<br>Cost: ${this.displayCost()}`
     }
     displayCost() {
-        return this.initCost.reduce((s, c) => `${s}${format(c.amount * this.startCostMod)} ${c.id} `, "")
+        return this.initCost.reduce((str, c) => `${str} ${(c.display(this.player, this.startCostMod, 0))}<br>`, "")
     }
 }
 

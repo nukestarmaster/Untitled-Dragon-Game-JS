@@ -120,8 +120,8 @@ class Cost {
     spend(player, mult = 1, allowPartial) {
         player.getComponent(this.type, this.id).spend(this.amount * mult, this.flat, this.allowPartial || allowPartial)
     }
-    display(player, mult = 1) {
-        return `${format(this.getCost(player, mult), 2)} ${player.getComponent(this.type,this.id).name}`
+    display(player, mult = 1, sd = 2) {
+        return `${format(this.getCost(player, mult), sd)} ${player.getComponent(this.type,this.id).name}`
     }
 }
 
